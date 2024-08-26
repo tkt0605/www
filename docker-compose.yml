@@ -6,9 +6,9 @@ services:
     container_name: web
     env_file:
       - .env  # ここで .env ファイルを指定します
-    command: gunicorn --workers 3 --timeout 120 --log-level debug project.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn  project.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - .:/project
+      - ./project:/project
     environment:
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]

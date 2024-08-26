@@ -13,3 +13,5 @@ COPY requirements.txt /project/
 # 依存関係をインストール
 RUN pip3 install --upgrade pip 
 RUN pip3 install --no-cache-dir -r /project/requirements.txt
+
+CMD ["gunicorn", "project.wsgi:application", "--bind", "0.0.0.0:8000"]
