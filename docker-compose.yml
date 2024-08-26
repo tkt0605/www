@@ -3,7 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: django-app
+    container_name: web
+    env_file:
+      - .env  # ここで .env ファイルを指定します
+    command: gunicorn --workers 3 --timeout 120 --log-level debug project.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/project
     environment:
@@ -11,18 +14,20 @@ services:
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
       - MYSQL_HOST=db
       - MYSQL_DATABASE=main
-      - MYSQL_USER=root
+      - MYSQL_USER=takato
       - MYSQL_PASSWORD=0605
     depends_on:
       - db
 
   db:
     image: mysql:8.0
-    container_name: mysql-db
+    container_name: mysql
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 20050605
       MYSQL_DATABASE: main
-      MYSQL_USER: root
+      MYSQL_USER: takato
       MYSQL_PASSWORD: 0605
     volumes:
       - mysql_data:/var/lib/mysql
@@ -36,6 +41,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - web
+      - db
 
 volumes:
   mysql_data:
