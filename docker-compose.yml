@@ -11,13 +11,16 @@ services:
       - ./project:/project
     environment:
       - DEBUG=0
+      - DJANGO_SETTINGS_MODULE=project.settings
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - DATABASE_URL=mysql://takato:0605@db:3306/main
       - DATABASE_HOST=db
-      - DATABASE_DATABASE=main
+      - DATABASE_NAME=main
       - DATABASE_USER=takato
       - DATABASE_PASSWORD=0605
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
     - webnet
 
@@ -27,13 +30,18 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: 20050605
-      MYSQL_DATABASE: main
-      MYSQL_USER: takato
-      MYSQL_PASSWORD: 0605
+      - MYSQL_ROOT_PASSWORD=20050605
+      - MYSQL_DATABASE=main
+      - MYSQL_USER=takato
+      - MYSQL_PASSWORD=0605
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
     - webnet
 
