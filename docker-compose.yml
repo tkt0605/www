@@ -12,12 +12,14 @@ services:
     environment:
       - DEBUG=0
       - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
-      - MYSQL_HOST=db
-      - MYSQL_DATABASE=main
-      - MYSQL_USER=takato
-      - MYSQL_PASSWORD=0605
+      - DATABASE_HOST=db
+      - DATABASE_DATABASE=main
+      - DATABASE_USER=takato
+      - DATABASE_PASSWORD=0605
     depends_on:
       - db
+    networks:
+    - webnet
 
   db:
     image: mysql:8.0
@@ -31,6 +33,9 @@ services:
       MYSQL_PASSWORD: 0605
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+    - webnet
 
   nginx:
     image: nginx:latest
@@ -42,6 +47,11 @@ services:
     depends_on:
       - web
       - db
+    networks:
+    - webnet
 
 volumes:
   mysql_data:
+networks:
+  webnet:
+    driver: bridge

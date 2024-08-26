@@ -55,7 +55,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,21 +75,15 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DATABASE_NAME"),
-        "USER": os.environ.get("DATABASE_USER"),
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-        "HOST": os.environ.get("DATABASE_HOST"),
-        # "PORT": "3306",
-        # 'NAME': 'root',
-        # 'USER': 'takat',
-        # 'PASSWORD': '20050605',
-        # 'HOST': 'db',
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'main',
+        'USER': 'takato',
+        'PASSWORD': '0605',
+        'HOST': 'db',  # Docker Compose の MySQL サービス名
         'PORT': '3306',
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -112,9 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "ja"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "Asia/Tokyo"
 
 USE_I18N = True
 
@@ -122,9 +116,12 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = "/static/"
+# STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
