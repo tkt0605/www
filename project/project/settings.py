@@ -127,3 +127,37 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# ]
+# SITE_ID = 1
+# ACCOUNT_EMAIL_VERIFICATION = 'none'
+# ACCOUNT_EMAIL_REQUIRED = True
+# LOGIN_REDIRECT_URL = '/'
+# AUTH_USER_MODEL = 'accounts.CustomUser'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# LOGIN_URL = "/accounts/login/"
+# ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# # FRONTEND_URL = "http://127.0.0.1:8000/community/"
+# #ユーザーネームは使わない
+# ACCOUNT_USERNAME_REQUIRED = True
+# # ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# #認証にはメールアドレスを使用する
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+
+# #ログイン後のリダイレクト先を指定
+# LOGIN_REDIRECT_URL = '/'
+# #ログアウト後のリダイレクト先を指定
+# LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# #メールアドレスが確認済みである必要がある
+# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# # ACCOUNT_EMAIL_VERIFICATION = "None"
+
+# #即ログアウトとする
+# ACCOUNT_LOGOUT_ON_GET = True
+# ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+# # ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
