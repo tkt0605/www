@@ -1,0 +1,24 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block title %}flexBlock | Signup{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/account/signup.css' %}">
+{% endblock %}
+{% block content %}
+<div class="main">
+  <div class="flexBlock">
+    <b>flexBlock</b>
+  </div>
+  <div class="Signup">
+    <h2><b>サインアップ</b></h2>
+    <form class="Signup_form" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <p>{{user.username}}</p>
+      <button class="button" type="submit"><b>サインアップ</b></button>
+      <hr class="hr">
+    </form>
+    <a href="/accounts/login/"><button class="button_login"><b>ログイン</b></button></a>
+  </div>
+</div>
+{% endblock %}

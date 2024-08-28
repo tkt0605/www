@@ -1,0 +1,17 @@
+{% extends "account/base_generic.html" %}
+{% load static %}
+{% block title %}flexBlock | Login{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+{% endblock %}
+{% block content %}
+<div>
+    <p class="text-center">
+        <b><u>確認用のメールを送信しました！</u></b>
+    </p>
+</div>
+<div>
+    <p class="text-center">メールの有効性が確認できるまでユーザー登録は完了となりません。</p>
+    <p class="text-center">メールに記載されたリンクをクリックして、ユーザー登録を完了させてください。</p>
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+@charset "UTF-8";
+:root {
+    font-family: Söhne, -apple-system, BlinkMacSystemFont, Helvetica, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+}
+
+body {
+    background-color: #fff;
+    display: block;
+    margin: 0;
+}
+
+a {
+    font-weight: 400;
+    text-decoration: inherit;
+    color: #10a37f;
+}
+
+.main {
+    margin-top: 100px;
+}
+
+.explain {}
+
+.flex,
+.flexBlock {
+    text-align: center;
+    font-size: 35px;
+}
+
+.login {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.login_form {
+    text-align: center;
+    display: block;
+}
+
+.button,
+.button_register {
+    background: black;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid white;
+    width: 300px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover,
+.button_register:hover {
+    background-color: #555;
+}
+
+#id_login,
+#id_password {
+    width: 300px;
+    height: 35px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding: 0 10px;
+}
+
+#id_password_helptext {
+    display: block;
+}
+
+.hr {
+    text-align: center;
+    width: 350px;
+    border-top: 1px solid #ccc;
+    margin: 20px auto;
+}
+
+#id_remember {}

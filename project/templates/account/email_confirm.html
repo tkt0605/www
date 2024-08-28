@@ -1,0 +1,18 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block title %}flexBlock | Login{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/account/login.css' %}">
+{% endblock %}
+{% block content %}
+<div>
+    <form class="forms" action="{% url 'account_confirm_email' confirmation.key %}" enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <p>サインアップ完了いたしました。</p>
+      <p>今度は、ログインの必要があります。</p>
+      <button class="login" type="submit"><b>Login</b></button>
+    </form>
+  </div>
+</div>
+{% endblock %}
