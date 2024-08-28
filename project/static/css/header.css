@@ -47,16 +47,6 @@ body {
     position: relative;
 }
 
-.menu_line {
-    margin-top: 15px;
-    margin-left: -10px;
-    width: 210px;
-    height: 100%;
-    position: relative;
-}
-
-.side_name {}
-
 .d-icon {
     width: 20px;
     height: 20px;
@@ -70,14 +60,6 @@ body {
     margin-left: 5px;
     padding-left: 0.5em;
     text-align: left;
-}
-
-.d-inline2 {
-    font-size: 16px;
-    margin-left: 35px;
-    padding-left: 0.5em;
-    text-align: left;
-    margin-top: -28px;
 }
 
 .d-inline3 {
@@ -230,6 +212,9 @@ body {
         padding: 0 20px;
         box-shadow: var(--box-shadow);
     }
+    .li_menu {
+        width: 100%;
+    }
     .d-inline,
     .d-inline2 {
         font-size: 14px;
@@ -239,7 +224,7 @@ body {
         margin: -21.5px 0 0 39px;
     }
     .menu_line {
-        margin: 25px 0 0 -40px;
+        margin: 25px 0 0 -20px;
     }
     .main {
         height: 100%;
@@ -251,7 +236,7 @@ body {
     }
     .main.show {
         left: 0;
-        width: 75%;
+        width: 55%;
     }
     .flex {
         font-size: 25px;

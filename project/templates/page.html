@@ -1,0 +1,96 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/page.css' %}">
+{% endblock %}
+{% block title %}flexBlock | {{account.name}}{% endblock title %}
+{% block content %}
+<div id="main">
+    <div class="profile_filed">
+        <img class="profile_image" src="/media/{{account.image}}"/>
+        <br>
+        <div class="main_filed">
+            <div class="profile_name">
+                <img class="profile_icon" src="/media/{{account.icon}}"/>
+                <div class="name"><b>{{account.name}}</b></div>
+            </div>
+            <hr class="hr">
+            <ul class="sub_filed">
+                <li class="infomation">
+                    <div class="d-info">{{account.infomation}}</div>
+                </li> 
+                <li class="hobby">
+                   <div class="d-info1"> 趣味:{{account.hobby}}</div>
+                </li> 
+                <li class="detail">
+                    <div class="d-info2"> 詳細:{{account.detail}}</div>
+                </li> 
+                <li class="create">
+                    <svg class="date" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
+                        <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
+                        <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                    </svg>    
+                    <div class="d-date">{{account.created_at|date:'Y年n月j日'}}から利用しています。</div>
+                </li> 
+            </ul>
+            <ul class="tab2-group">
+                <li class="tab2 tab2-A is-active2">
+                    <b><div class="menu">Home</div></b>
+                </li>
+                <li class="tab2 tab2-B">
+                    <b><div class="menu">Owner</div></b>
+                </li>
+                <li class="tab2 tab2-C">
+                    <b><div class="menu">Member</div></b>
+                </li>
+                <li class="tab2 tab2-D">
+                    <b><div class="menu">Blocks</div></b>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel2-group">
+        <div class="panel2 tab2-A is-show2">
+            <div class="tab_1">
+                <h1>Hello 1</h1>
+            </div>
+        </div>
+        <div class="panel2 tab2-B">
+            <div class="tab_1">
+                <h1>Hello 2</h1>
+            </div>
+        </div>
+        <div class="panel2 tab2-C">
+            <div class="tab_1">
+                <h1>Hello 3</h1>
+            </div>
+        </div>
+        <div class="panel2 tab2-D">
+            <div class="tab_1">
+                <h1>Hello 4</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<script teype="text/javascript">
+    document.addEventListener('DOMContentLoaded', function(){
+        // タブに対してクリックイベントを適用
+        const tabs = document.getElementsByClassName('tab2');
+        for(let i = 0; i < tabs.length; i++) {
+          tabs[i].addEventListener('click', tabSwitch, false);
+        }
+      
+        // タブをクリックすると実行する関数
+        function tabSwitch(){
+          // タブのclassの値を変更
+          document.getElementsByClassName('is-active2')[0].classList.remove('is-active2');
+          this.classList.add('is-active2');
+          // コンテンツのclassの値を変更
+          document.getElementsByClassName('is-show2')[0].classList.remove('is-show2');
+          const arrayTabs = Array.prototype.slice.call(tabs);
+          const index = arrayTabs.indexOf(this);
+          document.getElementsByClassName('panel2')[index].classList.add('is-show2');
+        };
+      }, false);
+</script>
+{% endblock content %}
