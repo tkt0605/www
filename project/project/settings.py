@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-_tdz(#ta!vztj&#6hif!va5u3)0#s5aoxyv(vkf97_bunbtcep'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS =['3.114.145.130']
 
@@ -32,13 +32,13 @@ ALLOWED_HOSTS =['3.114.145.130']
 
 INSTALLED_APPS = [
     "flexblock",
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -148,24 +148,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = "/accounts/login/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-# FRONTEND_URL = "http://127.0.0.1:8000/community/"
-#ユーザーネームは使わない
 ACCOUNT_USERNAME_REQUIRED = True
-# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-#認証にはメールアドレスを使用する
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
-
-#ログイン後のリダイレクト先を指定
 LOGIN_REDIRECT_URL = '/'
-#ログアウト後のリダイレクト先を指定
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-
-#メールアドレスが確認済みである必要がある
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# ACCOUNT_EMAIL_VERIFICATION = "None"
-
-#即ログアウトとする
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+# ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'

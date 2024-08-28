@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # entrypoint: /bin/sh
     container_name: web
     env_file:
       - .env  # ここで .env ファイルを指定します
@@ -55,7 +56,6 @@ services:
       - ./project/static:/project/static
     depends_on:
       - web
-      - db
     networks:
     - webnet
 

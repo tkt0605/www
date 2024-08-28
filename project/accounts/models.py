@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
@@ -26,16 +26,35 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
+
+    # 追加: related_name を設定して競合を避ける
+    groups = models.ManyToManyField(
+        Group,
+        related_name='custom_user_groups',  # 競合を避けるために related_name を追加
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='custom_user_permissions',  # 競合を避けるために related_name を追加
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_query_name='user',
+    )
+
     objects = CustomUserManager()
-    blockchain_address = models.CharField(max_length=66, blank=True, null=True)  
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
+
     @property
     def profile(self):
         return Account.objects.get_or_create(user=self)[0]
+
 class Account(models.Model):
     mainuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name="メインユーザー", blank=True, null=True, default="")
     name = models.CharField(max_length=15, verbose_name='ユーザー名', blank=True, null=True, default="")
@@ -44,9 +63,10 @@ class Account(models.Model):
     infomation = models.TextField(max_length=180, verbose_name="紹介文",blank=True, null=True, default="・・・・")
     hobby =  models.CharField(max_length=8, default="・・・・")
     detail = models.CharField(max_length=8, default="・・・・")
-    hash = models.CharField(max_length=100, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True,null=True  ,verbose_name='作成日')
+    created_at = models.DateTimeField(auto_now_add=True,null=True,verbose_name='作成日')
+
     def __str__(self):
         return str(self.name)
+
     class Meta:
         verbose_name_plural = 'Account'
