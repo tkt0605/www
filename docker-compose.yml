@@ -1,10 +1,10 @@
 services:
-  web:
+  www:
     build:
       context: .
       dockerfile: Dockerfile
     # entrypoint: /bin/sh
-    container_name: web
+    container_name: www
     env_file:
       - .env  # ここで .env ファイルを指定します
     command: gunicorn  project.wsgi:application --bind 0.0.0.0:8000
