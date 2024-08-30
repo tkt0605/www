@@ -5,7 +5,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", views.index, name="index"),
     path("profile", views.page, name="page"),
-    # path("profile", views.profiles, name="profiles")
+    path("community/<str:name>", views.community, name="community"),
+    path("class/create.html", views.form_create, name="form_create"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

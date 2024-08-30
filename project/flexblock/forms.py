@@ -4,8 +4,8 @@ from django import forms
 class CreateClassForm(forms.ModelForm):
     class Meta:
         model = Group
-        fields = ("__all__")
-        exclude = ["mainuser", "managername",]
+        fields = "__all__"
+        exclude = ["mainuser", "managername", "transaction_hash"]
         widget = {
             'name': forms.TextInput(
                 attrs={
@@ -14,7 +14,7 @@ class CreateClassForm(forms.ModelForm):
                     "min-length": 8,
                 }
             ),
-            'ctagory':forms.TextInput(
+            'category':forms.TextInput(
                 attrs={
                     "class": "category",
                     "placeholder": "#カテゴリー",
@@ -37,16 +37,22 @@ class CreateClassForm(forms.ModelForm):
                     "placeholder": "@見出し",
                 }
             ),
+            'root':forms.TextInput(
+                attrs={
+                    'placeholder': '@(Your Approach class)',
+                }
+            ),
         }
-        def __init__(self, mainuser=None, managername=None, *args, **kwargs):
-            self.mainuser = mainuser
-            self.managername = managername
-            super().__init__(*args, **kwargs)
-        def save(self, commit=True):
-            kwargs = super().save(commit=False)
-            if self.mainuser:
-                kwargs.mainuser = self.mainuser
-                kwargs.managername = self.managername
-                if commit == True:
-                    kwargs.save()
-            return  kwargs.mainuser
+        required=True
+    def __init__(self, mainuser=None, managername=None, *args, **kwargs):
+        self.mainuser = mainuser
+        self.managername = managername
+        super().__init__(*args, **kwargs)
+    def save(self, commit=True):
+        kwargs = super().save(commit=False)
+        if self.mainuser:
+            kwargs.mainuser = self.mainuser
+            kwargs.managername = self.managername
+            if commit == True:
+                kwargs.save()
+        return  kwargs.mainuser
