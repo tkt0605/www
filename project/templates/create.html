@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/create.css' %}">
+{% endblock extra_head %}
+{% block title %}flexBlock | Home{% endblock  %}
+{% block content %}
+<div class="main">
+    <div class="create">
+        <h2>Blockの作成</h2>
+        <br>
+        <div class="create-form">
+            <form class="forms" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button class="create" type="submit"><b>作成</b></button>
+            <form>
+        </div>
+    </div>
+</div>
+{% endblock %}

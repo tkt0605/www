@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from accounts.models import Account, CustomUser
-# from .models import  Group
+from .models import  Group
+from django.views import generic
+from .forms import CreateClassForm
 def index(request):
     template = loader.get_template("index.html")
     accounts = Account.objects.order_by("-pk")[:100000]
@@ -40,3 +42,6 @@ def page1(request):
         "account": account,
     }
     return HttpResponse(template.render(context, request))
+class CreateClassView(generic.CreateView):
+    form_name = CreateClassForm
+    template_name = "create.html"

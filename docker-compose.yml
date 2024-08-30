@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     # entrypoint: /bin/sh
     container_name: www
+    ports:
+      - "8000:8000"
     env_file:
       - .env  # ここで .env ファイルを指定します
     command: gunicorn  project.wsgi:application --bind 0.0.0.0:8000
@@ -13,7 +15,7 @@ services:
     environment:
       - DEBUG=0
       - DJANGO_SETTINGS_MODULE=project.settings
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1] www
       - DATABASE_URL=mysql://takato:0605@db:3306/main
       - DATABASE_HOST=db
       - DATABASE_NAME=main
@@ -55,7 +57,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./project/static:/project/static
     depends_on:
-      - web
+      - www
     networks:
     - webnet
 
