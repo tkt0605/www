@@ -21,7 +21,13 @@ body {
     max-width: 600px;
     margin-top: 420px;
 }
-
+.menu_line{
+    margin-top: 15px;
+    margin-left: -10px;
+    width: 210px;
+    height: 100%;
+    position: relative;
+}
 .name {
     font-size: 24px;
     font-weight: bold;
@@ -43,6 +49,16 @@ label {
     margin-bottom: 5px;
     font-weight: bold;
 }
+
+/* input[type="text"], input[type="file"], select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
+} */
+
 textarea {
     resize: vertical;
 }

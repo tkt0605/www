@@ -10,10 +10,10 @@
         <div class="class">
             {% for room in rooms %}
             <div class="room">
-                <a href="/community/{{room.name}}/"><img class="backimage" src="{{room.backimage}}"/></a>
+                <a href="/community/{{room.name}}"><img class="backimage" src="/media/{{room.backimage}}"/></a>
                 <div class="room_explain">
                     <div class="name">
-                        <a href="/community/{{room.id}}/"><b>{{room.name}}</b></a>/ from<a style="color: black;" href="{% url 'page' %}?id={{ room.managername.id }}"><u><img src="/media/{{room.managername.icon}}/" class="class_account_icon" alt=""/><b>{{room.managername}}</b></u></a>
+                        <a href="/community/{{room.name}}"><b>{{room.name}}</b></a>/ from<a style="color: black;" href="{% url 'page' %}?id={{ room.managername.id }}"><u><img src="/media/{{room.managername.icon}}/" class="class_account_icon" alt=""/><b>{{room.managername}}</b></u></a>
                         <b><div class="explain">{{room.index}}</div></b>
                     </div>
                 </div>

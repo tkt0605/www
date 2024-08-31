@@ -9,11 +9,11 @@ from django.urls import reverse_lazy, reverse
 def index(request):
     template = loader.get_template("index.html")
     accounts = Account.objects.order_by("-pk")[:100000]
-    # rooms = Group.objects.order_by("-name")[:100000]
+    rooms = Group.objects.order_by("-pk")[:100000]
     context = {
         "csrf_token":"",
         "accounts": accounts,
-        # "rooms": rooms
+        "rooms": rooms
     }
     return HttpResponse(template.render(context, request))
 def page(request):
@@ -27,22 +27,6 @@ def page(request):
         "account" : account,
     }
     return HttpResponse(template.render(context, request))
-def pages(request):
-    template = loader.get_template("header.html", "index.html")
-    accounts = Account.objects.order_by("-pk")[:100000]
-    context ={
-        "csrf_token": "",
-        "accounts": accounts,
-    }
-    return HttpResponse(template.render(context, request))
-def page1(request):
-    account =Account.objects.order_by("-pk")[:100000]
-    template = loader.get_template("header.html", "page.html")
-    context = {
-        "csrf_token": "",
-        "account": account,
-    }
-    return HttpResponse(template.render(context, request))
 def community(request, name):
     accounts =Account.objects.order_by("-pk")[:100000]
     community = Group.objects.get(name=name)
@@ -53,10 +37,21 @@ def community(request, name):
         "accounts": accounts,
     }
     return HttpResponse(template.render(context, request))
+def pages(request):
+    template = loader.get_template('create.html')
+    accounts = Account.objects.order_by('-pk')[:100000]
+    id = request.GET.get('id')
+    account = Account.objects.get(pk=id)
+    context={
+        "csrf_token": "",
+        "accounts": accounts,
+        "account": account,
+    }
+    return HttpResponse(template.render(context, request))
 class CreateClassView(generic.CreateView):
     form_class = CreateClassForm
     template_name = "create.html"
-    success_url = "/"
+    # success_url = "/"
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super().get_form_kwargs(*args, **kwargs)
         kwargs['mainuser'] = self.request.user

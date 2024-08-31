@@ -6,11 +6,11 @@ class CreateClassForm(forms.ModelForm):
         model = Group
         fields = "__all__"
         exclude = ["mainuser", "managername", "transaction_hash"]
-        widget = {
+        widgets = {
             'name': forms.TextInput(
                 attrs={
                     "class": "name",
-                    "placeholder": "名前（ドットは不可）",
+                    'placeholder': '名前（ドットは不可）',
                     "min-length": 8,
                 }
             ),

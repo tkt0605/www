@@ -23,7 +23,7 @@
                         {% for account in accounts %}
                         {% if user == account.mainuser%}
                         <li style="color: rgb(241, 240, 240);">
-                            <a class="side_name" href="{% url 'page' %}?id={{ account.id }}">
+                            <a class="side_name" href="{% url 'page' %}?id={{account.id}}">
                                 <button   id="nemu_button"  onMouseOver="changeColor1()" onMouseOut="revertColor1()"class="border_2">
                                     <img class="image1_bord" src="/media/{{account.icon}}" alt="">
                                     <b><div class="d-inline3">{{account.name}}</div></b>
@@ -56,8 +56,10 @@
                                 </button>
                             </a>
                         </li>
+                        {% for account in accounts %}
+                        {% if user == account.mainuser%}
                         <li class="li_menu" style="color: rgb(241, 240, 240);">
-                            <a class="side_name" href="/class/create.html">
+                            <a class="side_name" href="{% url 'pages' %}?id={{account.id}}">
                                 <button id="nemu_button3"  onMouseOver="beforecolor3()" onMouseOut="aftercolor3()" class="border_2">
                                     <div class="aside">
                                         <svg class="d-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-seam-fill" viewBox="0 0 16 16">
@@ -68,6 +70,8 @@
                                 </button>
                             </a>
                         </li>
+                        {% endif %}
+                        {% endfor %}
                         <li class="li_menu" style="color: rgb(241, 240, 240);">
                             <a class="side_name" href="/flex-network/">
                                 <button id="nemu_button2"  onMouseOver="beforecolor2()" onMouseOut="aftercolor2()" class="border_2">
