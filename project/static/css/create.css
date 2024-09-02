@@ -64,8 +64,8 @@ textarea {
 }
 
 .create {
-    background-color: #000000;
-    color: white;
+    background-color: #50C878;
+    color: rgb(0, 0, 0);
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -76,7 +76,7 @@ textarea {
 }
 
 .create:hover {
-    background-color: #000000;
+    background-color: #50C878;
 }
 
 .file-upload {

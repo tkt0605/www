@@ -18,8 +18,10 @@ def index(request):
     return HttpResponse(template.render(context, request))
 def page(request):
     template = loader.get_template("page.html")
+    # urlのidのナンバーから、Accountモデルに一致するものを抽出。
     id = request.GET.get('id')
     account = Account.objects.get(pk=id)
+    # Accountモデルの全DBを取得する。
     accounts = Account.objects.order_by('-pk')[:100000]
     context = {
         "csrf_token": "",
@@ -37,17 +39,6 @@ def community(request, name):
         "accounts": accounts,
     }
     return HttpResponse(template.render(context, request))
-def pages(request):
-    template = loader.get_template('create.html')
-    accounts = Account.objects.order_by('-pk')[:100000]
-    id = request.GET.get('id')
-    account = Account.objects.get(pk=id)
-    context={
-        "csrf_token": "",
-        "accounts": accounts,
-        "account": account,
-    }
-    return HttpResponse(template.render(context, request))
 class CreateClassView(generic.CreateView):
     form_class = CreateClassForm
     template_name = "create.html"
@@ -58,9 +49,12 @@ class CreateClassView(generic.CreateView):
         form = self.request.user.username
         kwargs['managername'] = Account.objects.get(name=form)
         return kwargs
-    def get_queryset(self):
-        return Group.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        accounts = Account.objects.order_by('-pk')[:100000]
+        context['accounts'] = accounts
+        return context
     def get_absolute_url(self):
         return reverse('community', kwargs={"name": self.kwargs["name"]})
 form_create = CreateClassView.as_view()
-        
+

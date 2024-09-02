@@ -7,7 +7,6 @@ urlpatterns = [
     path("profile", views.page, name="page"),
     path("community/<str:name>", views.community, name="community"),
     path("class/create.html", views.form_create, name="form_create"),
-    path('class/create.html', views.pages, name="pages"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -5,7 +5,7 @@
 {% endblock extra_head %}
 {% block title %}flexBlock | Home{% endblock  %}
 {% block content %}
-<div class="dcjcbd">
+{% comment %} <div class="dcjcbd">
     <div class="class_line">
         <div class="class">
             {% for room in rooms %}
@@ -22,5 +22,19 @@
             {% endfor %}
         </div>
     </div>
-</div> 
+</div>  {% endcomment %}
+<main class="group-container">
+    {% for room in rooms %}
+    <div class="group-card">
+        <div class="group-image">
+            <img class="backimage" src="/media/{{room.backimage}}"/>
+        </div>
+        <div class="group-content">
+            <h2>{{room.name}}</h2>
+            <p>{{room.index}}</p>
+            <button onclick="location.href='/community/{{room.name}}'" class="btn"><b>詳細を見る</b></button>
+        </div>
+    </div>
+    {% endfor %}
+</main>
 {% endblock %}
