@@ -1,5 +1,5 @@
 from accounts.models import Account
-from .models import Group
+from .models import Group, Network
 from django import forms
 class CreateClassForm(forms.ModelForm):
     class Meta:
@@ -56,3 +56,31 @@ class CreateClassForm(forms.ModelForm):
             if commit == True:
                 kwargs.save()
         return  kwargs.mainuser
+class CreateNetworkForm(forms.ModelForm):
+    class Meta:
+        model = Network
+        fields = "__all__"
+        exclude = ["mainuser"]
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "placeholder": "ネットワーク名",
+                    "class": "network_name",
+                }
+            ),
+            "visibility": forms.RadioSelect(
+                attrs={
+                    "class": "radio-point"
+                }
+            ),
+        }
+    def __init__(self, mainuser=None, *args, **kwargs):
+        self.mainuser = mainuser
+        super().__init__(*args, **kwargs)
+    def save(self, commit=True):
+        kwargs = super().save(commit=False)
+        if self.mainuser:
+            kwargs.mainuser = self.mainuser
+            if commit == True:
+                kwargs.save()
+        return kwargs.mainuser

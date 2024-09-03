@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/create.css' %}">
+{% endblock extra_head %}
+{% block title %}flexBlock | CreateNetwork{% endblock title %}
+{% block content %}
+<div class="main_bords">
+    <div class="name">
+        Networkの作成
+    </div>
+    <br>
+    <div class="forms">
+        <div class="reg_form">
+            <form class="forms" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="create" type="submit"><b>作成</b></button>
+            <form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

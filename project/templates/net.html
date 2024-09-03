@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/network.css' %}">
+{% endblock extra_head %}
+{% block title %}flexBlock | Network{% endblock  %}
+{% block content %}
+<div class='mains'>
+    <ul class='group_category'>
+        <li class='category'>
+            <img class="image_bord" src="/media/{{network.image}}" alt=""/>
+            <a href="?area=#{{network.name}}">{{network.name}}</a>
+            <small>{{network.created_at|date:'Y年n月j日'}}から利用しています。</small>
+            <p>{{network.index}}</p>
+        </li>
+    </ul>
+</div>
+{% endblock %}

@@ -7,6 +7,9 @@ urlpatterns = [
     path("profile", views.page, name="page"),
     path("community/<str:name>", views.community, name="community"),
     path("class/create.html", views.form_create, name="form_create"),
+    path("flex/networks", views.networks, name="networks"),
+    path("flex/networks", views.network, name="network"),
+    path("flex/create-network", views.form_net, name="form_net"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

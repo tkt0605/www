@@ -35,3 +35,18 @@ class Post(models.Model):
         return str(self.text)
     class Meta:
         verbose_name_plural = "Post"
+class Network(models.Model):
+    VISIBILITY_CHOICES = [
+        ('public', 'Public'),
+        ('local', 'Local'),
+    ]
+    mainuser = models.ForeignKey("accounts.CustomUser",  on_delete=models.PROTECT,  related_name="メインユーザー", blank=True, null=True)
+    name = models.CharField(max_length=30, blank=True, null=True, verbose_name="ネットワーク名")
+    visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
+    image = models.FileField(upload_to='classicon/',null=True,blank=True , verbose_name=None)
+    index = models.CharField(max_length=50, blank=False, null=True, verbose_name = "見出し")
+    created_at = models.DateTimeField(auto_now_add=True,null=True  , verbose_name='作成日')
+    def __str__(self):
+        return str(self.name)
+    class Meta:
+        verbose_name_plural = "Network"

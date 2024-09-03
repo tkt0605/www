@@ -21,6 +21,24 @@ body {
     max-width: 600px;
     margin-top: 420px;
 }
+/* .radio-point {
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+}
+.radio-point div {
+    display: flex; 
+    align-items: center; 
+}     */
+.main_bords{
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    margin-top: -75px;
+}
 .menu_line{
     margin-top: 15px;
     margin-left: -10px;
@@ -38,10 +56,6 @@ body {
 .forms {
     display: flex;
     flex-direction: column;
-}
-
-.forms div {
-    margin-bottom: 15px;
 }
 
 label {
