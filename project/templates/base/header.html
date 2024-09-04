@@ -96,7 +96,7 @@
                                 </button>
                             </a>
                         </li>         
-                        {% if user.username == "takatokomada" %}
+                        {% if user.username == "駒田隆人" %}
                         <li class="li_menu" style="color: rgb(241, 240, 240);">
                             <a class="side_name" href="/admin-auth/">
                                 <button id="nemu_button6"  onMouseOver="beforecolor6()" onMouseOut="aftercolor6()" class="border_2">
@@ -126,10 +126,10 @@
                             </a>
                         </li>
                         {% endif %}
-                        {% for network in networks %}
-                        {% if network.name %}
+                        {% for account in accounts %}
+                        {% if user == account.mainuser%}
                         <li class="li_menu" style="color: rgb(241, 240, 240);">
-                            <a class="side_name" href="/flex/create-network">
+                            <a class="side_name" href="{% url 'form_net' %}">
                                 <button id="nemu_button9"  onMouseOver="beforecolor9()" onMouseOut="aftercolor9()" class="border_2">
                                     <div class="aside">
                                         <svg class="d-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">

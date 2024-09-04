@@ -76,7 +76,9 @@ class CreateNetworkForm(forms.ModelForm):
         }
     def __init__(self, mainuser=None, *args, **kwargs):
         self.mainuser = mainuser
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)  
+        if self.mainuser:
+            self.fields['mygroup'].queryset = Group.objects.filter(mainuser=self.mainuser)
     def save(self, commit=True):
         kwargs = super().save(commit=False)
         if self.mainuser:

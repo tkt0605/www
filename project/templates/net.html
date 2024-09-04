@@ -9,8 +9,8 @@
     <ul class='group_category'>
         <li class='category'>
             <img class="image_bord" src="/media/{{network.image}}" alt=""/>
-            <a href="?area=#{{network.name}}">{{network.name}}</a>
-            <small>{{network.created_at|date:'Y年n月j日'}}から利用しています。</small>
+            <a href="/flex/networks/{{network.name}}">{{network.name}}</a>
+            <p><small>{{ network.created_at | date:'Y年n月j日' }}から利用しています。</small></p>
             <p>{{network.index}}</p>
         </li>
     </ul>

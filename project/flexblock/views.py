@@ -49,9 +49,8 @@ def networks(request):
         'networks': networks,
     }
     return HttpResponse(template.render(context, request))
-def network(request):
+def network(request, name):
     accounts = Account.objects.order_by('-pk')[:10000000]
-    name = request.GET.get('name')
     network = Network.objects.get(name=name)
     template = loader.get_template('net.html')
     context = {

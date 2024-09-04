@@ -10,9 +10,10 @@
         {% for network in networks %}
         <li class='category'>
             <img class="image_bord" src="/media/{{network.image}}" alt=""/>
-            <a href="{% url 'network' %}?name={{network.name}}">#{{network.name}}</a>
+            <a href="/flex/networks/{{network.name}}">#{{network.name}}</a>
             <p>{{network.index}}</p>
         </li>
+        <br>
         {% endfor %}
     </ul>
 </div>
