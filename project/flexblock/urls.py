@@ -10,6 +10,8 @@ urlpatterns = [
     path("flex/networks", views.networks, name="networks"),
     path("flex/networks/<str:name>", views.network, name="network"),
     path("flex/create-network", views.form_net, name="form_net"),
+    path('send_auth_request/<int:user_id>/', views.send_auth_request, name='send_auth_request'),
+    path('approve_auth_request/<int:auth_id>/', views.approve_auth_request, name='approve_auth_request'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

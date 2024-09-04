@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from accounts.models import Account, CustomUser
-from .models import  Group, Network
+from .models import  Group, Network, RootAuth
 from django.views import generic
 from .forms import CreateClassForm, CreateNetworkForm
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 def index(request):
     template = loader.get_template("index.html")
     accounts = Account.objects.order_by("-pk")[:100000]
@@ -16,6 +18,7 @@ def index(request):
         "rooms": rooms
     }
     return HttpResponse(template.render(context, request))
+@login_required
 def page(request):
     template = loader.get_template("page.html")
     # urlのidのナンバーから、Accountモデルに一致するものを抽出。
@@ -23,10 +26,14 @@ def page(request):
     account = Account.objects.get(pk=id)
     # Accountモデルの全DBを取得する。
     accounts = Account.objects.order_by('-pk')[:100000]
+    auth_request_sent = RootAuth.objects.filter(user=request.user, target_user=account).exists()
+    auth_requests_received = RootAuth.objects.filter(target_user=request.user, is_approved_by_target=False)
     context = {
         "csrf_token": "",
         "accounts": accounts,
         "account" : account,
+        "auth_request_sent": auth_request_sent,
+        "auth_requests_received": auth_requests_received,
     }
     return HttpResponse(template.render(context, request))
 def community(request, name):
@@ -99,3 +106,20 @@ class CreateNetworkView(generic.CreateView):
     def get_success_url(self):
         return reverse('networks')
 form_net = CreateNetworkView.as_view()
+@login_required
+def send_auth_request(request, user_id):
+    """ユーザーに認証リクエストを送信するビュー"""
+    id = request.GET.get('id')
+    account = Account.objects.get(pk=id)
+    # リクエストを送信するロジックを追加
+    if not RootAuth.objects.filter(user=request.user, target_user=account).exists():
+        RootAuth.objects.create(user=request.user, target_user=account)
+
+    return redirect('page', user_id=user_id)
+@login_required
+def approve_auth_request(request, auth_id):
+    """認証リクエストを承認するビュー"""
+    auth_request = get_object_or_404(RootAuth, id=auth_id)
+    if request.user in [auth_request.user, auth_request.target_user]:
+        auth_request.approve(request.user)
+    return redirect('page', user_id=auth_request.target_user.id if request.user == auth_request.user else auth_request.user.id)

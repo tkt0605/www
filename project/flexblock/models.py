@@ -59,3 +59,27 @@ class AddNetwork(models.Model):
         return str(self.destination)
     class Meta:
         verbose_name_plural = "add-network"
+class RootAuth(models.Model):
+    user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_sent', on_delete=models.CASCADE)
+    target_user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_received', on_delete=models.CASCADE)
+    is_approved_by_user = models.BooleanField(default=False)
+    is_approved_by_target = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = ('user', 'target_user')
+
+    def approve(self, by_user):
+        """相互認証の承認処理"""
+        if by_user == self.user:
+            self.is_approved_by_user = True
+        elif by_user == self.target_user:
+            self.is_approved_by_target = True
+        self.save()
+        return self.is_approved_by_user and self.is_approved_by_target
+
+    def is_fully_approved(self):
+        """両者による承認の完了状態を確認"""
+        return self.is_approved_by_user and self.is_approved_by_target
+
+    def __str__(self):
+        return f"{self.user} ⇔ {self.target_user}"

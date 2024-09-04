@@ -1,0 +1,413 @@
+#main {
+    margin-left: 375px;
+}
+
+.profile_filed {
+    text-align: center;
+    width: 75%;
+    margin-top: 65px;
+    margin-bottom: -10px;
+}
+.menu_line{
+    margin-top: 15px;
+    margin-left: -10px;
+    width: 210px;
+    height: 100%;
+    position: relative;
+}
+.profile_image {
+    width: 100%;
+    height: auto;
+    max-height: 300px;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+    background-color: #ccc;
+}
+
+.profile_icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-color: grey;
+    margin-top: -45px;
+    margin-left: -50%;
+    border: 4px solid white;
+    object-fit: cover;
+}
+
+.name {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.hr {
+    margin: -10px auto;
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+.main_filed {
+    width: auto;
+    height: auto;
+    background-color: white;
+}
+
+.sub_filed {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin: 15px 15px;
+}
+
+.sub_filed li {
+    display: flex;
+    align-items: center;
+    color: #555;
+}
+
+.sub_filed svg {
+    margin-right: 10px;
+    fill: #000000;
+}
+
+.d-info {
+    width: 75%;
+    font-size: 16px;
+    margin-left: 75px;
+}
+
+.d-category {
+    font-size: 16px;
+}
+
+.d-link {
+    font-size: 16px;
+}
+
+.d-owner {
+    font-size: 16px;
+}
+
+.d-date {
+    font-size: 16px;
+}
+
+.a_url {
+    text-decoration: none;
+    color: #000000;
+    transition: color 0.3s ease;
+}
+
+.a_url:hover {
+    color: #0077ff;
+}
+
+.tab2-group {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    list-style: none;
+    width: 75%;
+    text-align: center;
+    margin: -10px 0px 20px 12.5%;
+}
+
+.tab2 {
+    padding: 12px 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    flex-grow: 1;
+    text-align: center;
+    background-color: #ffffff;
+    color: #333;
+    font-weight: bold;
+    border-radius: 5px;
+    margin: 0 5px;
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+.tab2:hover {
+    background-color: #d0d0d0;
+    color: #000;
+}
+
+.is-active2 {
+    background-color: #333;
+    color: #fff;
+    height: 40px;
+}
+
+.panel2-group {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.panel2 {
+    display: none;
+    width: 100%;
+}
+
+.is-show2 {
+    display: block;
+    width: 100%;
+
+}
+
+.transaction, .bad_request {
+    margin: -10px 0px 0px 10px;
+}
+
+.d-images {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    margin-left: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    margin: -60px 0px 0px 160px;
+}
+
+.menu {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: -5px;
+}
+
+.chain_icon, .link_icon, .owner-icon, .date{
+    margin-left: 75px;
+}
+
+.font {
+    font-size: 20px;
+    color: black;
+    margin-top: 15px;
+}
+.managename{
+    margin: -57.5px 0px 0px 200px;
+}
+.sdafa{
+    margin: -23px 0px 0px 100px;
+}
+.tab_1{
+    margin-top: -20px;
+}
+.post_field{
+    background: white;
+    width: 75%;
+    height: auto;
+    margin: -10px 10px 0px 0px;
+}
+.post_icon{
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    margin: 10px 10px 10px 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+.post_user{
+    margin: 10px 10px 10px 10px;
+}
+.post_username{
+    font-size: 18px;
+    margin: -40px 0px 0px 50px;
+}
+.post_text{
+    margin: -11px -1px -20px 65px;
+    width: 75%;
+}
+.destination_icon{
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);   
+}
+.destination_name{
+    font-size: 20px;
+    color: black;
+}
+.user_font{
+    font-size: 20px;
+    color: black;
+}
+.post_create{
+    margin-left: 50px;
+    margin-top: -12.5px;
+    font-size: 15px;
+}
+.post_creates{
+    margin-left: 50px;
+    margin-top: -8px;
+    font-size: 15px;
+}
+.menu_icon{
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0px;
+}
+.hr_style{
+    margin: -20px 0px 0px 0px;
+}
+.post_manager{
+    margin-top: -5px;
+    color: #000000;
+}
+.post_image_field{
+    margin: 10px 10px 0px 50px;
+}
+.post_image{
+    border-radius: 10px;
+    margin-bottom: 15px;
+    height: 100%;
+    width: 75%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.post_image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+.tab4_info{
+    background: white;
+    width: 75%;
+    height: auto;
+    margin: -10px 10px 0px 0px;
+}
+.dvcsdcd{
+    width: 65%;
+}
+.sgcvs{
+    
+}
+.first_member{
+    font-size: 22.5px;
+}
+.hdvbd{
+    font-size: 22.5px;
+}
+.post_field_home {
+    background: white;
+    width: 75%;
+    height: auto;
+    margin: -10px 10px 0px 0px;
+    display: block;
+    display: flex;
+    align-items: flex-start; 
+    flex-wrap: wrap; 
+}
+.messages{
+    list-style: none;
+    padding: 0;
+    margin: -9% 0px 0px 60%;
+    justify-content: space-around;
+}
+
+.member_info {
+    list-style: none;
+    padding: 0;
+    margin: 0px 0px 0px 10%;
+    margin-bottom: 10px;
+    justify-content: space-around;
+}
+.inline-list li, .inline-list span {
+    margin-right: 10px;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 5px;
+    border-radius: 5px;
+}
+.founder{
+    font-size: 17.5px;
+}
+.founder_image{
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    margin-left: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+.ddfsres{
+    text-align: center;
+}
+@media (max-width: 768px) {
+    #main {
+        margin-left: 50px;
+    }
+
+    .profile_filed, .post_field, .tab4_info {
+        width: 75%;
+        margin: 65px 10px 0 10px;
+    }
+
+    .profile_icon {
+        width: 80px;
+        height: 80px;
+        margin-left: 0;
+    }
+
+    .d-info {
+        margin-left: 25px;
+        width: auto;
+    }
+
+    .chain_icon, .link_icon, .owner-icon, .date {
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #main {
+        margin-left: 0px;
+    }
+
+    .profile_filed, .post_field, .tab4_info {
+        width: 100%;
+        margin: 55px 10px 0 0px;
+    }
+    .profile_image{
+        height: 175px;
+        width: 100%;
+    }
+    .profile_icon {
+        width: 65px;
+        height: 65px;
+        margin: -25px  0px 0px -50%;
+    }
+
+    .name {
+        font-size: 24px;
+    }
+
+    .d-info {
+        margin-left: 10px;
+        width: auto;
+    }
+
+    .chain_icon, .link_icon, .owner-icon, .date {
+        margin-left: 5px;
+    }
+    .sdafa{
+        margin-left: 32.5px;
+    }
+    .font{
+        margin: 0px 0px 0px -65px;
+    }
+    .managename{
+        margin: -57.5px 0px 0px 130px
+    }
+}

@@ -2,34 +2,31 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #ffffff;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+    align-items: center;
+    height: 100vh;
 }
 
-/* .mains {
+.mains {
     width: 90%;
     max-width: 800px;
+    margin: auto;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 20px;
-} */
+    overflow-y: auto;
+    max-height: 90vh;
+}
 
 .group_category {
     list-style: none;
     padding: 0;
-    margin: 50px 0 0 0;
+    margin: 0;
 }
-.menu_line{
-    margin-top: 15px;
-    margin-left: -10px;
-    width: 210px;
-    height: 100%;
-    position: relative;
-}
+
 .category {
     display: flex;
     align-items: center;
@@ -37,8 +34,9 @@ body {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    position: relative;
 }
 
 .category:hover {
@@ -47,22 +45,18 @@ body {
 }
 
 .image_bord {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     border-radius: 50%;
+    border: 2px solid #ddd;
     margin-right: 15px;
-    transition: transform 0.3s ease;
-}
-
-.image_bord:hover {
-    transform: scale(1.1);
 }
 
 .category a {
     text-decoration: none;
     color: #333;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     margin-bottom: 5px;
     transition: color 0.3s ease;
@@ -71,11 +65,36 @@ body {
 .category a:hover {
     color: #007bff;
 }
-
+.menu_line{
+    margin-top: 15px;
+    margin-left: -10px;
+    width: 210px;
+    height: 100%;
+    position: relative;
+}
 .category p {
     margin: 0;
     color: #666;
     font-size: 0.9rem;
+}
+
+.category p small {
+    display: block;
+    margin-bottom: 8px;
+    color: #888;
+}
+
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff5722;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .group_info {
