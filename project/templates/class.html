@@ -19,9 +19,11 @@
                 <div class="name-container">
                     <b class="name">{{community.name}}</b>
                 </div>
+                {% if not community.mainuser == user %}
                 <div class="button">
                     <button class="join-button">参加する？</button>
                 </div>
+                {% endif %}
             </div>
             <hr class="hr">
             <ul class="sub_filed">

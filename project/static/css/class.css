@@ -30,11 +30,6 @@ body {
     margin: -65px 0px 0px 0px;
 }
 .profile_image {
-    /* width: 100%; 
-    height: 50%;
-    border-radius: 1% 1% 0 0;
-    border: 2px solid #ddd;
-    margin-bottom: 15px; */
     display: grid;                
     place-items: center;          
     height: 50%;                
@@ -44,7 +39,6 @@ body {
 }
 .scsc{
     max-width: 900px;              /* 画像がコンテナを超えないようにする */
-    /* max-height: 350px;     */
 }
 .main_filed {
     width: 100%;
@@ -165,6 +159,10 @@ body {
     margin-top: 0px;
     padding: 20;
     list-style: none;
+    align-items: center;
+    justify-content: center;
+    width: 75%;
+    margin-left: 85px; 
 }
 
 .tab2 {
@@ -183,12 +181,19 @@ body {
 }
 
 .panel2-group {
-    display: none;
+    width: 100%;
     margin-top: 20px;
 }
 
-.panel2.is-show2 {
+.panel2 {
+    display: none;
+    width: 100%;
+}
+
+.is-show2 {
     display: block;
+    width: 100%;
+
 }
 
 .tab_1 {

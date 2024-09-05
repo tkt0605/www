@@ -8,10 +8,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 class Group(models.Model):
+    VISIBILITY_CHOICES = [
+        ('public', 'Public'),
+        ('local', 'Local'),
+    ]
     mainuser = models.ForeignKey("accounts.CustomUser",  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
+    visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
     web_site = models.URLField(blank=True)
     backimage = models.ImageField(upload_to='backimage/', verbose_name="BackImage")
     icon = models.ImageField(upload_to='classicon/', verbose_name="クラスアイコン", null=True)
@@ -21,6 +26,15 @@ class Group(models.Model):
     created_at = models.DateField(null=True ,auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return str(self.name)
+    def can_user_join(self, user):
+        """指定されたユーザーがグループに参加できるか確認"""
+        auth_exists = RootAuth.objects.filter(user=self.mainuser, target_user=user, is_approved_by_user=True, is_approved_by_target=True).exists()
+
+        reverse_auth_exists = RootAuth.objects.filter(user=user, target_user=self.mainuser, is_approved_by_user=True, is_approved_by_target=True).exists()
+
+        print(f"Auth from mainuser to user: {auth_exists}, Auth from user to mainuser: {reverse_auth_exists}")
+
+        return auth_exists and reverse_auth_exists
     class Meta:
         verbose_name_plural = 'ClassName'
 class Post(models.Model):

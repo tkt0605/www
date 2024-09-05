@@ -19,7 +19,8 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 600px;
-    margin-top: 420px;
+    margin-top: 365px;
+    position: absolute;
 }
 /* .radio-point {
     display: flex; 
@@ -31,13 +32,14 @@ body {
     align-items: center; 
 }     */
 .main_bords{
+    position: absolute;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 600px;
-    margin-top: -75px;
+    margin-top: -35px;
 }
 .menu_line{
     margin-top: 15px;
