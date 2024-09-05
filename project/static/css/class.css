@@ -1,12 +1,18 @@
-#main {
-    margin-left: 375px;
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
 }
 
-.profile_filed {
-    text-align: center;
-    width: 75%;
-    margin-top: 65px;
-    margin-bottom: -10px;
+#main {
+    width: 80%;
+    max-width: 900px;
+    margin: 60px 0px 0px 320px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* padding: 20px; */
 }
 .menu_line{
     margin-top: 15px;
@@ -15,51 +21,113 @@
     height: 100%;
     position: relative;
 }
-.profile_image {
-    width: 100%;
-    height: auto;
-    max-height: 300px;
-    border-radius: 10px 10px 0px 0px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    object-fit: cover;
-    background-color: #ccc;
+.profile_filed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.profile_icon {
-    width: 100px;
-    height: 100px;
-    border-radius: 100%;
-    background-color: grey;
-    margin-top: -45px;
-    margin-left: -50%;
+.profile_image {
+    /* width: 100%; 
+    height: 50%;
+    border-radius: 1% 1% 0 0;
+    border: 2px solid #ddd;
+    margin-bottom: 15px; */
+    display: grid;                
+    place-items: center;          
+    height: 50%;                
+    width: 100%;                
+    border: 1px solid #ffffff;
+    border-radius: 1% 1% 0 0
+}
+.scsc{
+    max-width: 900px;              /* 画像がコンテナを超えないようにする */
+    /* max-height: 350px;     */
+}
+.main_filed {
+    width: 100%;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.name-icon {
+    position: relative; 
+    width: 125px;
+    height: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px; 
+    margin-left: 42.5%;
+}
+
+.icon-image {
+    width: 125px; /* アイコンの幅 */
+    height: 125px; /* アイコンの高さ */
+    border-radius: 50%;
     border: 4px solid white;
-    object-fit: cover;
+    margin-bottom: 5px; /* アイコンと名前の間のスペース */
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    position: relative;
+    transition: transform 0.4s ease, opacity 0.3s ease, box-shadow 0.4s ease; 
+}
+
+.join-button {
+    position: absolute; /* アイコンの上に配置するために絶対位置を使用 */
+    top: 35%; /* アイコンの中央に配置 */
+    left: 50%; /* アイコンの中央に配置 */
+    transform: translate(-50%, -50%); /* ボタンを中央に配置するために変換 */
+    background-color: #50C878; /* ボタンの背景色 */
+    color: white; /* ボタンの文字色 */
+    border: none; /* ボタンの境界線を削除 */
+    border-radius: 5px; /* ボタンの角を丸くする */
+    padding: 10px 20px; /* ボタンの内側の余白 */
+    width: 125px;
+    height: 40px;
+    cursor: pointer; /* カーソルをポインターに変更 */
+    opacity: 0; /* 初期状態でボタンを非表示に */
+    transition: opacity 0.2s ease 0.3s; /* ホバー時のアニメーションに遅延を追加 */
+}
+
+.name-icon:hover .icon-image {
+    transform: translateY(-15px); /* アイコンを浮かせる */
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+}
+
+.name-icon:hover .join-button {
+    opacity: 1; /* ホバー時にボタンを表示 */
+}
+.icon-image:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+} 
+
+.name-container {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 10px;
 }
 
 .name {
-    font-size: 30px;
+    font-size: 3.0em;
     font-weight: bold;
-    margin-top: 10px;
+    color: #333;
 }
+
 
 .hr {
-    margin: -10px auto;
-    width: 100%;
-    border: 0;
-    border-top: 1px solid #e0e0e0;
-}
-
-.main_filed {
-    width: auto;
-    height: auto;
-    background-color: white;
+    margin: -20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
 }
 
 .sub_filed {
     list-style: none;
     padding: 0;
     text-align: left;
-    margin: 15px 15px;
+    margin: 25px 15px 0px 75px;
 }
 
 .sub_filed li {
@@ -72,342 +140,216 @@
     margin-right: 10px;
     fill: #000000;
 }
-
-.d-info {
-    width: 75%;
+.d-info{
     font-size: 16px;
-    margin-left: 75px;
+    margin-left: 0px;
 }
-
-.d-category {
+.d-category, .d-link, .d-owner, .d-date {
     font-size: 16px;
+    margin-left: 0px;
 }
-
-.d-link {
-    font-size: 16px;
+.center{
+    margin: 10px 0px 0px 0px;
 }
-
-.d-owner {
-    font-size: 16px;
-}
-
-.d-date {
-    font-size: 16px;
-}
-
-.a_url {
-    text-decoration: none;
-    color: #000000;
-    transition: color 0.3s ease;
-}
-
-.a_url:hover {
-    color: #0077ff;
-}
-
-.tab2-group {
-    display: flex;
-    justify-content: space-around;
-    padding: 0;
-    list-style: none;
-    width: 75%;
-    text-align: center;
-    margin: -10px 0px 20px 12.5%;
-}
-
-.tab2 {
-    padding: 12px 25px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    flex-grow: 1;
-    text-align: center;
-    background-color: #ffffff;
-    color: #333;
-    font-weight: bold;
-    border-radius: 5px;
-    margin: 0 5px;
-    margin-bottom: 10px;
-    height: 40px;
-}
-
-.tab2:hover {
-    background-color: #d0d0d0;
-    color: #000;
-}
-
-.is-active2 {
-    background-color: #333;
-    color: #fff;
-    height: 40px;
-}
-
-.panel2-group {
-    width: 100%;
-    margin-top: 20px;
-}
-
-.panel2 {
-    display: none;
-    width: 100%;
-}
-
-.is-show2 {
-    display: block;
-    width: 100%;
-
-}
-
-.transaction, .bad_request {
-    margin: -10px 0px 0px 10px;
-}
-
 .d-images {
     width: 35px;
     height: 35px;
-    border-radius: 100%;
-    margin-left: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    margin: -60px 0px 0px 160px;
-}
-
-.menu {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: -5px;
-}
-
-.chain_icon, .link_icon, .owner-icon, .date{
-    margin-left: 75px;
-}
-
-.font {
-    font-size: 20px;
-    color: black;
-    margin-top: 15px;
-}
-.managename{
-    margin: -57.5px 0px 0px 200px;
-}
-.sdafa{
-    margin: -23px 0px 0px 100px;
-}
-.tab_1{
-    margin-top: -20px;
-}
-.post_field{
-    background: white;
-    width: 75%;
-    height: auto;
-    margin: -10px 10px 0px 0px;
-}
-.post_icon{
-    width: 35px;
-    height: 35px;
-    border-radius: 100%;
-    margin: 10px 10px 10px 10px;
+    border-radius: 50%;
+    margin-left: -20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
-.post_user{
-    margin: 10px 10px 10px 10px;
+.font{
+    margin: 0px 0px 0px 10px;
+    font-size: 17.5px;
 }
-.post_username{
-    font-size: 18px;
-    margin: -40px 0px 0px 50px;
-}
-.post_text{
-    margin: -11px -1px -20px 65px;
-    width: 75%;
-}
-.destination_icon{
-    width: 35px;
-    height: 35px;
-    border-radius: 100%;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);   
-}
-.destination_name{
-    font-size: 20px;
-    color: black;
-}
-.user_font{
-    font-size: 20px;
-    color: black;
-}
-.post_create{
-    margin-left: 50px;
-    margin-top: -12.5px;
-    font-size: 15px;
-}
-.post_creates{
-    margin-left: 50px;
-    margin-top: -8px;
-    font-size: 15px;
-}
-.menu_icon{
+.tab2-group {
     display: flex;
-    justify-content: space-around;
-    padding: 0;
+    justify-content: space-between;
+    margin-top: 0px;
+    padding: 20;
     list-style: none;
-    width: 100%;
+}
+
+.tab2 {
+    flex-grow: 1;
     text-align: center;
-    padding: 15px 0px;
-}
-.hr_style{
-    margin: -20px 0px 0px 0px;
-}
-.post_manager{
-    margin-top: -5px;
-    color: #000000;
-}
-.post_image_field{
-    margin: 10px 10px 0px 50px;
-}
-.post_image{
-    border-radius: 10px;
-    margin-bottom: 15px;
-    height: 100%;
-    width: 75%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.post_image:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
-}
-.tab4_info{
-    background: white;
-    width: 75%;
-    height: auto;
-    margin: -10px 10px 0px 0px;
-}
-.dvcsdcd{
-    width: 65%;
-}
-.sgcvs{
-    
-}
-.first_member{
-    font-size: 22.5px;
-}
-.hdvbd{
-    font-size: 22.5px;
-}
-.post_field_home {
-    background: white;
-    width: 75%;
-    height: auto;
-    margin: -10px 10px 0px 0px;
-    display: block;
-    display: flex;
-    align-items: flex-start; 
-    flex-wrap: wrap; 
-}
-.messages{
-    list-style: none;
-    padding: 0;
-    margin: -9% 0px 0px 60%;
-    justify-content: space-around;
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
 }
 
-.member_info {
-    list-style: none;
-    padding: 0;
-    margin: 0px 0px 0px 10%;
-    margin-bottom: 10px;
-    justify-content: space-around;
+.tab2.is-active2 {
+    border-bottom-color: #50C878;
+    font-weight: bold;
+    color: #50C878;
 }
-.inline-list li, .inline-list span {
+
+.panel2-group {
+    display: none;
+    margin-top: 20px;
+}
+
+.panel2.is-show2 {
+    display: block;
+}
+
+.tab_1 {
+    text-align: left;
+}
+
+.tab_1 h1, .tab_1 h2, .tab_1 h3 {
+    margin: 0;
+    color: #333;
+}
+
+.post_field_home, .post_field {
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.post_user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post_icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
     margin-right: 10px;
 }
 
-.messages li.success {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 5px;
-    border-radius: 5px;
+.post_username {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin-right: 15px;
 }
 
-.messages li.error {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 5px;
-    border-radius: 5px;
+.post_create {
+    font-size: 0.9em;
+    color: #777;
 }
-.founder{
-    font-size: 17.5px;
-}
-.founder_image{
-    width: 35px;
-    height: 35px;
-    border-radius: 100%;
-    margin-left: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-.ddfsres{
+
+.post_image_field {
     text-align: center;
+    margin: 10px 0;
 }
+
+.post_image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.menu_icon {
+    display: flex;
+    justify-content: flex-start;
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.menu_icon li {
+    margin-right: 15px;
+}
+
+.a_icon {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.hr_style {
+    margin-top: 20px;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+
+/* メディアクエリ */
 @media (max-width: 768px) {
     #main {
-        margin-left: 50px;
+        margin: 20px auto;
+        width: 90%;
+        padding: 15px;
     }
 
-    .profile_filed, .post_field, .tab4_info {
-        width: 75%;
-        margin: 65px 10px 0 10px;
+    .profile_image, .profile_icon, .d-images {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
     }
 
-    .profile_icon {
-        width: 80px;
-        height: 80px;
-        margin-left: 0;
+    .profile_name {
+        flex-direction: column;
     }
 
-    .d-info {
-        margin-left: 25px;
-        width: auto;
+    .name {
+        margin: 10px 0;
     }
 
-    .chain_icon, .link_icon, .owner-icon, .date {
-        margin-left: 10px;
+    .sub_filed {
+        margin: 15px 10px;
+        text-align: center;
+    }
+
+    .tab2-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab2 {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .menu_icon {
+        justify-content: center;
+    }
+
+    .post_field_home, .post_field {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .post_text, .post_username, .post_create {
+        text-align: center;
+        margin: 0;
     }
 }
 
 @media (max-width: 480px) {
-    #main {
-        margin-left: 0px;
+    .profile_image {
+        width: 80px;
+        height: 80px;
     }
 
-    .profile_filed, .post_field, .tab4_info {
-        width: 100%;
-        margin: 55px 10px 0 0px;
-    }
-    .profile_image{
-        height: 175px;
-        width: 100%;
-    }
-    .profile_icon {
-        width: 65px;
-        height: 65px;
-        margin: -25px  0px 0px -50%;
+    .profile_icon, .d-images, .post_icon {
+        width: 20px;
+        height: 20px;
     }
 
     .name {
-        font-size: 24px;
+        font-size: 1.2em;
     }
 
-    .d-info {
-        margin-left: 10px;
-        width: auto;
+    .font {
+        font-size: 15px;
     }
 
-    .chain_icon, .link_icon, .owner-icon, .date {
-        margin-left: 5px;
+    .tab2 {
+        padding: 8px 0;
     }
-    .sdafa{
-        margin-left: 32.5px;
+
+    .post_username, .post_create {
+        font-size: 0.9em;
     }
-    .font{
-        margin: 0px 0px 0px -65px;
-    }
-    .managename{
-        margin: -57.5px 0px 0px 130px
+
+    .menu_icon li {
+        margin-right: 10px;
     }
 }

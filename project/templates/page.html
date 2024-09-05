@@ -17,12 +17,14 @@
                     {% if user.is_authenticated %}
                         {% if account.mainuser != user %}
                             {% if mutual_auth %}
-                                <p>Rooting</p>
+                                <button class="button"><b>Rooting</b></button>
                             {% else %}
                                 {% if not auth_request_sent %}
-                                    <a href="{% url 'send_auth_request' account.id %}">Send Auth Request</a>
+                                    <a href="{% url 'send_auth_request' account.id %}">
+                                        <button class="button"><b>Send Auth Request</b></button>
+                                    </a>
                                 {% else %}
-                                    <p>Request Sent</p>
+                                    <button class="button"><b>Request Sent</b></button>
                                 {% endif %}
                             {% endif %}
                         {% endif %}

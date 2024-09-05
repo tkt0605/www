@@ -1,137 +1,150 @@
-@charset "UTF-8";
-:root {
-    --background-color: #f3f3f3;
-    --text-color: #333;
-    --primary-color: #007aff;
-    --secondary-color: #6c757d;
-    --border-radius: 10px;
-    --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
 body {
-    background: var(--background-color);
-    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
-    font-family: var(--font-family);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    padding: 0;
 }
 
 #main {
-    background: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
-    width: 90%;
-    max-width: 800px;
-    margin-top: -100px;
-}
-.profile_image {
-    width: 100%;
-    height: 225px;
-    object-fit: cover;
-    background: rgb(155, 155, 155);
-}
-
-.profile_icon {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background-color: grey;
-    margin: -50px 50px -50px;
-    display: block;
-    border: 4px solid white;
-    object-fit: cover;
-}
-
-.name {
-    font-size: 35px;
-    text-align: left;
-    margin: 0px 0px 0px 19%;
-}
-
-.main_filed {
+    width: 80%;
+    max-width: 900px;
+    margin: 60px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
 
-.hr {
-    border: 0;
-    border-top: 1px solid #e0e0e0;
-    margin: -10px 0;
-}
-
-.sub_filed {
-    list-style: none;
-    padding: 0;
-    margin: 20px;
-}
-
-.sub_filed li {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: var(--secondary-color);
-}
-
-.create .date, .create .d-date {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.tab2-group {
+.profile_filed {
     display: flex;
-    justify-content: space-around;
-    margin: 20px 0 0;
-    list-style: none;
-    padding: 0;
+    flex-direction: column;
+    align-items: center;
 }
-
-.tab2 {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border-radius: var(--border-radius);
-    margin: 0 5px;
-    color: var(--text-color);
-    /* background: #f9f9f9; */
-    background: #fff;
-}
-.menu_line {
+.menu_line{
     margin-top: 15px;
     margin-left: -10px;
     width: 210px;
     height: 100%;
     position: relative;
 }
-.tab2:hover {
-    background-color: #d0d0d0;
+.profile_image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.main_filed {
+    width: 100%;
+    text-align: center;
+}
+
+.profile_name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.profile_icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.name {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-right: 15px;
+}
+
+.root .button {
+    background-color: #50C878;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: not-allowed;
+}
+
+.hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.sub_filed {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.sub_filed li {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+.tab2-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 0;
+    list-style: none;
+}
+
+.tab2 {
+    flex-grow: 1;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px 0;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s;
 }
 
 .tab2.is-active2 {
-    background-color: black;
-    color: #fff;
+    border-bottom-color: #50C878;
+    font-weight: bold;
+    color: #50C878;
 }
 
 .panel2-group {
-    padding: 20px;
-}
-
-.panel2 {
     display: none;
+    margin-top: 20px;
 }
 
 .panel2.is-show2 {
     display: block;
 }
 
-.tab_1 h1 {
-    font-size: 24px;
-    color: var(--primary-color);
+.tab_1 {
+    text-align: left;
 }
+
+.tab_1 h1, .tab_1 h2, .tab_1 h3 {
+    margin: 0;
+    color: #333;
+}
+
+.info {
+    background-color: #f0f8ff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.d-date, .d-info, .d-info1, .d-info2 {
+    margin-top: 5px;
+}
+
+.date {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
 
 @media (max-width: 768px) {
     #main {
