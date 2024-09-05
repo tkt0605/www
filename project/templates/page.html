@@ -7,12 +7,15 @@
 {% block content %}
 <div id="main">
     <div class="profile_filed">
-        <img class="profile_image" src="/media/{{account.image}}"/>
-        <br>
+        {% comment %} <img class="profile_image" src="/media/{{account.image}}"/> {% endcomment %}
         <div class="main_filed">
             <div class="profile_name">
-                <img class="profile_icon" src="/media/{{account.icon}}"/>
-                <div class="name"><b>{{account.name}}</b></div>
+                <div class="profile_icon">
+                    <img class="icon-image" src="/media/{{account.icon}}"/>
+                </div>
+                <div class="name-container">
+                    <b class="name">{{account.name}}</b>
+                </div>
                 <div class="root">
                     {% if user.is_authenticated %}
                         {% if account.mainuser != user %}
