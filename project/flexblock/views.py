@@ -10,8 +10,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 def error(request):
     template = loader.get_template('error.html')
+    accounts = Account.objects.order_by('-pk')[:100000]
     context = {
         "csrf_token": "",
+        "accounts": accounts
     }
     return HttpResponse(template.render(context, request))
 def index(request):
@@ -58,19 +60,25 @@ def page(request, pk):
     return HttpResponse(template.render(context, request))
 @login_required
 def community(request, name):
-    accounts =Account.objects.order_by("-pk")[:100000]
+    # データの取得
+    accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
-    current_user = request.user
-    can_join = group.can_user_join(current_user)
-    if not can_join:
-        redirect('error')
+    # ユーザーがグループに参加できるかを確認
+    can_join = group.can_user_join(request.user)
+    if not can_join :
+        return redirect('error')  # リダイレクトを修正
+    elif can_join:
+        return redirect('commuinty')
+    # コンテキストの作成
     context = {
         "csrf_token": "",
         "community": group,
         "accounts": accounts,
         "can_join": can_join,
     }
+
+    # テンプレートのレンダリング
     return HttpResponse(template.render(context, request))
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]

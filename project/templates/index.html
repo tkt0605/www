@@ -32,7 +32,7 @@
         <div class="group-content">
             <h2>{{room.name}}</h2>
             <p>{{room.index}}</p>
-            <button onclick="location.href='/community/{{room.name}}'" class="btn"><b>詳細を見る</b></button>
+            <button onclick="location.href='{% url "community" room.name %}'" class="btn"><b>詳細を見る</b></button>
         </div>
     </div>
     {% endfor %}
