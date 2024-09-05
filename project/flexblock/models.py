@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from accounts.models import CustomUser, Account
+from django.db.models import Q
 User = get_user_model()
 class Category(models.Model):
     name = models.CharField('カテゴリー', max_length=100)
@@ -28,15 +29,33 @@ class Group(models.Model):
         return str(self.name)
     def can_user_join(self, user):
         """指定されたユーザーがグループに参加できるか確認"""
-        auth_exists = RootAuth.objects.filter(user=self.mainuser, target_user=user, is_approved_by_user=True, is_approved_by_target=True).exists()
+        # もしグループが'local'な場合、追加のチェックを実行
+        manager_user = self.managername.user if hasattr(self.managername, 'user') else None
+        main_user = self.mainuser
+        if self.visibility == 'local':
+            # 管理者またはメインユーザーによる許可を確認
+            is_approved_by_manager = RootAuth.objects.filter(
+                user=manager_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists() if manager_user else False
 
-        reverse_auth_exists = RootAuth.objects.filter(user=user, target_user=self.mainuser, is_approved_by_user=True, is_approved_by_target=True).exists()
-
-        print(f"Auth from mainuser to user: {auth_exists}, Auth from user to mainuser: {reverse_auth_exists}")
-
-        return auth_exists and reverse_auth_exists
+            is_approved_by_mainuser = RootAuth.objects.filter(
+                user=main_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists() if main_user else False
+            # グループに参加できる条件は、管理者またはメインユーザーによる許可
+            if not (is_approved_by_manager or is_approved_by_mainuser):
+                return False
+            # 通常のグループ参加条件（RootAuthの相互承認をチェック）
+        auth_exists = RootAuth.objects.filter(
+            Q(user=main_user, target_user=user) | 
+            Q(user=user, target_user=main_user),
+            is_approved_by_user=True,
+            is_approved_by_target=True
+        ).exists()
+        print(f"Auth from mainuser to user: {auth_exists}")
+        # 'local'の場合の追加条件も満たしていれば、参加可能
+        return auth_exists
     class Meta:
-        verbose_name_plural = 'ClassName'
+            verbose_name_plural = 'ClassName'
 class Post(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     destination = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="投稿先")

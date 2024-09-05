@@ -64,21 +64,20 @@ def community(request, name):
     accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
-    # ユーザーがグループに参加できるかを確認
-    can_join = group.can_user_join(request.user)
-    if not can_join :
-        return redirect('error')  # リダイレクトを修正
-    elif can_join:
-        return redirect('commuinty')
-    # コンテキストの作成
     context = {
         "csrf_token": "",
         "community": group,
         "accounts": accounts,
-        "can_join": can_join,
+        # "can_join": can_join,
     }
-
-    # テンプレートのレンダリング
+    # ユーザーがグループに参加できるかを確認
+    if group.visibility == "local":
+        user = request.user
+        can_join = group.can_user_join(user)
+        if not can_join :
+            return redirect('error')  # リダイレクトを修正
+    # コンテキストの作成
+        # テンプレートのレンダリング
     return HttpResponse(template.render(context, request))
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
