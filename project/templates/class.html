@@ -41,7 +41,7 @@
                             <b>
                                 <div class="sdafa">所有者/</div>
                             </b>
-                            <a target="_blank" rel="noopener noreferrer" class="font" href="{% url 'page' %}?id={{ community.managername.id }}">
+                            <a target="_blank" rel="noopener noreferrer" class="font" href="{% url 'page' community.managername.id %}">
                                 <img class="d-images" src="/media/{{community.managername.icon}}"/>
                                 <div class="managename">{{community.managername}}</div>
                             </a>

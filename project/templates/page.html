@@ -16,16 +16,15 @@
                 <div class="root">
                     {% if user.is_authenticated %}
                         {% if account.mainuser != user %}
-                            {% if not auth_request_sent %}
-                                <a href="{% url 'send_auth_request' account.id %}">Send Auth Request</a>
+                            {% if mutual_auth %}
+                                <p>Rooting</p>
                             {% else %}
-                                <p>Request Sent</p>
+                                {% if not auth_request_sent %}
+                                    <a href="{% url 'send_auth_request' account.id %}">Send Auth Request</a>
+                                {% else %}
+                                    <p>Request Sent</p>
+                                {% endif %}
                             {% endif %}
-            
-                            {% for request in auth_requests_received %}
-                                <p>{{ request.user.username }} wants to connect with you.</p>
-                                <a href="{% url 'approve_auth_request' request.id %}">Approve</a>
-                            {% endfor %}
                         {% endif %}
                     {% endif %}
                 </div>
@@ -57,7 +56,7 @@
                     <b><div class="menu">Owner</div></b>
                 </li>
                 <li class="tab2 tab2-C">
-                    <b><div class="menu">Member</div></b>
+                    <b><div class="menu">Root</div></b>
                 </li>
                 <li class="tab2 tab2-D">
                     <b><div class="menu">Blocks</div></b>
@@ -68,7 +67,18 @@
     <div class="panel2-group">
         <div class="panel2 tab2-A is-show2">
             <div class="tab_1">
-                <h1>Hello 1</h1>
+                <h2>インフォメーション</h2>
+                <div class="info">
+                    <h3>通知</h3>
+                    {% if user.is_authenticated %}
+                        {% if account.mainuser == user %}
+                            {% for request in auth_requests_received %}
+                                <div class="request_info"><p>{{ request.user.username }} wants to connect with you.</p></div>
+                                <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">Approve</a>or<a href="{% url "not_approve_auth_request" request.id %}">Not Approve</a></div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
         <div class="panel2 tab2-B">

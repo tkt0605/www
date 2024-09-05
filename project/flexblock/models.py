@@ -67,7 +67,6 @@ class RootAuth(models.Model):
     
     class Meta:
         unique_together = ('user', 'target_user')
-
     def approve(self, by_user):
         """相互認証の承認処理"""
         if by_user == self.user:

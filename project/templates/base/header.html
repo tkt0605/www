@@ -23,7 +23,7 @@
                         {% for account in accounts %}
                         {% if user == account.mainuser%}
                         <li style="color: rgb(241, 240, 240);">
-                            <a class="side_name" href="{% url 'page' %}?id={{account.id}}">
+                            <a class="side_name" href="{% url 'page' account.id%}">
                                 <button   id="nemu_button"  onMouseOver="changeColor1()" onMouseOut="revertColor1()"class="border_2">
                                     <img class="image1_bord" src="/media/{{account.icon}}" alt="">
                                     <b><div class="d-inline3">{{account.name}}</div></b>
