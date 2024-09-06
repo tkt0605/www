@@ -109,18 +109,18 @@ class CreatePostForm(forms.ModelForm):
                 }
             )
         }
-        def __init__(self, mainuser=None, destination=None, username=None, *args, **kwargs):
-            self.mainuser = mainuser
-            self.destination = destination
-            self.username = username
-            super().init(*args, **kwargs)
-        def save(self, commit=True):
-            kwargs = super().save(commit=False)
-            if self.mainuser:
-                kwargs.mainuser = self.mainuser
-                kwargs.destination = self.destination
-                kwargs.username = self.username
-                if commit==True:
-                    kwargs.save()
-            return kwargs.mainuser
+    def __init__(self, mainuser=None, destination=None, username=None, *args, **kwargs):
+        self.mainuser = mainuser
+        self.destination = destination    
+        self.username = username
+        super().__init__(*args, **kwargs)
+    def save(self, commit=True):
+        kwargs = super().save(commit=False)
+        if self.mainuser:
+            kwargs.mainuser = self.mainuser
+            kwargs.destination = self.destination
+            kwargs.username = self.username
+            if commit:
+                kwargs.save()
+        return kwargs
         

@@ -153,6 +153,11 @@ body {
     margin: 0px 0px 0px 10px;
     font-size: 17.5px;
 }
+.founder_image{
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+}
 .tab2-group {
     display: flex;
     justify-content: space-between;

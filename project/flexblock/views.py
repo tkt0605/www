@@ -151,13 +151,13 @@ form_net = CreateNetworkView.as_view()
 class CreatePostView(generic.CreateView):
     form_class = CreatePostForm
     template_name = "create-post.html"
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super().get_form_kwargs(*args, **kwargs)
         form = CreatePostForm(self.request.FILES, self.request.POST, instance=Account and Group)
         form.instance.name = self.kwargs['name']
         kwargs['mainuser'] = self.request.user
-        kwargs['destintion'] = Group.objects.get(name=form.instance.name)
-        kwargs['username'] = self.request.user.username
+        kwargs['destination'] = Group.objects.get(name=form.instance.name)
+        kwargs['username'] = Account.objects.get(name=self.request.user.username)
         return kwargs
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
