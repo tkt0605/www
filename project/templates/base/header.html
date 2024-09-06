@@ -113,7 +113,7 @@
                         {% endif %}
                         {% if community.name %}
                         <li class="li_menu" style="color: rgb(241, 240, 240);">
-                            <a class="side_name" href="/create/comment/{{community.name}}/">
+                            <a class="side_name" href="{% url "form_post" community.name %}">
                                 <button id="nemu_button9"  onMouseOver="beforecolor9()" onMouseOut="aftercolor9()" class="border_2">
                                     <div class="aside">
                                         <svg class="d-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">

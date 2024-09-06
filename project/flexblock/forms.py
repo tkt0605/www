@@ -1,5 +1,5 @@
 from accounts.models import Account
-from .models import Group, Network
+from .models import Group, Network, Post
 from django import forms
 class CreateClassForm(forms.ModelForm):
     class Meta:
@@ -86,3 +86,41 @@ class CreateNetworkForm(forms.ModelForm):
             if commit == True:
                 kwargs.save()
         return kwargs.mainuser
+class CreatePostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = "__all__"
+        exclude = ["mainuser", "destination", "username"]
+        widgets = {
+            "text": forms.Textarea(
+                attrs = {
+                    "class": "text-post",
+                    "placeholder": "新規投稿",
+                }
+            ),
+            "image": forms.FileInput(
+                attrs={
+                    "class": "image-post",
+                }
+            ),
+            "vedio": forms.FileInput(
+                attrs={
+                    "class": "vedio-post",
+                }
+            )
+        }
+        def __init__(self, mainuser=None, destination=None, username=None, *args, **kwargs):
+            self.mainuser = mainuser
+            self.destination = destination
+            self.username = username
+            super().init(*args, **kwargs)
+        def save(self, commit=True):
+            kwargs = super().save(commit=False)
+            if self.mainuser:
+                kwargs.mainuser = self.mainuser
+                kwargs.destination = self.destination
+                kwargs.username = self.username
+                if commit==True:
+                    kwargs.save()
+            return kwargs.mainuser
+        

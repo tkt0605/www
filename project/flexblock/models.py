@@ -36,13 +36,18 @@ class Group(models.Model):
             # 管理者またはメインユーザーによる許可を確認
             is_approved_by_manager = RootAuth.objects.filter(
                 user=manager_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
-            ).exists() if manager_user else False
-
+            ).exists() 
             is_approved_by_mainuser = RootAuth.objects.filter(
                 user=main_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
-            ).exists() if main_user else False
+            ).exists()
+            is_approved_by_manager_login = RootAuth.objects.filter(
+                user=user, target_user=manager_user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists() 
+            is_approved_by_mainuser_login = RootAuth.objects.filter(
+                user=user, target_user=main_user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists()
             # グループに参加できる条件は、管理者またはメインユーザーによる許可
-            if not (is_approved_by_manager or is_approved_by_mainuser):
+            if not (is_approved_by_manager or is_approved_by_mainuser or is_approved_by_manager_login or is_approved_by_mainuser_login):
                 return False
             # 通常のグループ参加条件（RootAuthの相互承認をチェック）
         auth_exists = RootAuth.objects.filter(

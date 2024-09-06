@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from accounts.models import Account, CustomUser
-from .models import  Group, Network, RootAuth
+from .models import  Group, Network, RootAuth, Post
 from django.views import generic
-from .forms import CreateClassForm, CreateNetworkForm
+from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -71,13 +71,20 @@ def community(request, name):
         # "can_join": can_join,
     }
     # ユーザーがグループに参加できるかを確認
+    if group.mainuser == request.user:
+        return HttpResponse(template.render(context, request))
     if group.visibility == "local":
         user = request.user
         can_join = group.can_user_join(user)
         if not can_join :
-            return redirect('error')  # リダイレクトを修正
-    # コンテキストの作成
-        # テンプレートのレンダリング
+                return redirect('error') 
+        else:
+            return HttpResponse(template.render(context, request))
+    # if group.visibility == "local":
+    #     user = request.user
+    #     can_join = group.can_user_join(user)
+    #     if not can_join :
+    #         return redirect('error')  # リダイレクトを修正
     return HttpResponse(template.render(context, request))
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
@@ -120,8 +127,10 @@ class CreateClassView(generic.CreateView):
         #追加のコンテキストデータをマージ,htmlにコンテキストを表示できるようにする。
         context['accounts'] = accounts
         return context
+    # def get_absolute_url(self):
+    #     return reverse('community', kwargs={"name": self.kwargs["name"]})
     def get_absolute_url(self):
-        return reverse('community', kwargs={"name": self.kwargs["name"]})
+        return reverse('community', name=self.kwargs["name"])
 form_create = CreateClassView.as_view()
 
 class CreateNetworkView(generic.CreateView):
@@ -139,6 +148,25 @@ class CreateNetworkView(generic.CreateView):
     def get_success_url(self):
         return reverse('networks')
 form_net = CreateNetworkView.as_view()
+class CreatePostView(generic.CreateView):
+    form_class = CreatePostForm
+    template_name = "create-post.html"
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        form = CreatePostForm(self.request.FILES, self.request.POST, instance=Account and Group)
+        form.instance.name = self.kwargs['name']
+        kwargs['mainuser'] = self.request.user
+        kwargs['destintion'] = Group.objects.get(name=form.instance.name)
+        kwargs['username'] = self.request.user.username
+        return kwargs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        accounts = Account.objects.order_by('-pk')[:10000000]
+        context['accounts'] = accounts
+        return context
+    def get_absolute_url(self):
+        return reverse('community', name=self.kwargs["name"])
+form_post = CreatePostView.as_view()
 @login_required
 def send_auth_request(request, pk):
     """ユーザーに認証リクエストを送信するビュー"""

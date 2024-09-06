@@ -14,6 +14,7 @@ urlpatterns = [
     path('approve_auth_request/<int:pk>', views.approve_auth_request, name='approve_auth_request'),
     path("not_approve_auth_request/<int:pk>", views.not_approve_auth_request, name="not_approve_auth_request"),
     path('error/404', views.error, name='error'),
+    path("create/post/<str:name>", views.form_post, name='form_post'),
     # path("delete_auth_request/<int:pk>", views.delete_auth_request, name='delete_auth_request'),
 ]
 if settings.DEBUG:
