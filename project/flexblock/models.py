@@ -69,7 +69,7 @@ class GroupMembership(models.Model):
         unique_together = ('account', 'group')  # 同じユーザーが同じグループに重複して参加できないようにする
 
     def __str__(self):
-        return f'{self.account.user.username} joined {self.group.name}'
+        return f'{self.account.username} joined {self.group.name}'
 class Post(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     destination = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="投稿先")

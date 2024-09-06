@@ -64,7 +64,7 @@ def community(request, name):
     accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
-    user_account = request.user.username
+    user_account = request.user
     # ユーザーがグループのメンバーであるかを確認
     is_member = GroupMembership.objects.filter(account=user_account, group=group).exists()
 
@@ -88,7 +88,7 @@ def community(request, name):
 @login_required
 def join(request, name):
     group = get_object_or_404(Group, name=name)
-    user_account = request.user.username
+    user_account = request.user
     join_exist = GroupMembership.objects.filter(account=user_account, group=group).exists()
     if not join_exist:
         GroupMembership.objects.create(account=user_account, group=group)
