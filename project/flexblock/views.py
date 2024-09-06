@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from accounts.models import Account, CustomUser
-from .models import  Group, Network, RootAuth, Post
+from .models import  Group, Network, RootAuth, Post, GroupMembership
 from django.views import generic
 from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm
 from django.urls import reverse_lazy, reverse
@@ -64,11 +64,15 @@ def community(request, name):
     accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
+    user_account = request.user.username
+    # ユーザーがグループのメンバーであるかを確認
+    is_member = GroupMembership.objects.filter(account=user_account, group=group).exists()
+
     context = {
         "csrf_token": "",
         "community": group,
         "accounts": accounts,
-        # "can_join": can_join,
+        "is_member":is_member,
     }
     # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
@@ -80,12 +84,15 @@ def community(request, name):
                 return redirect('error') 
         else:
             return HttpResponse(template.render(context, request))
-    # if group.visibility == "local":
-    #     user = request.user
-    #     can_join = group.can_user_join(user)
-    #     if not can_join :
-    #         return redirect('error')  # リダイレクトを修正
     return HttpResponse(template.render(context, request))
+@login_required
+def join(request, name):
+    group = get_object_or_404(Group, name=name)
+    user_account = request.user.username
+    join_exist = GroupMembership.objects.filter(account=user_account, group=group).exists()
+    if not join_exist:
+        GroupMembership.objects.create(account=user_account, group=group)
+    return redirect('community', name=name)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
     networks = Network.objects.order_by('-pk')[:10000000]

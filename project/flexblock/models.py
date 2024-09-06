@@ -61,6 +61,15 @@ class Group(models.Model):
         return auth_exists
     class Meta:
             verbose_name_plural = 'ClassName'
+class GroupMembership(models.Model):
+    account = models.ForeignKey("accounts.CustomUser", on_delete=models.CASCADE, verbose_name="ユーザー名", null=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='参加グループ名', null=True)
+    join_date = models.DateTimeField(auto_now_add=True, null=True, verbose_name="参加日")
+    class Meta:
+        unique_together = ('account', 'group')  # 同じユーザーが同じグループに重複して参加できないようにする
+
+    def __str__(self):
+        return f'{self.account.user.username} joined {self.group.name}'
 class Post(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     destination = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="投稿先")

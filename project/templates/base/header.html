@@ -111,7 +111,7 @@
                             </a>
                         </li>
                         {% endif %}
-                        {% if community.managername == user.username %}
+                        {% if community.mainuser == user %}
                         <li class="li_menu" style="color: rgb(241, 240, 240);">
                             <a class="side_name" href="{% url "form_post" community.name %}">
                                 <button id="nemu_button9"  onMouseOver="beforecolor9()" onMouseOut="aftercolor9()" class="border_2">
