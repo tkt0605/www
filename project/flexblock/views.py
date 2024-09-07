@@ -90,7 +90,7 @@ def community(request, name):
 @login_required
 def join(request, name):
     group = get_object_or_404(Group, name=name)
-    user_account = request.user
+    user_account = request.user.account
     join_exist = GroupMembership.objects.filter(account=user_account, group=group).exists()
     if not join_exist:
         GroupMembership.objects.create(account=user_account, group=group)

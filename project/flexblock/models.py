@@ -101,7 +101,7 @@ class Network(models.Model):
         verbose_name_plural = "Network"
 class AddNetwork(models.Model):
     destination = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name="ネットワーク名", blank=True, null=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="ターゲットグループ")
     created_at = models.DateTimeField(auto_now_add=True,null=True  , verbose_name='作成日')
     def __str__(self):
         return str(self.destination)

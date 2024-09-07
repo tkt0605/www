@@ -14,23 +14,29 @@
             <div class="profile_name">
                 <div class="name-icon">
                     <!-- アイコンをここに挿入します -->
-                    <img id="class-icons"  src="/media/{{community.icon}}" alt="アイコン" class="icon-image">
+                    <img id="class-icons"  src="/media/{{community.backimage}}" alt="アイコン" class="icon-image">
                 </div>
                 <div class="name-container">
                     <b class="name">{{community.name}}</b>
                 </div>
-                {% if not is_member %}
+                {% if  community.mainuser == user %}
+                    <div class='button'>
+                        <!--Nothing-->
+                    </div>
+                {% else %}
+                    {% if not is_member %}
                     <div class="button">
                         <a href="{% url 'join' community.name %}">
                             <button type="submit" class="join-button"><b>参加する</b></button>
                         </a>
                     </div>
-                {% else %}
+                    {% else %}
                    <div class="button">
                         <a href="{% url 'joinout' community.name %}">
                             <button type="submit" class="join-button-out"><b>脱退する</b></button>
                         </a>
                     </div>
+                    {% endif %}
                 {% endif %}
             </div>
             <hr class="hr">
@@ -196,6 +202,7 @@
                 <div class="post_field">
                     <div class="post_user">
                         {% for groupmembership in groupmemberships %}
+                        {% if community.name == groupmembership.group.name %}
                         <ul>
                             <li>
                                 <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'page' groupmembership.account.id%}">
@@ -205,6 +212,7 @@
                                 </a>
                             </li>
                         </ul>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>
