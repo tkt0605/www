@@ -64,15 +64,17 @@ def community(request, name):
     accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
-    user_account = request.user
+    user_account = request.user.account
     # ユーザーがグループのメンバーであるかを確認
     is_member = GroupMembership.objects.filter(account=user_account, group=group).exists()
-
+    # groupmemberships = GroupMembership.objects.get(group=group)
+    groupmemberships = GroupMembership.objects.order_by('-pk')[:10000]
     context = {
         "csrf_token": "",
         "community": group,
         "accounts": accounts,
         "is_member":is_member,
+        "groupmemberships": groupmemberships,
     }
     # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
@@ -92,6 +94,15 @@ def join(request, name):
     join_exist = GroupMembership.objects.filter(account=user_account, group=group).exists()
     if not join_exist:
         GroupMembership.objects.create(account=user_account, group=group)
+    return redirect('community', name=name)
+@login_required
+def joinout(request, name):
+    group = get_object_or_404(Group, name=name)
+    user_account = request.user.account
+    join_exist = GroupMembership.objects.filter(account=user_account, group=group).exists()
+    if join_exist:
+        exists_memeber = GroupMembership.objects.get(account=user_account, group=group)
+        exists_memeber.delete()
     return redirect('community', name=name)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]

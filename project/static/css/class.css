@@ -8,7 +8,7 @@ body {
 #main {
     width: 80%;
     max-width: 900px;
-    margin: 60px 0px 0px 320px;
+    margin: 57.5px 0px 0px 320px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -81,13 +81,20 @@ body {
     border-radius: 4px;
     cursor: not-allowed;
 }
-
+.join-button-out {
+    background-color: #ff0000;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: not-allowed;
+}
 .name-icon:hover .icon-image {
     transform: translateY(-15px); /* アイコンを浮かせる */
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
 }
 
-.name-icon:hover .join-button {
+.name-icon:hover .join-button .join_out-button {
     opacity: 1; /* ホバー時にボタンを表示 */
 }
 .icon-image:hover {
@@ -150,6 +157,7 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 .font{
+    color: #000000;
     margin: 0px 0px 0px 10px;
     font-size: 17.5px;
 }
@@ -211,7 +219,7 @@ body {
 }
 
 .post_field_home, .post_field {
-    background-color: #f0f8ff;
+    /* background-color: #f0f8ff; */
     padding: 10px;
     border-radius: 4px;
     margin-top: 10px;
@@ -275,9 +283,116 @@ body {
     border: none;
     border-top: 1px solid #ddd;
 }
-
-
+.groupmembership-icon{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.groupmembership-name{
+    font-size: 17.5px;
+}
+.a_url{
+    color: #000000;
+}
+.rink{
+    color: #000000;
+}
 /* メディアクエリ */
+/* Panel styling */
+.panel2-group {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 8px rgba(0,0,0,0.1); */
+}
+
+/* Tab styling */
+.panel2 {
+    padding: 15px;
+    /* border: 1px solid #ddd; */
+    margin-bottom: 10px;
+}
+
+.tab_1 {
+    padding: 10px;
+}
+
+.member_info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.inline-list {
+    display: flex;
+    align-items: center;
+}
+
+.first_member {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.founder_image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.messages {
+    margin-top: 20px;
+}
+
+.hdvbd {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.post_field {
+    padding: 15px;
+}
+
+.post_user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post_username a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.post_text {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.menu_icon {
+    display: flex;
+    list-style: none;
+    padding: 0;
+}
+
+.a_icon svg {
+    fill: #007BFF;
+    cursor: pointer;
+}
+
+.hr_style {
+    margin: 15px 0;
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+}
 @media (max-width: 768px) {
     #main {
         margin: 20px auto;

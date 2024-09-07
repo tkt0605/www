@@ -22,11 +22,15 @@
                 {% if not is_member %}
                     <div class="button">
                         <a href="{% url 'join' community.name %}">
-                            <button type="submit" class="join-button">参加する</button>
+                            <button type="submit" class="join-button"><b>参加する</b></button>
                         </a>
                     </div>
                 {% else %}
-                    <p>あなたはこのグループに参加しています。</p>
+                   <div class="button">
+                        <a href="{% url 'joinout' community.name %}">
+                            <button type="submit" class="join-button-out"><b>脱退する</b></button>
+                        </a>
+                    </div>
                 {% endif %}
             </div>
             <hr class="hr">
@@ -108,6 +112,7 @@
                 </div>        
             </div>
         </div>
+    
         <div class="panel2 tab2-B">
             <div class="tab_1">
                 {% for post in posts %}
@@ -115,18 +120,14 @@
                 <div class="post_field">
                     <div class="post_user">
                         <img class="post_icon" src="/media/{{post.username.icon}}"/>
-                        {% if community.managername == post.username %}
                         <div class="post_username">
-                            <a class="user_font" href="{% url 'page' %}?id={{ post.username.id }}">{{post.username}}</a> 
+                            <a class="user_font" href="{% url 'page' %}?id={{ post.username.id }}">{{post.username}}</a>
+                            {% if community.managername == post.username %}
                             <svg class="post_manager" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
                                 <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
                             </svg>
+                            {% endif %}
                         </div>
-                        {% else %}
-                        <div class="post_username">
-                            <a class="user_font" href="{% url 'page' %}?id={{ post.username.id }}">{{post.username}}</a>
-                        </div>
-                        {% endif %}
                         <div class="post_creates">
                             <small>{{post.created_at|date:'Y年n月j日'}}</small>
                         </div>
@@ -135,9 +136,7 @@
                     <div class="post_image_field">
                         <img class="post_image" src="/media/{{post.image}}/"/>
                     </div> 
-                    {% else %}
-                    <div></div>
-                    {% endif %}                    
+                    {% endif %}
                     <div class="post_text">{{post.text}}</div>
                     <ul class="menu_icon">
                         <li class="icon_1">
@@ -147,21 +146,6 @@
                                 </svg>
                             </a>
                         </li>
-                        <li class="icon_2">
-                            <a class="a_icon">
-
-                            </a>
-                        </li>
-                        <li class="icon_3">
-                            <a class="a_icon">
-
-                            </a>
-                        </li>
-                        <li class="icon_4">
-                            <a class="a_icon">
-
-                            </a>
-                        </li>
                     </ul>
                     <hr class="hr_style">
                 </div>
@@ -169,6 +153,7 @@
                 {% endfor %}
             </div>
         </div>
+    
         <div class="panel2 tab2-C">
             <div class="tab_1">
                 {% for post in posts %}
@@ -178,7 +163,7 @@
                         <img class="post_icon" src="/media/{{post.username.icon}}"/>
                         <div class="post_username">
                             <a class="user_font" href="{% url 'page' %}?id={{ post.username.id }}">{{post.username}}</a>
-                            /<a class="destination_name" href="/community/{{post.destination}}/"><img class="destination_icon" src="{{post.destination.icon}}"/>{{post.destination}}</a>
+                            /<a class="destination_name" href="/community/{{post.destination}}/">{{post.destination}}</a>
                         </div>
                         <div class="post_create">
                             <small>{{post.created_at|date:'Y年n月j日'}}</small>
@@ -188,9 +173,7 @@
                     <div class="post_image_field">
                         <img class="post_image" src="/media/{{post.image}}/"/>
                     </div> 
-                    {% else %}
-                    <div></div>
-                    {% endif %}             
+                    {% endif %}
                     <div class="post_text">{{post.text}}</div>
                     <ul class="menu_icon">
                         <li class="icon_1">
@@ -200,42 +183,34 @@
                                 </svg>
                             </a>
                         </li>
-                        <li class="icon_2">
-                            <a class="a_icon">
-
-                            </a>
-                        </li>
-                        <li class="icon_3">
-                            <a class="a_icon">
-
-                            </a>
-                        </li>
-                        <li class="icon_4">
-                            <a class="a_icon">
-
-                            </a>
-                        </li>
                     </ul>
                     <hr class="hr_style">
                 </div>
                 {% endif %}
                 {% endfor %}
             </div>
-            <br>
         </div>
+    
         <div class="panel2 tab2-D">
             <div class="tab_1">
                 <div class="post_field">
                     <div class="post_user">
-                        <!--
-                         ここに参加しているユーザー名の一覧を出す。
-                        -->
+                        {% for groupmembership in groupmemberships %}
+                        <ul>
+                            <li>
+                                <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'page' groupmembership.account.id%}">
+                                    <div class="groupmembership-name">
+                                        <img class="groupmembership-icon" src="/media/{{groupmembership.account.icon}}"/><b>{{groupmembership.account}}</b>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-            <br>
         </div>
-    </div>
+    </div>    
 </div>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function(){
