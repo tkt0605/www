@@ -136,7 +136,7 @@ class AddNetwork(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
-        return str(self.name)
+        return f"{self.name} ⇔ {self.group}"
     class Meta:
         verbose_name_plural = "AddNetwork"
 class RootAuth(models.Model):

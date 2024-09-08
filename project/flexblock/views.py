@@ -66,14 +66,13 @@ def community(request, name):
     template = loader.get_template('class.html')
     user_account = request.user.account
     user = request.user
-    network = Network.objects.filter(mainuser=user).exists()
-    # network = get_object_or_404(Network, name=name)
-    # ユーザーがグループのメンバーであるかを確認
+    network_exists = Network.objects.filter(mainuser=user).exists()
     is_member = GroupMembership.objects.filter(account=user_account, group=group).exists()
-    is_network = AddNetwork.objects.filter(name=network, group=group).exists()
-    # groupmemberships = GroupMembership.objects.get(group=group)
+    # is_network = AddNetwork.objects.filter(name = network_exists, group=group).exists()
+    is_network = AddNetwork.objects.filter(group=group, name__mainuser=user).exists()
     groupmemberships = GroupMembership.objects.order_by('-pk')[:10000]
-    networks = Network.objects.order_by('-pk')[:1000000]
+    # networks = Network.objects.order_by('-pk')[:1000000]
+    networks = Network.objects.filter(mainuser=user).order_by('-pk')[:1000000]
     context = {
         "csrf_token": "",
         "community": group,
@@ -82,6 +81,7 @@ def community(request, name):
         "groupmemberships": groupmemberships,
         "is_network": is_network,
         "networks": networks,
+        "network_exists": network_exists
     }
     # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
@@ -114,10 +114,10 @@ def joinout(request, name):
 @login_required
 def add_network(request, name, pk):
     group = get_object_or_404(Group, name=name)
-    names = get_object_or_404(Network, pk=pk)
-    add_network = AddNetwork.objects.filter(name=names, group=group).exists()
+    network_name =get_object_or_404(Network,pk=pk)
+    add_network = AddNetwork.objects.filter(name=network_name, group=group).exists()
     if not add_network:
-        AddNetwork.objects.create(name=names, group=group)
+        AddNetwork.objects.create(name=network_name, group=group)
     return redirect('community', name=name)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
