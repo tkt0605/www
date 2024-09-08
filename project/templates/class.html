@@ -19,47 +19,49 @@
                 <div class="name-container">
                     <b class="name">{{community.name}}</b>
                 </div>
-                {% if  community.mainuser == user %}
-                    <div class='button'>
-                        <!--Nothing-->
-                    </div>
-                {% else %}
-                    {% if not is_member %}
-                    <div class="button">
-                        <a href="{% url 'join' community.name %}">
-                            <button type="submit" class="join-button"><b>参加する</b></button>
-                        </a>
-                    </div>
+                <div class="sdcn">
+                    {% if  community.mainuser == user %}
+                        <div class="button">
+                            
+                        </div>
                     {% else %}
-                    <div class="button">
-                        <a href="{% url 'joinout' community.name %}">
-                            <button type="submit" class="join-button-out"><b>脱退する</b></button>
-                        </a>
-                    </div>
+                        {% if not is_member %}
+                            <div class="button">
+                                <a href="{% url 'join' community.name %}">
+                                    <button type="submit" class="join-button"><b>参加する</b></button>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="button">
+                                <a href="{% url 'joinout' community.name %}">
+                                    <button type="submit" class="join-button-out"><b>脱退する</b></button>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if not is_network %}
+                            {% if network_exists %}
+                            <div class="button" class="btn-group" role="group">
+                                <button class="join-button" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <b>追加する</b>
+                                </button>
+                                <ul class="dropdown-menu">
+                                {% for network in networks %}
+                                    {% if network.mainuser == user %}
+                                    <li><a class="dropdown-item" href="{% url 'add_network' community.name network.pk %}">{{network.name}}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="button">
+                                <a >
+                                    <button type="submit" class="join-button-out"><b>追加済み</b></button>
+                                </a>
+                            </div>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                {% if not is_network %}
-                    {% if network_exists %}
-                    <div class="button" class="btn-group" role="group">
-                        <button class="join-button" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <b>追加する</b>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {% for network in networks %}
-                                {% if network.mainuser == user %}
-                                <li><a class="dropdown-item" href="{% url 'add_network' community.name network.pk %}">{{network.name}}</a></li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
-                {% else %}
-                    <div class="button">
-                        <a >
-                            <button type="submit" class="join-button"><b>追加済み</b></button>
-                        </a>
-                    </div>
-                {% endif %}
+                </div>
             </div>
             <hr class="hr">
             <ul class="sub_filed">
@@ -103,16 +105,16 @@
             </ul>
             <ul class="tab2-group">
                 <li class="tab2 tab2-A is-active2">
-                    <b><div class="menu">Home</div></b>
+                    <b><div class="menu">ホーム</div></b>
                 </li>
                 <li class="tab2 tab2-B">
-                    <b><div class="menu">All</div></b>
+                    <b><div class="menu">すべて</div></b>
                 </li>
                 <li class="tab2 tab2-C">
-                    <b><div class="menu">MyPosts</div></b>
+                    <b><div class="menu">私の投稿</div></b>
                 </li>
                 <li class="tab2 tab2-D">
-                    <b><div class="menu">Members</div></b>
+                    <b><div class="menu">メンバー</div></b>
                 </li>
             </ul>
         </div>

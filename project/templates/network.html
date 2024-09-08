@@ -6,16 +6,17 @@
 {% block title %}flexBlock | Network{% endblock  %}
 {% block content %}
 <div class='mains'>
-    <ul class='group_category'>
-        {% for network in networks %}
-        <li class='category'>
+    {% for network in networks %}
+    <div class='category'>
+        <span class="badge">NEW</span>
+        <div class="shcb">
             <img class="image_bord" src="/media/{{network.image}}" alt=""/>
-            <div class="group_info">
-                <a href="/flex/networks/{{network.name}}">{{network.name}}</a>
-                <p>{{network.index}}</p>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+        </div>
+        <div class="group_info">
+            <a href="/flex/networks/{{network.name}}">{{network.name}}</a>
+            <p>{{network.index}}</p>
+        </div>
+    </div>
+     {% endfor %}
 </div>
 {% endblock %}

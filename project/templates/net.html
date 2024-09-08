@@ -6,16 +6,17 @@
 {% block title %}flexBlock | Network{% endblock  %}
 {% block content %}
 <div class='mains'>
-    <ul class='group_category'>
-        <li class='category'>
-            <span class="badge">NEW</span>
+    <div class='group_category'>
+        <div class='category'>
             <img class="image_bord" src="/media/{{network.image}}" alt=""/>
             <div class="group_info">
                 <a href="/flex/networks/{{network.name}}">{{network.name}}</a>
-                <p><small>{{ network.created_at | date:'Y年n月j日' }}から利用しています。</small></p>
-                <p>{{network.index}}</p>
             </div>
-        </li>
-    </ul>
+            <p><small>{{ network.created_at | date:'Y年n月j日' }}から利用しています。</small></p>
+            <p><small>{{ network.visibility}}ネットワーク</small></p>
+            <p>{{network.index}}</p>
+        </div>
+        <div>
+    </div>
 </div>
 {% endblock %}

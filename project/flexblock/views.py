@@ -86,7 +86,7 @@ def community(request, name):
     # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
         return HttpResponse(template.render(context, request))
-    if group.visibility == "local":
+    if group.visibility== "local":
         user = request.user
         can_join = group.can_user_join(user)
         if not can_join :
@@ -138,6 +138,15 @@ def network(request, name):
         'accounts': accounts,
         'network': network,
     }
+    if network.mainuser == request.user:
+        return HttpResponse(template.render(context, request))
+    if network.visibility == 'local':
+        user = request.user
+        can_join = network.can_user_join(user)
+        if not can_join :
+                return redirect('error') 
+        else:
+            return HttpResponse(template.render(context, request))
     return HttpResponse(template.render(context, request))
 def root(request):
     return
