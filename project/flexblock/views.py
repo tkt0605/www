@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from accounts.models import Account, CustomUser
-from .models import  Group, Network, RootAuth, Post, GroupMembership
+from .models import  Group, Network, RootAuth, Post, GroupMembership, AddNetwork
 from django.views import generic
 from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm
 from django.urls import reverse_lazy, reverse
@@ -65,16 +65,23 @@ def community(request, name):
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
     user_account = request.user.account
+    user = request.user
+    network = Network.objects.filter(mainuser=user).exists()
+    # network = get_object_or_404(Network, name=name)
     # ユーザーがグループのメンバーであるかを確認
     is_member = GroupMembership.objects.filter(account=user_account, group=group).exists()
+    is_network = AddNetwork.objects.filter(name=network, group=group).exists()
     # groupmemberships = GroupMembership.objects.get(group=group)
     groupmemberships = GroupMembership.objects.order_by('-pk')[:10000]
+    networks = Network.objects.order_by('-pk')[:1000000]
     context = {
         "csrf_token": "",
         "community": group,
         "accounts": accounts,
         "is_member":is_member,
         "groupmemberships": groupmemberships,
+        "is_network": is_network,
+        "networks": networks,
     }
     # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
@@ -103,6 +110,14 @@ def joinout(request, name):
     if join_exist:
         exists_memeber = GroupMembership.objects.get(account=user_account, group=group)
         exists_memeber.delete()
+    return redirect('community', name=name)
+@login_required
+def add_network(request, name, pk):
+    group = get_object_or_404(Group, name=name)
+    names = get_object_or_404(Network, pk=pk)
+    add_network = AddNetwork.objects.filter(name=names, group=group).exists()
+    if not add_network:
+        AddNetwork.objects.create(name=names, group=group)
     return redirect('community', name=name)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]

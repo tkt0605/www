@@ -16,7 +16,8 @@ urlpatterns = [
     path('error/404', views.error, name='error'),
     path("create/post/<str:name>", views.form_post, name='form_post'),
     path('community/<str:name>/join', views.join, name='join'),
-    path('commuhnity/<str:name>/joinout', views.joinout, name="joinout"),
+    path('community/<str:name>/joinout', views.joinout, name="joinout"),
+    path("community/<str:name>/add_network/<int:pk>", views.add_network, name="add_network"),
     # path("delete_auth_request/<int:pk>", views.delete_auth_request, name='delete_auth_request'),
 ]
 if settings.DEBUG:

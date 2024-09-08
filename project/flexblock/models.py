@@ -88,25 +88,57 @@ class Network(models.Model):
         ('public', 'Public'),
         ('local', 'Local'),
     ]
-    mainuser = models.ForeignKey("accounts.CustomUser",  on_delete=models.PROTECT,  related_name="メインユーザー", blank=True, null=True)
-    mygroup = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="ハブ", blank=True, null=True)
-    name = models.CharField(max_length=30, blank=True, null=True, verbose_name="ネットワーク名")
-    visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
-    image = models.FileField(upload_to='classicon/',null=True,blank=True , verbose_name=None)
-    index = models.CharField(max_length=80, blank=False, null=True, verbose_name = "見出し")
-    created_at = models.DateTimeField(auto_now_add=True,null=True  , verbose_name='作成日')
+    mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
+    hub = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name="ハブグループ名")
+    name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Network名")
+    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='public', verbose_name="可視性")
+    image = models.FileField(upload_to='classicon/', null=True, blank=True, verbose_name=None)
+    index = models.CharField(max_length=50, blank=False, null=True, verbose_name="見出し")
+    created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
+    def __str__(self):
+        return str(self.name)
+    def can_user_join(self, user):
+        """指定されたユーザーがグループに参加できるか確認"""
+        # もしグループが'local'な場合、追加のチェックを実行
+        manager_user = self.hub.managername.user if hasattr(self.hub.managername, 'user') else None
+        main_user = self.mainuser
+        if self.visibility == 'local':
+            # 管理者またはメインユーザーによる許可を確認
+            is_approved_by_manager = RootAuth.objects.filter(
+                user=manager_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists() 
+            is_approved_by_mainuser = RootAuth.objects.filter(
+                user=main_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists()
+            is_approved_by_manager_login = RootAuth.objects.filter(
+                user=user, target_user=manager_user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists() 
+            is_approved_by_mainuser_login = RootAuth.objects.filter(
+                user=user, target_user=main_user, is_approved_by_user=True, is_approved_by_target=True
+            ).exists()
+            # グループに参加できる条件は、管理者またはメインユーザーによる許可
+            if not (is_approved_by_manager or is_approved_by_mainuser or is_approved_by_manager_login or is_approved_by_mainuser_login):
+                return False
+            # 通常のグループ参加条件（RootAuthの相互承認をチェック）
+        auth_exists = RootAuth.objects.filter(
+            Q(user=main_user, target_user=user) | 
+            Q(user=user, target_user=main_user),
+            is_approved_by_user=True,
+            is_approved_by_target=True
+        ).exists()
+        print(f"Auth from mainuser to user: {auth_exists}")
+        # 'local'の場合の追加条件も満たしていれば、参加可能
+        return auth_exists
+    class Meta:
+        verbose_name_plural = 'Network'
+class AddNetwork(models.Model):
+    name = models.ForeignKey(Network, on_delete=models.CASCADE, null=True)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return str(self.name)
     class Meta:
-        verbose_name_plural = "Network"
-class AddNetwork(models.Model):
-    destination = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name="ネットワーク名", blank=True, null=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="ターゲットグループ")
-    created_at = models.DateTimeField(auto_now_add=True,null=True  , verbose_name='作成日')
-    def __str__(self):
-        return str(self.destination)
-    class Meta:
-        verbose_name_plural = "add-network"
+        verbose_name_plural = "AddNetwork"
 class RootAuth(models.Model):
     user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_sent', on_delete=models.CASCADE)
     target_user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_received', on_delete=models.CASCADE)

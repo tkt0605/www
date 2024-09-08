@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Group, Network, RootAuth, Post, GroupMembership, AddNetwork
+from .models import Group,RootAuth, Post, GroupMembership, Network, AddNetwork
 admin.site.register(Group)
 admin.site.register(Network)
 admin.site.register(RootAuth)
