@@ -516,7 +516,7 @@ body {
     .tab2-group {
         display: flex;
         justify-content: space-between;
-        margin-left:-25px;
+        margin-left:0px;
         padding: 0;
         list-style: none;
         /* width: 800px; */

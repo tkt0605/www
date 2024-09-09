@@ -8,33 +8,32 @@
 <div id="main">
     <div class="profile_filed">
         {% comment %} <img class="profile_image" src="/media/{{account.image}}"/> {% endcomment %}
-        <div class="main_filed">
-            <div class="profile_name">
-                <div class="profile_icon">
-                    <img class="icon-image" src="/media/{{account.icon}}"/>
-                </div>
-                <div class="name-container">
-                    <b class="name">{{account.name}}</b>
-                </div>
-                <div class="root">
-                    {% if user.is_authenticated %}
-                        {% if account.mainuser != user %}
-                            {% if mutual_auth %}
-                                <button class="button"><b>Rooting</b></button>
+        <div class="profile_name">
+            <div class="profile_icon">
+                <img class="icon-image" src="/media/{{account.icon}}"/>
+            </div>
+            <div class="name-container">
+                <b class="name">{{account.name}}</b>
+            </div>
+            <div class="root">
+                {% if user.is_authenticated %}
+                    {% if account.mainuser != user %}
+                        {% if mutual_auth %}
+                            <button class="button"><b>Rooting</b></button>
+                        {% else %}
+                            {% if not auth_request_sent %}
+                                <a href="{% url 'send_auth_request' account.id %}">
+                                    <button class="button"><b>Send Auth Request</b></button>
+                                </a>
                             {% else %}
-                                {% if not auth_request_sent %}
-                                    <a href="{% url 'send_auth_request' account.id %}">
-                                        <button class="button"><b>Send Auth Request</b></button>
-                                    </a>
-                                {% else %}
-                                    <button class="button"><b>Request Sent</b></button>
-                                {% endif %}
+                                <button class="button"><b>Request Sent</b></button>
                             {% endif %}
                         {% endif %}
                     {% endif %}
+                {% endif %}
                 </div>
             </div>
-            <hr class="hr">
+            <hr class='hr'>
             <ul class="sub_filed">
                 <li class="infomation">
                     <div class="d-info">{{account.infomation}}</div>
