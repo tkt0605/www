@@ -7,9 +7,9 @@
 {% block content %}
 <div id="main">
     <div class="profile_filed">
-        <div class="profile_image">
+        {% comment %} <div class="profile_image">
             
-        </div>
+        </div> {% endcomment %}
         <div class="main_filed">       
             <div class="profile_name">
                 <div class="name-icon">
@@ -231,7 +231,8 @@
                             <li>
                                 <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'page' groupmembership.account.id%}">
                                     <div class="groupmembership-name">
-                                        <img class="groupmembership-icon" src="/media/{{groupmembership.account.icon}}"/><b>{{groupmembership.account}}</b>
+                                        <img class="groupmembership-icon" src="/media/{{groupmembership.account.icon}}" alt="{{groupmembership.account}}'s icon"/>
+                                        <b>{{groupmembership.account}}</b>
                                     </div>
                                 </a>
                             </li>

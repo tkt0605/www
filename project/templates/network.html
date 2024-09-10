@@ -10,10 +10,14 @@
     <div class='category'>
         <span class="badge">NEW</span>
         <div class="shcb">
-            <img class="image_bord" src="/media/{{network.image}}" alt=""/>
+            <a href="/flex/networks/{{network.name}}">
+                <img class="image_bord" src="/media/{{network.image}}" alt=""/>
+            </a>
         </div>
         <div class="group_info">
-            <a href="/flex/networks/{{network.name}}">{{network.name}}</a>
+            <div class="group_info_name">
+                {{network.name}}
+            </div>
             <p>{{network.index}}</p>
         </div>
     </div>

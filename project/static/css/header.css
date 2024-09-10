@@ -219,6 +219,7 @@ body {
         justify-content: space-between;
         padding: 0 20px;
         box-shadow: var(--box-shadow);
+        /* max-width: 480px; */
     }
     .li_menu {
         width: 100%;
@@ -244,7 +245,8 @@ body {
     }
     .main.show {
         left: 0;
-        width: 55%;
+        top: 15px;
+        width: 50%;
     }
     .flex {
         font-size: 25px;
