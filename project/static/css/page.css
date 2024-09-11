@@ -10,7 +10,7 @@ body {
     min-height: 100vh;
 }
 #main {
-    margin: 39.5px 0px 0px 0px;
+    margin: 40px 0px 0px 15px;
     width: 80%;
     max-width: 900px;
     border-radius: 8px;
@@ -181,15 +181,15 @@ body {
 
 @media (max-width: 480px) {
     #main {
-        /* width: 80%;
-        max-width: 900px;
-        margin: 57.5px 0px 0px 30px;
-        background-color: white;
+        width: 100%;
+        height: auto;
+        /* max-width: 480px; */
+        /* margin: 0px; */
+        margin: 15px 0px 0px 0px;
+        /* background-color: white; */
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-        margin: 72px auto;
-        width: 90%;
-        padding: 15px;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+        /* padding: 20px; */
     }
     .icon-image {
         width: 100px;
@@ -204,7 +204,7 @@ body {
     .profile_name{
         /* margin-left: -100px; */
         text-align: center;
-        margin-top: -25px;
+        margin-top: 20px;
     }
     .name-container {
         text-align: center;
@@ -212,7 +212,7 @@ body {
         margin-left: 0px;
     }
     .profile_filed{
-        margin: 57.5px 0px 0px 30px;
+        margin: 40px 0px 0px 0px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -220,7 +220,7 @@ body {
     .profile_icon {
         width: 50px;
         height: 50px;
-        margin-top: -30px;
+        margin-top: 0px;
     }
     .name {
         font-size: 2.5em;
@@ -236,8 +236,9 @@ body {
     .tab2-group {
         display: flex;
         justify-content: space-between;
-        margin-left:-25px;
-        padding: 0;
+        margin-left: 0px;
+        margin-bottom: 0px;
+        padding: 10px;
         list-style: none;
         align-items: center;
         justify-content: center;
@@ -263,7 +264,7 @@ body {
         list-style: none;
         padding: 0;
         /* text-align: left; */
-        margin: 25px 15px 0px -60px;
+        margin: 0px 15px 0px -135px;
     }
     .button {
         background-color: #50C878;

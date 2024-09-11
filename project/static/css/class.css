@@ -33,7 +33,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 .profile_name{
-    /* margin: -65px 0px 0px 0px; */
+    /* margin: -30px 0px 0px 0px; */
     text-align: center;
     margin: 0 auto;
 }
@@ -51,7 +51,7 @@ body {
 .main_filed {
     width: 100%;
     text-align: center;
-    /* margin: 25px; */
+    margin-top: 25px;
 }
 
 .name-icon {

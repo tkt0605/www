@@ -6,9 +6,22 @@
 {% block title %}flexBlock | Network{% endblock  %}
 {% block content %}
 <div class='mains'>
+    <div class='net'>
+        <div class='name'><b>Networkフィールド/{{message}}</b></div>
+        <div class='chvascjha' class="btn-group" role="group">
+            <button class='sjdcb' type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <b>すべて</b>
+            </button>
+            <ul class="dropdown-menu" class='sdcvusjgchv'>
+                <li><a class="dropdown-item" href="{% url "networks" %}">すべて</a></li>
+                <li><a class="dropdown-item" href="{% url "public" %}">Public</a></li>
+                <li><a class="dropdown-item" href="{% url "local" %}">Local</a></li>
+            </ul>
+        </div>
+    </div>
     {% for network in networks %}
     <div class='category'>
-        <span class="badge">NEW</span>
+        {% comment %} <span class="badge">NEW</span> {% endcomment %}
         <div class="shcb">
             <a href="/flex/networks/{{network.name}}">
                 <img class="image_bord" src="/media/{{network.image}}" alt=""/>
@@ -16,11 +29,16 @@
         </div>
         <div class="group_info">
             <div class="group_info_name">
-                {{network.name}}
+                {% if network.visibility == 'local' %}
+                <a href="/flex/networks/{{network.name}}" class='asdcab'>{{network.name}}</a>/<small>{{network.visibility}}ネットワーク(プライベート)</small>
+                {% else %}
+                <a href="/flex/networks/{{network.name}}" class='asdcab'>{{network.name}}</a>/<small>{{network.visibility}}ネットワーク(オープン)</small>
+                {% endif %}
             </div>
             <p>{{network.index}}</p>
         </div>
     </div>
-     {% endfor %}
+    <hr class='hr_network'>
+    {% endfor %}
 </div>
 {% endblock %}

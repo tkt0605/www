@@ -64,6 +64,7 @@ def community(request, name):
     accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
+    posts = Post.objects.order_by('-pk')[:1000000]
     user_account = request.user.account
     user = request.user
     network_exists = Network.objects.filter(mainuser=user).exists()
@@ -75,6 +76,7 @@ def community(request, name):
     networks = Network.objects.filter(mainuser=user).order_by('-pk')[:1000000]
     context = {
         "csrf_token": "",
+        "posts": posts,
         "community": group,
         "accounts": accounts,
         "is_member":is_member,
@@ -123,20 +125,24 @@ def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
     networks = Network.objects.order_by('-pk')[:10000000]
     template = loader.get_template('network.html')
+    message = "全ネットワーク"
     context = {
         'csrf_token': '',
         'accounts': accounts,
         'networks': networks,
+        "message": message,
     }
     return HttpResponse(template.render(context, request))
 def network(request, name):
     accounts = Account.objects.order_by('-pk')[:10000000]
     network = Network.objects.get(name=name)
+    members = AddNetwork.objects.order_by('-pk')[:10000000]
     template = loader.get_template('net.html')
     context = {
         'csrf_token': '',
         'accounts': accounts,
         'network': network,
+        "members": members,
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
@@ -148,8 +154,31 @@ def network(request, name):
         else:
             return HttpResponse(template.render(context, request))
     return HttpResponse(template.render(context, request))
-def root(request):
-    return
+# Publicネットワークのみ
+def public(request):
+    networks = Network.objects.filter(visibility='public')
+    accounts = Account.objects.order_by('-pk')[:1000000000]
+    template = loader.get_template('network.html')
+    message = "Publicネットワーク"
+    context = {
+        'networks': networks,
+        'accounts': accounts,
+        'mesaage':message,
+    }
+    return HttpResponse(template.render(context, request))
+
+# Localネットワークのみ
+def local(request):
+    networks = Network.objects.filter(visibility='local')
+    accounts = Account.objects.order_by('-pk')[:1000000000]
+    template = loader.get_template('network.html')
+    message = "Localネットワーク"
+    context = {
+        'networks': networks,
+        'accounts': accounts,
+        "message": message,
+    }
+    return HttpResponse(template.render(context, request))
 class CreateClassView(generic.CreateView):
     form_class = CreateClassForm
     template_name = "create.html"
