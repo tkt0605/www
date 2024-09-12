@@ -30,7 +30,7 @@ def index(request):
 def page(request, pk):
     template = loader.get_template("page.html")
     # urlのidのナンバーから、Accountモデルに一致するものを抽出。
-
+    posts = Post.objects.order_by('-pk')[:100000]
     account = Account.objects.get(pk=pk)
     # Accountモデルの全DBを取得する。
     accounts = Account.objects.order_by('-pk')[:100000]
@@ -50,6 +50,7 @@ def page(request, pk):
     auth_requests_received = RootAuth.objects.filter(target_user=request.user, is_approved_by_target=False)
     context = {
         "csrf_token": "",
+        "posts": posts,
         "accounts": accounts,
         "account" : account,
         "profile_user": profile_user,

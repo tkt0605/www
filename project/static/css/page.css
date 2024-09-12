@@ -11,10 +11,8 @@ body {
 }
 #main {
     margin: 40px 0px 0px 15px;
-    width: 80%;
-    max-width: 900px;
+    width: 900px;
     border-radius: 8px;
-    /* padding: 20px; */
 }
 .profile_filed {
     display: flex;
@@ -33,7 +31,6 @@ body {
 
 .main_filed {
     width: 100%;
-    /* text-align: center; */
 }
 
 .icon-image {
@@ -41,10 +38,9 @@ body {
     height: 150px;
     border-radius: 50%;
     border: 2px solid #ddd;
-    margin-bottom: -10px;
+    margin-bottom: 0px;
     margin-top: 20px;
-    /* text-align: center; */
-    margin-left: 10px;
+    margin-left: -7.5px;
 }
 .name-container {
     text-align: center;
@@ -59,7 +55,16 @@ body {
     text-align: center;
 }
 .root {
-    margin: -5px 10px 15px -10px;
+    margin: 0px 10px 15px 0%;
+}
+.buttons {
+    background-color: #50C878;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-left: 10%;
 }
 .button {
     background-color: #50C878;
@@ -71,9 +76,6 @@ body {
 }
 
 .hr {
-    /* margin: -10px 0;
-    border: none;
-    border-top: 1px solid #ddd; */
     margin: -20px 0;
     border: none;
     border-top: 1px solid #ddd;
@@ -98,7 +100,6 @@ body {
     margin-left: -25px; 
     padding: 20;
     list-style: none;
-    /* width: 800px; */
     align-items: center;
     justify-content: center;
     width: 75%;
@@ -115,23 +116,24 @@ body {
 
 .tab2.is-active2 {
     border-bottom-color: #50C878;
-    /* font-weight: bold; */
     color: #50C878;
 }   
 .panel2-group {
     width: 100%;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 0px 0px 0px 0px;
 }
 
 .panel2 {
     display: none;
     width: 100%;
+    margin-bottom: 10px;
 }
 
 .is-show2 {
     display: block;
     width: 100%;
-
 }
 
 .tab_1 {
@@ -142,6 +144,14 @@ body {
     margin: 0;
     color: #333;
 }
+.post_field {
+    padding: 15px;
+    margin: 0px 0px 0px 0px;
+    background-color: #ffffff;
+}
+.post_field_home {
+    margin: 10px;
+} 
 
 .info {
     background-color: #f0f8ff;
@@ -159,6 +169,59 @@ body {
 .date {
     vertical-align: middle;
     margin-right: 5px;
+}
+
+.post_field {
+    padding: 15px;
+    margin: 0px 0px 0px 0px;
+    background-color: #ffffff;
+}
+
+.post_user {
+    align-items: center;
+    text-align: left;
+    gap: 0px;
+}
+.post_creates{
+    margin-left: -10px;
+}
+.post_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post_username a {
+    color: #000000;
+    text-decoration: none;
+    font-size: 1.0em;
+}
+
+.post_text {
+    margin: 10px 0px 0px 50px;
+    line-height: 1.6;
+}
+
+.menu_icon {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin-left: 45px;
+}
+
+.a_icon svg {
+    fill: #000000;
+    cursor: pointer;
+    margin-top: -10px;
+}
+
+.hr_style {
+    margin-top: -45px;
+    width: 100%;
+    border: none;
+    height: 1px;
+    background-color: #ddd;
 }
 
 
@@ -183,13 +246,8 @@ body {
     #main {
         width: 100%;
         height: auto;
-        /* max-width: 480px; */
-        /* margin: 0px; */
         margin: 15px 0px 0px 0px;
-        /* background-color: white; */
         border-radius: 8px;
-        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-        /* padding: 20px; */
     }
     .icon-image {
         width: 100px;
@@ -197,12 +255,10 @@ body {
         border-radius: 50%;
         align-items: center;
         border: 2px solid #ddd;
-        /* margin-bottom: -10px; */
         margin-top: 0px;
         margin-left: 5px;
     }
     .profile_name{
-        /* margin-left: -100px; */
         text-align: center;
         margin-top: 20px;
     }
@@ -244,7 +300,6 @@ body {
         justify-content: center;
         width: 100%;
         text-align: center;
-        /* flex-direction: column; */
     }
     .tab2 {
         padding: 5px 5px 5px 5px;
@@ -254,7 +309,6 @@ body {
     }
     .tab2.is-active2 {
         border-bottom-color: #50C878;
-        /* align-items: stretch */
         align-items: stretch;
         color: #50C878;
         padding: 5px 5px 5px 5px;
@@ -263,7 +317,6 @@ body {
     .sub_filed {
         list-style: none;
         padding: 0;
-        /* text-align: left; */
         margin: 0px 15px 0px -135px;
     }
     .button {
@@ -273,10 +326,8 @@ body {
         padding: 5px 10px;
         border-radius: 4px;
         cursor: not-allowed;
-        /* text-align: left; */
     }
     .root {
-        /* text-align: center; */
         margin: -5px 0px 15px -30px;
     }
 }

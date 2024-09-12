@@ -159,7 +159,7 @@
                             {% endif %}
                         </div>
                         <div class="post_creates">
-                            <small>{{post.created_at|date:'Y年n月j日'}}</small>
+                            <b>/</b><small>{{post.created_at|date:'Y年n月j日'}}</small>
                         </div>
                     </div>  
                     {% if post.image %}
@@ -187,7 +187,8 @@
         <div class="panel2 tab2-C">
             <div class="tab_1">
                 {% for post in posts %}
-                {% if community.managername == post.username %}
+                {% if community == post.destination %}
+                {% if  post.mainuser == user  %}
                 <div class="post_field">
                     <div class="post_user">
                         <img class="post_icon" src="/media/{{post.username.icon}}"/>
@@ -205,6 +206,7 @@
                     </div> 
                     {% endif %}
                     <div class="post_text">{{post.text}}</div>
+                    <hr class="hr_style">
                     <ul class="menu_icon">
                         <li class="icon_1">
                             <a class="a_icon">
@@ -214,8 +216,8 @@
                             </a>
                         </li>
                     </ul>
-                    <hr class="hr_style">
                 </div>
+                {% endif %}
                 {% endif %}
                 {% endfor %}
             </div>
