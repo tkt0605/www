@@ -66,6 +66,8 @@
                                 <div class="ddfsres"><b>メッセージはありません。</b></div>
                             </li>
                             {% endif %}
+                            <p>{{is_network}}</p>
+                            <p>{{network_exists_mainuser}}</p>
                         </ul>
                     </div>        
                 </div>
@@ -74,7 +76,7 @@
             <div class="panel2 tab2-B">
                 <div class="tab_1">
                     {% for post in posts %}
-                    {% if community == post.destination %}
+                    {% if network == post.destination %}
                     <div class="post_field">
                         <div class="post_user">
                             <img class="post_icon" src="/media/{{post.username.icon}}"/>
@@ -153,15 +155,12 @@
                 <div class="tab_1">
                     <div class="post_field">
                         <div class="post_user">
-                            {% for groupmembership in groupmemberships %}
-                            {% if community.name == groupmembership.group.name %}
+                            {% for member in members %}
+                            {% if network == member.name %}
                             <ul>
                                 <li>
-                                    <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'page' groupmembership.account.id%}">
-                                        <div class="groupmembership-name">
-                                            <img class="groupmembership-icon" src="/media/{{groupmembership.account.icon}}" alt="{{groupmembership.account}}'s icon"/>
-                                            <b>{{groupmembership.account}}</b>
-                                        </div>
+                                    <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'community' member.group%}" >
+                                        <div>{{member.group}}</div>
                                     </a>
                                 </li>
                             </ul>

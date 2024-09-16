@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from accounts.models import Account, CustomUser
-from .models import  Group, Network, RootAuth, Post, GroupMembership, AddNetwork
+from .models import  Group, Network, RootAuth, Post, GroupMembership, AddNetwork, NetworkPost
 from django.views import generic
-from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm
+from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm, NetworkPostForm
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -139,21 +139,33 @@ def network(request, name):
     network = Network.objects.get(name=name)
     members = AddNetwork.objects.order_by('-pk')[:10000000]
     template = loader.get_template('net.html')
+    # group = Group.objects.get(name=name)
+    user = request.user
+    is_network = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
+    network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
+    # is_members = 
     context = {
         'csrf_token': '',
         'accounts': accounts,
         'network': network,
         "members": members,
+        "is_network": is_network,
+        "network_exists_mainuser": network_exists_mainuser,
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
     if network.visibility == 'local':
         user = request.user
         can_join = network.can_user_join(user)
-        if not can_join :
+        if not can_join:
                 return redirect('error') 
         else:
             return HttpResponse(template.render(context, request))
+    # if network.visibility:
+    #     if not network_exists_mainuser:
+    #         return redirect('error') 
+    #     else:
+    #         return HttpResponse(template.render(context, request))
     return HttpResponse(template.render(context, request))
 # Publicネットワークのみ
 def public(request):
@@ -239,6 +251,25 @@ class CreatePostView(generic.CreateView):
     def get_absolute_url(self):
         return reverse('community', name=self.kwargs["name"])
 form_post = CreatePostView.as_view()
+class NetworkPostViews(generic.CreateView):
+    form_class = NetworkPostForm
+    template_name = "create-post.html"
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super().get_form_kwargs(*args, **kwargs)
+        form = NetworkPostForm(self.request.FILES, self.request.POST, instance=Account and Network)
+        form.instance.name = self.kwargs['name'] 
+        kwargs['mainuser'] = self.request.user
+        kwargs['destination'] = Network.objects.get(name=form.instance.name)
+        kwargs['username'] = Account.objects.get(name = self.request.user.username)
+        return kwargs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        accounts = Account.objects.order_by('-pk')[:10000000]
+        context['accounts'] = accounts       
+        return context
+    def get_success_url(self):
+        return super().get_success_url('home')
+form_network_post = NetworkPostViews.as_view()
 @login_required
 def send_auth_request(request, pk):
     """ユーザーに認証リクエストを送信するビュー"""

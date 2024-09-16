@@ -279,7 +279,8 @@ body {
     justify-content: flex-start;
     list-style: none;
     padding: 0;
-    margin-top: 10px;
+    margin-top: 0px;
+    margin-bottom: -15px;
 }
 
 .menu_icon li {
@@ -291,10 +292,17 @@ body {
     text-decoration: none;
 }
 
-.hr_style {
+/* .hr_style {
     margin-top: 20px;
     border: none;
     border-top: 1px solid #ddd;
+} */
+.hr_style {
+    margin: 0px;
+    width: 100%;
+    border: none;
+    height: 1px;
+    color: black;
 }
 .groupmembership-icon{
     width: 30px;
@@ -369,6 +377,7 @@ body {
     /* display: flex; */
     align-items: center;
     gap: 0px;
+    margin-bottom: -10px;
 }
 .post_creates{
     margin-left: -10px;
@@ -387,7 +396,7 @@ body {
 }
 
 .post_text {
-    margin: 10px 0px 0px 50px;
+    margin: 0px 0px 5px 50px;
     line-height: 1.6;
 }
 
@@ -396,6 +405,7 @@ body {
     list-style: none;
     padding: 0;
     margin-left: 45px;
+    margin-bottom: -15px;
 }
 
 .a_icon svg {
@@ -404,13 +414,13 @@ body {
     margin-top: -10px;
 }
 
-.hr_style {
+/* .hr_style {
     margin-top: -45px;
     width: 100%;
     border: none;
     height: 1px;
     background-color: #ddd;
-}
+} */
 .dropdown-menu{
     margin-left: auto;
 }

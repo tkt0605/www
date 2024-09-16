@@ -20,7 +20,7 @@ urlpatterns = [
     path("community/<str:name>/add_network/<int:pk>", views.add_network, name="add_network"),
     path("flex/networks/public/", views.public, name="public"),
     path("flex/networks/local/", views.local, name="local"),
-    # path("delete_auth_request/<int:pk>", views.delete_auth_request, name='delete_auth_request'),
+    path("create/network_post/<str:name>", views.form_network_post, name='form_network_post'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

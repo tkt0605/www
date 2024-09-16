@@ -120,9 +120,10 @@ body {
 }   
 .panel2-group {
     width: 100%;
+    max-width: 900px;
     display: flex;
     flex-direction: column;
-    margin: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 15px;
 }
 
 .panel2 {
@@ -143,11 +144,6 @@ body {
 .tab_1 h1, .tab_1 h2, .tab_1 h3 {
     margin: 0;
     color: #333;
-}
-.post_field {
-    padding: 15px;
-    margin: 0px 0px 0px 0px;
-    background-color: #ffffff;
 }
 .post_field_home {
     margin: 10px;
@@ -173,14 +169,15 @@ body {
 
 .post_field {
     padding: 15px;
-    margin: 0px 0px 0px 0px;
+    margin: 0px;
     background-color: #ffffff;
 }
 
 .post_user {
     align-items: center;
-    text-align: left;
+    display: flex;
     gap: 0px;
+    margin: 10px;
 }
 .post_creates{
     margin-left: -10px;
@@ -191,15 +188,21 @@ body {
     border-radius: 50%;
     margin-right: 10px;
 }
-
-.post_username a {
-    color: #000000;
+.post_username {
+    font-size: 1em;
+    font-weight: bold;
+    margin-right: 15px;
     text-decoration: none;
-    font-size: 1.0em;
 }
-
+.post_username a{
+    font-size: 1em;
+    font-weight: bold;
+    margin-right: 15px;
+    text-decoration: none;
+    color: #000000;
+}
 .post_text {
-    margin: 10px 0px 0px 50px;
+    margin: 10px 10px 0px 50px;
     line-height: 1.6;
 }
 
@@ -208,6 +211,7 @@ body {
     list-style: none;
     padding: 0;
     margin-left: 45px;
+    margin-bottom: -15px;
 }
 
 .a_icon svg {
@@ -217,11 +221,11 @@ body {
 }
 
 .hr_style {
-    margin-top: -45px;
+    margin: 0px;
     width: 100%;
     border: none;
     height: 1px;
-    background-color: #ddd;
+    color: black;
 }
 
 

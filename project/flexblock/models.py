@@ -162,3 +162,15 @@ class RootAuth(models.Model):
 
     def __str__(self):
         return f"{self.user} ⇔ {self.target_user}"
+class NetworkPost(models.Model):
+    mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
+    destination = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name="投稿先")
+    username = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="投稿主")
+    text = models.TextField(null=True, verbose_name=None)
+    image = models.FileField(upload_to='post/',null=True,blank=True , verbose_name=None)
+    video = models.FileField(upload_to='video/', null=True, blank=True, verbose_name=None)
+    created_at = models.DateTimeField(auto_now_add=True,null=True  ,verbose_name='作成日')
+    def __str__(self):
+        return str(self.text)
+    class Meta:
+        verbose_name_plural = "NetworkPost"
