@@ -136,7 +136,8 @@ class AddNetwork(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
-        return f"{self.name} ⇔ {self.group}"
+        # return f"{self.name} ⇔ {self.group}"
+        return f"{self.group}"
     class Meta:
         verbose_name_plural = "AddNetwork"
 class RootAuth(models.Model):
@@ -165,6 +166,8 @@ class RootAuth(models.Model):
 class NetworkPost(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     destination = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name="投稿先")
+    group = models.ForeignKey(AddNetwork, on_delete=models.CASCADE, verbose_name="管理元", null=True)
+    # group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="管理元", null=True)
     username = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="投稿主")
     text = models.TextField(null=True, verbose_name=None)
     image = models.FileField(upload_to='post/',null=True,blank=True , verbose_name=None)
@@ -174,3 +177,12 @@ class NetworkPost(models.Model):
         return str(self.text)
     class Meta:
         verbose_name_plural = "NetworkPost"
+class Making(models.Model):
+    name = models.ForeignKey(Network, on_delete=models.CASCADE, null=True, related_name="ネットワーク名")
+    hub = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name="ハブグループ")
+    sub = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name="サブグループ")
+    created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
+    def __str__(self):
+        return f"{self.name}⇔{self.hub}->{self.sub} "
+    class Meta:
+        verbose_name_plural = "Making"

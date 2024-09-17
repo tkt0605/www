@@ -8,7 +8,7 @@ urlpatterns = [
     path("community/<str:name>", views.community, name="community"),
     path("class/create.html", views.form_create, name="form_create"),
     path("flex/networks", views.networks, name="networks"),
-    path("flex/networks/<str:name>", views.network, name="network"),
+    path("flex/networks/<int:pk>", views.network, name="network"),
     path("flex/create-network", views.form_net, name="form_net"),
     path('send_auth_request/<int:pk>', views.send_auth_request, name='send_auth_request'),
     path('approve_auth_request/<int:pk>', views.approve_auth_request, name='approve_auth_request'),
@@ -20,7 +20,8 @@ urlpatterns = [
     path("community/<str:name>/add_network/<int:pk>", views.add_network, name="add_network"),
     path("flex/networks/public/", views.public, name="public"),
     path("flex/networks/local/", views.local, name="local"),
-    path("create/network_post/<str:name>", views.form_network_post, name='form_network_post'),
+    path("create/network_post/<int:pk>", views.form_network_post, name='form_network_post'),
+    path('flex/networks/<int:pk>/add_making/<str:name>', views.add_mark, name='add_mark'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

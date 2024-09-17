@@ -25,6 +25,46 @@
                     <div class='d-date'>{{ network.visibility}}ネットワーク</div>
                 </li>
                 <li class="create">
+                    {% comment %} <svg class='date' xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pin-angle-fill" viewBox="0 0 16 16">
+                        <path d="M9.828.722a.5.5 0 0 1 .354.146l4.95 4.95a.5.5 0 0 1 0 .707c-.48.48-1.072.588-1.503.588-.177 0-.335-.018-.46-.039l-3.134 3.134a5.927 5.927 0 0 1 .16 1.013c.046.702-.032 1.687-.72 2.375a.5.5 0 0 1-.707 0l-2.829-2.828-3.182 3.182c-.195.195-1.219.902-1.414.707-.195-.195.512-1.22.707-1.414l3.182-3.182-2.828-2.829a.5.5 0 0 1 0-.707c.688-.688 1.673-.767 2.375-.72a5.922 5.922 0 0 1 1.013.16l3.134-3.133a2.772 2.772 0 0 1-.04-.461c0-.43.108-1.022.589-1.503a.5.5 0 0 1 .353-.146z"/>
+                    </svg> {% endcomment %}
+                    <svg class='date' xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                        <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                        <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                    <div class='d-date'>ハブグループ</div>
+                    <div class="d-date">
+                        <a href="{% url "community" network.hub %}" class='d-a-rink'>
+                            <img src="/media/{{network.hub.backimage}}/" class='d-rink'/>
+                            <b>{{network.hub}}</b>
+                        </a>
+                    </div>
+                </li>
+                <li class='create'>
+                    <div class='dsacvja'>
+                        <svg class='date-icon' xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-shield" viewBox="0 0 16 16">
+                            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                        </svg>
+                        <div class='d-date1'>サブグループ</div>
+                        {% if is_sub %}
+                        {% for mark in marks %}
+                        {% if network == mark.name %}
+                        <div class="d-date2">
+                            <a href="{% url "community" mark.sub %}" class='d-a-rink'>
+                                <img src="/media/{{mark.sub.backimage}}/" class='d-rink'/>
+                                <b>{{mark.sub}}</b>
+                            </a>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <div class="d-date2">
+                            <b>Nothing</b>
+                        </div>
+                        {% endif %}
+                    </div>
+                </li> 
+                <li class="create">
                     <svg class="date" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
                         <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
                         <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
@@ -75,42 +115,6 @@
         
             <div class="panel2 tab2-B">
                 <div class="tab_1">
-                    {% for post in posts %}
-                    {% if network == post.destination %}
-                    <div class="post_field">
-                        <div class="post_user">
-                            <img class="post_icon" src="/media/{{post.username.icon}}"/>
-                            <div class="post_username">
-                                <a class="user_font" href="{% url 'page' %}?id={{ post.username.id }}">{{post.username}}</a>
-                                {% if community.managername == post.username %}
-                                <svg class="post_manager" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-check-fill" viewBox="0 0 16 16">
-                                    <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
-                                </svg>
-                                {% endif %}
-                            </div>
-                            <div class="post_creates">
-                                <small>{{post.created_at|date:'Y年n月j日'}}</small>
-                            </div>
-                        </div>  
-                        {% if post.image %}
-                        <div class="post_image_field">
-                            <img class="post_image" src="/media/{{post.image}}/"/>
-                        </div> 
-                        {% endif %}
-                        <div class="post_text">{{post.text}}</div>
-                        <ul class="menu_icon">
-                            <li class="icon_1">
-                                <a class="a_icon" href="/create/comment/{{community.name}}/">
-                                    <svg class="chat" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-chat" viewBox="0 0 16 16">
-                                        <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/>
-                                    </svg>
-                                </a>
-                            </li>
-                        </ul>
-                        <hr class="hr_style">
-                    </div>
-                    {% endif %}
-                    {% endfor %}
                 </div>
             </div>
         
@@ -122,7 +126,7 @@
                         <div class="post_user">
                             <img class="post_icon" src="/media/{{post.username.icon}}"/>
                             <div class="post_username">
-                                <a class="user_font" href="{% url 'page' %}?id={{ post.username.id }}">{{post.username}}</a>
+                                <a class="user_font" href="{% url 'page' post.username.pd %}">{{post.username}}</a>
                                 /<a class="destination_name" href="/community/{{post.destination}}/">{{post.destination}}</a>
                             </div>
                             <div class="post_create">
@@ -155,17 +159,33 @@
                 <div class="tab_1">
                     <div class="post_field">
                         <div class="post_user">
-                            {% for member in members %}
-                            {% if network == member.name %}
                             <ul>
+                                {% for member in members %}
+                                {% if network == member.name %}
                                 <li>
-                                    <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'community' member.group%}" >
-                                        <div>{{member.group}}</div>
-                                    </a>
+                                    <div class="member_info_font">
+                                        <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'community' member.group%}" >
+                                            <img class="post_member" src="/media/{{member.group.backimage}}/"/><b>{{member.group}}</b>
+                                        </a>    
+                                        {% comment %} {% if network.mainuser == user %} {% endcomment %}
+                                        {% if not is_sub %}
+                                        <div class="button">
+                                            <a href="{% url 'add_mark' network.pk member.group %}">
+                                                <button type="submit" class="join-button"><b>サブに追加</b></button>
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <div class="button">
+                                            <a href="{% url 'add_mark' network.pk member.group %}">
+                                                <button type="submit" class="join-button"><b>サブを削除</b></button>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </div>
                                 </li>
+                                {% endif %}
+                                {% endfor %}
                             </ul>
-                            {% endif %}
-                            {% endfor %}
                         </div>
                     </div>
                 </div>

@@ -84,7 +84,8 @@ body {
 .group_info {
     padding: 15px;
     text-align: center;
-    margin: 5px;
+    margin-top: 15px;
+    margin-bottom: -20px;
     font-size: 2.0em;
 }
 
@@ -103,14 +104,23 @@ body {
     text-align: left;
 }
 
-.menu_network li {
+/* .menu_network li {
+    display: flex;
+    align-items: center;
+    color: #000000;
+} */
+.create{
+    margin-left: 165px;
+    padding: 2.5px;
     display: flex;
     align-items: center;
     color: #000000;
 }
-.create{
+.creates{
     margin-left: 165px;
     padding: 2.5px;
+    align-items: center;
+    color: #000000;
 }
 .d-dates{
     margin-left: 15px;
@@ -118,8 +128,18 @@ body {
 .d-date{
     margin-left: 10px;
 }
-.date{
-
+.dsacvja{
+    display: block;
+}
+.d-date1{
+    margin-top:-22.5px;
+    margin-left:30px;
+}
+.d-date2{
+    margin-left: 35px;
+}
+.date-icon{
+    /* margin-top: -100px; */
 }
 .tab2-group {
     margin-top: 0px;
@@ -168,6 +188,41 @@ hr {
     border: 0;
     border-top: var(--bs-border-width) solid;
     opacity: .25;
+}
+.post_member{
+    width: 20%;
+    height: 20%;
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 50%;
+    border: 2px solid rgb(255, 255, 255);
+    object-fit: cover;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(15px);
+    position: relative;
+    transition: transform 0.4s ease, opacity 0.3s ease, box-shadow 0.4s ease; 
+    margin: 25px;
+}
+.rink{
+    font-size: 1.5em;
+    color: #000000;
+    text-decoration: none;
+}
+.d-rink{
+    width: 20%;
+    height: 20%;
+    max-width: 125px;
+    max-height: 125px;
+    border-radius: 50%;
+    /* border: 2px solid #e3e3e3; */
+    border: 2px solid #ffffff;
+}
+.d-a-rink {
+    color: #000000;
+    font-size: 1.0em;
+    text-decoration: none;
+    margin-left: -10px;
 }
 /* レスポンシブ対応 */
     /* スマートフォン向け */

@@ -23,16 +23,16 @@
     <div class='category'>
         {% comment %} <span class="badge">NEW</span> {% endcomment %}
         <div class="shcb">
-            <a href="/flex/networks/{{network.name}}">
+            <a href="/flex/networks/{{network.pk}}">
                 <img class="image_bord" src="/media/{{network.image}}" alt=""/>
             </a>
         </div>
         <div class="group_info">
             <div class="group_info_name">
                 {% if network.visibility == 'local' %}
-                <a href="/flex/networks/{{network.name}}" class='asdcab'>{{network.name}}</a>/<small>{{network.visibility}}ネットワーク(プライベート)</small>
+                <a href="/flex/networks/{{network.pk}}" class='asdcab'>{{network.name}}</a>/<small>{{network.visibility}}ネットワーク(プライベート)</small>
                 {% else %}
-                <a href="/flex/networks/{{network.name}}" class='asdcab'>{{network.name}}</a>/<small>{{network.visibility}}ネットワーク(オープン)</small>
+                <a href="/flex/networks/{{network.pk}}" class='asdcab'>{{network.name}}</a>/<small>{{network.visibility}}ネットワーク(オープン)</small>
                 {% endif %}
             </div>
             <p>{{network.index}}</p>

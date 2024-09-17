@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from accounts.models import Account, CustomUser
-from .models import  Group, Network, RootAuth, Post, GroupMembership, AddNetwork, NetworkPost
+from .models import  Group, Network, RootAuth, Post, GroupMembership, AddNetwork, NetworkPost, Making
 from django.views import generic
 from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm, NetworkPostForm
 from django.urls import reverse_lazy, reverse
@@ -122,6 +122,14 @@ def add_network(request, name, pk):
     if not add_network:
         AddNetwork.objects.create(name=network_name, group=group)
     return redirect('community', name=name)
+@login_required
+def add_mark(request,name , pk):
+    group = get_object_or_404(Group, name=name)
+    network_name = get_object_or_404(Network, pk=pk)
+    add_mark = Making.objects.filter(name=network_name, hub=network_name.hub, sub=group).exists()
+    if not add_mark:
+        Making.objects.create(name=network_name, hub=network_name.hub, sub=group)
+    return redirect('network', pk=pk)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
     networks = Network.objects.order_by('-pk')[:10000000]
@@ -134,23 +142,29 @@ def networks(request):
         "message": message,
     }
     return HttpResponse(template.render(context, request))
-def network(request, name):
+def network(request, pk):
     accounts = Account.objects.order_by('-pk')[:10000000]
-    network = Network.objects.get(name=name)
+    network = Network.objects.get(pk=pk)
     members = AddNetwork.objects.order_by('-pk')[:10000000]
     template = loader.get_template('net.html')
+    posts = NetworkPost.objects.order_by('-pk')[:100000000000]
     # group = Group.objects.get(name=name)
     user = request.user
-    is_network = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
+    is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
     # is_members = 
+    is_sub = Making.objects.filter(hub=network.hub).exists()
+    marks = Making.objects.filter(hub=network.hub).order_by('-pk')[:1000000]
     context = {
         'csrf_token': '',
         'accounts': accounts,
         'network': network,
         "members": members,
-        "is_network": is_network,
+        "is_network_name": is_network_name,
         "network_exists_mainuser": network_exists_mainuser,
+        "posts": posts,
+        "is_sub": is_sub,
+        "marks": marks,
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
@@ -176,7 +190,7 @@ def public(request):
     context = {
         'networks': networks,
         'accounts': accounts,
-        'mesaage':message,
+        'message':message,
     }
     return HttpResponse(template.render(context, request))
 
@@ -256,11 +270,12 @@ class NetworkPostViews(generic.CreateView):
     template_name = "create-post.html"
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super().get_form_kwargs(*args, **kwargs)
-        form = NetworkPostForm(self.request.FILES, self.request.POST, instance=Account and Network)
-        form.instance.name = self.kwargs['name'] 
+        form = NetworkPostForm(self.request.FILES, self.request.POST, instance=Account and Network and AddNetwork)
+        form.instance_name = self.kwargs['pk'] 
         kwargs['mainuser'] = self.request.user
-        kwargs['destination'] = Network.objects.get(name=form.instance.name)
+        kwargs['destination'] = Network.objects.get(pk=form.instance_name)
         kwargs['username'] = Account.objects.get(name = self.request.user.username)
+        kwargs['group'] = AddNetwork.objects.filter(name__pk=form.instance_name, group__mainuser=self.request.user)
         return kwargs
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -268,7 +283,7 @@ class NetworkPostViews(generic.CreateView):
         context['accounts'] = accounts       
         return context
     def get_success_url(self):
-        return super().get_success_url('home')
+        return super().get_success_url()
 form_network_post = NetworkPostViews.as_view()
 @login_required
 def send_auth_request(request, pk):

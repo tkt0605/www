@@ -1,5 +1,5 @@
 from accounts.models import Account
-from .models import Group, Network, Post, RootAuth, NetworkPost
+from .models import Group, Network, Post, RootAuth, NetworkPost, AddNetwork
 from django import forms
 from django.db.models import Q
 class CreateClassForm(forms.ModelForm):
@@ -140,7 +140,7 @@ class NetworkPostForm(forms.ModelForm):
     class Meta:
         model = NetworkPost
         fields = '__all__'
-        exclude = ['mainuser', 'destination', 'username']
+        exclude = ['mainuser', 'destination', 'username', 'group']
         widgets = {
                         "text": forms.Textarea(
                 attrs = {
@@ -159,10 +159,11 @@ class NetworkPostForm(forms.ModelForm):
                 }
             )
         }
-    def __init__(self, mainuser=None, destination=None, username=None, *args, **kwargs):
+    def __init__(self, mainuser=None, destination=None, username=None,group=None, *args, **kwargs):
         self.mainuser = mainuser
         self.destination = destination
         self.username = username
+        self.group = group
         super().__init__(*args, **kwargs)
     def save(self, commit=True):
         kwargs = super().save(commit=False)
@@ -170,6 +171,7 @@ class NetworkPostForm(forms.ModelForm):
             kwargs.mainuser = self.mainuser
             kwargs.destination = self.destination
             kwargs.username = self.username
+            kwargs.group = self.group.first()
             if commit:
                 kwargs.save()
         return kwargs
