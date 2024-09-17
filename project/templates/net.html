@@ -106,7 +106,7 @@
                                 <div class="ddfsres"><b>メッセージはありません。</b></div>
                             </li>
                             {% endif %}
-                            <p>{{is_network}}</p>
+                            <p>{{is_network_name}}</p>
                             <p>{{network_exists_mainuser}}</p>
                         </ul>
                     </div>        
@@ -161,13 +161,13 @@
                         <div class="post_user">
                             <ul>
                                 {% for member in members %}
-                                {% if network == member.name %}
+                                {% if network == member.name and network.hub != member.group %}
                                 <li>
                                     <div class="member_info_font">
                                         <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'community' member.group%}" >
                                             <img class="post_member" src="/media/{{member.group.backimage}}/"/><b>{{member.group}}</b>
                                         </a>    
-                                        {% comment %} {% if network.mainuser == user %} {% endcomment %}
+                                        {% if network.mainuser == user %}
                                         {% if not is_sub %}
                                         <div class="button">
                                             <a href="{% url 'add_mark' network.pk member.group %}">
@@ -176,10 +176,11 @@
                                         </div>
                                         {% else %}
                                         <div class="button">
-                                            <a href="{% url 'add_mark' network.pk member.group %}">
+                                            <a href="{% url 'delete_mark' network.pk member.group %}">
                                                 <button type="submit" class="join-button"><b>サブを削除</b></button>
                                             </a>
                                         </div>
+                                        {% endif %}
                                         {% endif %}
                                     </div>
                                 </li>

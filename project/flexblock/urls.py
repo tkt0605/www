@@ -18,10 +18,12 @@ urlpatterns = [
     path('community/<str:name>/join', views.join, name='join'),
     path('community/<str:name>/joinout', views.joinout, name="joinout"),
     path("community/<str:name>/add_network/<int:pk>", views.add_network, name="add_network"),
+    path("community/<str:name>/delete_network/<int:pk>", views.delete_network, name="delete_network"),
     path("flex/networks/public/", views.public, name="public"),
     path("flex/networks/local/", views.local, name="local"),
     path("create/network_post/<int:pk>", views.form_network_post, name='form_network_post'),
     path('flex/networks/<int:pk>/add_making/<str:name>', views.add_mark, name='add_mark'),
+    path('flex/networks/<int:pk>/delete_making/<str:name>', views.delete_mark, name='delete_mark'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

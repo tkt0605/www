@@ -54,10 +54,22 @@
                             </div>
                             {% endif %}
                         {% else %}
-                            <div class="button">
-                                <a >
+                            {% comment %} <div class="button">
+                                <a href="{% url 'delete_network' community.name network.pk %}">
                                     <button type="submit" class="join-button-out"><b>追加済み</b></button>
                                 </a>
+                            </div> {% endcomment %}
+                            <div class="button" class="btn-group" role="group">
+                                <button class="join-button-out" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <b>追加済み</b>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    {% for exist in exists %}
+                                    {% if exist.name.mainuser == user %}
+                                    <li><a class="dropdown-item" href="{% url 'delete_network' community.name exist.name.pk %}">{{exist.name}}</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
                             </div>
                         {% endif %}
                     {% endif %}

@@ -75,6 +75,7 @@ def community(request, name):
     groupmemberships = GroupMembership.objects.order_by('-pk')[:10000]
     # networks = Network.objects.order_by('-pk')[:1000000]
     networks = Network.objects.filter(mainuser=user).order_by('-pk')[:1000000]
+    exists = AddNetwork.objects.filter(group=group, name__mainuser=user).order_by('-pk')[:100000000000]
     context = {
         "csrf_token": "",
         "posts": posts,
@@ -84,7 +85,8 @@ def community(request, name):
         "groupmemberships": groupmemberships,
         "is_network": is_network,
         "networks": networks,
-        "network_exists": network_exists
+        "network_exists": network_exists,
+        "exists": exists,
     }
     # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
@@ -123,12 +125,30 @@ def add_network(request, name, pk):
         AddNetwork.objects.create(name=network_name, group=group)
     return redirect('community', name=name)
 @login_required
+def delete_network(request, name, pk):
+    group = get_object_or_404(Group, name=name)
+    network_name =get_object_or_404(Network,pk=pk)
+    add_network = AddNetwork.objects.filter(name=network_name, group=group).exists()
+    if add_network:
+        exists_network = AddNetwork.objects.get(name=network_name, group=group)
+        exists_network.delete()
+    return redirect('community', name=name)
+@login_required
 def add_mark(request,name , pk):
     group = get_object_or_404(Group, name=name)
     network_name = get_object_or_404(Network, pk=pk)
     add_mark = Making.objects.filter(name=network_name, hub=network_name.hub, sub=group).exists()
     if not add_mark:
         Making.objects.create(name=network_name, hub=network_name.hub, sub=group)
+    return redirect('network', pk=pk)
+@login_required
+def delete_mark(request,name , pk):
+    group = get_object_or_404(Group, name=name)
+    network_name = get_object_or_404(Network, pk=pk)
+    add_mark = Making.objects.filter(name=network_name, hub=network_name.hub, sub=group).exists()
+    if not add_mark:
+        exists_mark = Making.objects.get(name=network_name, hub=network_name.hub, sub=group)
+        exists_mark.delete()
     return redirect('network', pk=pk)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
@@ -148,12 +168,12 @@ def network(request, pk):
     members = AddNetwork.objects.order_by('-pk')[:10000000]
     template = loader.get_template('net.html')
     posts = NetworkPost.objects.order_by('-pk')[:100000000000]
-    # group = Group.objects.get(name=name)
+    # group = Group.objects.filter(mainuser=user)
     user = request.user
     is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
     # is_members = 
-    is_sub = Making.objects.filter(hub=network.hub).exists()
+    is_sub = Making.objects.filter(name=network, hub=network.hub).exists()
     marks = Making.objects.filter(hub=network.hub).order_by('-pk')[:1000000]
     context = {
         'csrf_token': '',
