@@ -202,7 +202,7 @@ hr {
     backdrop-filter: blur(15px);
     position: relative;
     transition: transform 0.4s ease, opacity 0.3s ease, box-shadow 0.4s ease; 
-    margin: 25px;
+    margin: 10px;
 }
 .rink{
     font-size: 1.5em;
@@ -224,6 +224,37 @@ hr {
     text-decoration: none;
     margin-left: -10px;
 }
+.join-button{
+    background-color: #50C878;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-left: -20px;
+}
+.join-button-out{
+    background-color: #ff0000;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: not-allowed;
+    margin-left: -20px;
+}
+.member_info_font{
+    display: flex;
+    gap: 5px;
+    text-align: center;
+    place-items: center;   
+    margin-left: 5%; 
+    /* margin:  0 auto;  */
+    margin-bottom:25px ;
+}
+.asgc li{
+    list-style: none;
+}
+
 /* レスポンシブ対応 */
     /* スマートフォン向け */
 @media screen and (max-width: 600px) {
@@ -294,6 +325,59 @@ hr {
     }
     .tab2 {
         padding: 10px 0;
+    }
+    .rink{
+        font-size: 1.25em;
+        color: #000000;
+        text-decoration: none;
+    }
+    .post_member{
+        width: 20%;
+        height: 20%;
+        max-width: 100px;
+        max-height: 100px;
+        border-radius: 50%;
+        border: 2px solid rgb(255, 255, 255);
+        object-fit: cover;
+        overflow: hidden;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(15px);
+        position: relative;
+        transition: transform 0.4s ease, opacity 0.3s ease, box-shadow 0.4s ease; 
+        margin: 10px;
+    }
+    .join-button{
+        background-color: #50C878;
+        color: rgb(0, 0, 0);
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: not-allowed;
+        margin-left: -25px;
+    }
+    .join-button-out{
+        background-color: #ff0000;
+        color: rgb(255, 255, 255);
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: not-allowed;
+        margin-left: -25px;
+    }
+    .member_info_font{
+        display: flex;
+        gap: 5px;
+        text-align: center;
+        place-items: center;   
+        margin-left: -10%; 
+        /* margin:  0 auto;  */
+        margin-bottom:0px ;
+    }
+    .asgc li{
+        list-style: none;
+    }
+    .asgc{
+        margin-left: 0%;
     }
 }
 

@@ -146,7 +146,7 @@ def delete_mark(request,name , pk):
     group = get_object_or_404(Group, name=name)
     network_name = get_object_or_404(Network, pk=pk)
     add_mark = Making.objects.filter(name=network_name, hub=network_name.hub, sub=group).exists()
-    if not add_mark:
+    if add_mark:
         exists_mark = Making.objects.get(name=network_name, hub=network_name.hub, sub=group)
         exists_mark.delete()
     return redirect('network', pk=pk)
@@ -168,8 +168,8 @@ def network(request, pk):
     members = AddNetwork.objects.order_by('-pk')[:10000000]
     template = loader.get_template('net.html')
     posts = NetworkPost.objects.order_by('-pk')[:100000000000]
-    # group = Group.objects.filter(mainuser=user)
     user = request.user
+    # group = Group.objects.filter(mainuser=user)
     is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
     # is_members = 
