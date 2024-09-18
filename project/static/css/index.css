@@ -36,10 +36,10 @@ body {
     /* display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
     gap: 30px;
-    /* padding: 40px; */
-    width: 100%;
-    margin-top: 60px;
-    /* margin-left: 200px; */
+    padding: 40px;
+    width: 80%;
+    margin-top: 20px;
+    margin-left: 300px;
     /* align-items: center; */
 }
 
@@ -196,23 +196,3 @@ body {
 }
 
 /* デスクトップ向け（901px以上） */
-@media (min-width: 901px) {
-    .group-container {
-        display: flex;
-        gap: 30px;
-        width: 1000px;
-        margin-left: 200px;
-    }
-
-    .group-card {
-        width: 400px;
-    }
-
-    .group-content h2 {
-        font-size: 22px;
-    }
-
-    .group-content p {
-        font-size: 14px;
-    }
-}
