@@ -147,7 +147,7 @@
                         <span class='hdvbd'>ルート中</span>
                         {% for rootauth in rootauths %}
                             {% for account in accounts %}
-                                {% if rootauth.user == account.mainuser %}
+                                {% comment %} {% if rootauth.user == account.mainuser %} {% endcomment %}
                                     {% if rootauth.target_user == account.mainuser %}
                                     <li>
                                         <div class="founde">
@@ -156,11 +156,7 @@
                                         </div>
                                     </li>
                                     {% endif %}
-                                {% comment %} {% else %}
-                                <li>
-                                    <div class="ddfsres">なんにもありません…。</div>
-                                </li> {% endcomment %}
-                                {% endif %}
+                                {% comment %} {% endif %} {% endcomment %}
                             {% endfor %}
                         {% endfor %}
                     </ul>
@@ -169,7 +165,32 @@
         </div>
         <div class="panel2 tab2-D">
             <div class="tab_1">
-                <h1>Hello 4</h1>
+                <div class='post_field'>
+                    <div class='ndvhjsbd'><b>Community一覧</b></div>
+                    <ul class='messages'>
+                        <span class='hdvbd'>ブロック・ネットワーク</span>
+                        {% for group in groups %}
+                        {% if group.mainuser == user %}
+                        <li>
+                            <div class="founde">
+                                <img class='founder_image' src="/media/{{group.icon}}" />
+                                {{group.name}}
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% for network in networks %}
+                        {% if network.mainuser == user %}
+                        <li>
+                            <div class="founde">
+                                <img class='founder_image' src="/media/{{network.image}}" />
+                                {{network.name}}
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

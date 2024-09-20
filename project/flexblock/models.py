@@ -162,7 +162,7 @@ class RootAuth(models.Model):
         return self.is_approved_by_user and self.is_approved_by_target
 
     def __str__(self):
-        return f"{self.user} ⇔ {self.target_user}"
+        return f"{self.user}"
 class NetworkPost(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     destination = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name="投稿先")
