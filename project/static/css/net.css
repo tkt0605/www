@@ -256,6 +256,114 @@ hr {
 }
 
 /* レスポンシブ対応 */
+/* 全体の投稿フィールド */
+.post_field_home {
+    padding: 20px;
+    background-color: #ffffff;
+    /* border-radius: 8px; */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* メンバー情報リストのスタイル */
+.member_info {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.inline-list {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.first_member {
+    font-weight: bold;
+    color: #333;
+    font-size: 18px;
+}
+
+.founder {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #555;
+}
+.founder a{
+    text-emphasis: none;
+    color: #000000;
+}
+.founder b {
+    font-size: 17.5px;
+    margin-left: -10px;
+}
+.founder_image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    margin-top: -10px;
+    border: 2px solid #ddd;
+}
+
+/* メッセージリスト */
+.messages {
+    list-style-type: none;
+    padding: 10px 0;
+    margin: 0;
+    border-top: 1px solid #ccc;
+}
+
+.hdvbd {
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* 各メッセージのスタイル */
+.messages li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #555;
+}
+
+.messages li.info {
+    border-left: 4px solid #2196F3;
+}
+
+.messages li.warning {
+    border-left: 4px solid #FF9800;
+}
+
+.messages li.error {
+    border-left: 4px solid #F44336;
+}
+
+/* メッセージがない場合のスタイル */
+.ddfsres {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+    padding: 10px;
+}
+
+/* ネットワーク名表示 */
+.messages p {
+    font-size: 14px;
+    color: #777;
+    margin-top: 20px;
+    font-style: italic;
+}
+
+/* レスポンシブ対応 */
     /* スマートフォン向け */
 @media screen and (max-width: 600px) {
     .mains {

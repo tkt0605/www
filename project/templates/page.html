@@ -9,10 +9,10 @@
     <div class="profile_filed">
         {% comment %} <img class="profile_image" src="/media/{{account.image}}"/> {% endcomment %}
         <div class="profile_name">
-            <div class="profile_icon">
-                <img class="icon-image" src="/media/{{account.icon}}"/>
-            </div>
             <div class="name-container">
+                <div class="profile_icon">
+                    <img class="icon-image" src="/media/{{account.icon}}"/>
+                </div>
                 <b class="name">{{account.name}}</b>
             </div>
             <div class="root">
@@ -71,17 +71,31 @@
     <div class="panel2-group">
         <div class="panel2 tab2-A is-show2">
             <div class="tab_1">
-                <h2>インフォメーション</h2>
-                <div class="info">
-                    <h3>通知</h3>
-                    {% if user.is_authenticated %}
-                        {% if account.mainuser == user %}
+                <div class='post_field'>
+                    <h2>インフォメーション</h2>
+                    <div class="info">
+                        {% comment %} {% if user.is_authenticated %} {% endcomment %}
+                        <ul class="messages">
+                            <span class="hdvbd">通知</span>
+                            {% if auth_requests_received %}
                             {% for request in auth_requests_received %}
-                                <div class="request_info"><p>{{ request.user.username }} wants to connect with you.</p></div>
+                            {% if account.mainuser == user %}
+                            <li>
+                                <div class="request_info">
+                                    <p>{{ request.user.username }} wants to connect with you.</p>
+                                </div>
                                 <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">Approve</a>or<a href="{% url "not_approve_auth_request" request.id %}">Not Approve</a></div>
+                            </li>
+                            {% endif %}
                             {% endfor %}
-                        {% endif %}
-                    {% endif %}
+                            {% else %}
+                            <li>
+                                <div class="ddfsres"><b>メッセージはありません。</b></div>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        {% comment %} {% endif %} {% endcomment %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,7 +141,30 @@
         </div>
         <div class="panel2 tab2-C">
             <div class="tab_1">
-                <h1>Hello 3</h1>
+                <div class='post_field'>
+                    <div class='ndvhjsbd'><b>Rooting一覧</b></div>
+                    <ul class='messages'>
+                        <span class='hdvbd'>ルート中</span>
+                        {% for rootauth in rootauths %}
+                            {% for account in accounts %}
+                                {% if rootauth.user == account.mainuser %}
+                                    {% if rootauth.target_user == account.mainuser %}
+                                    <li>
+                                        <div class="founde">
+                                            <img class='founder_image' src="/media/{{account.icon}}" />
+                                            {{account.name}}
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                {% comment %} {% else %}
+                                <li>
+                                    <div class="ddfsres">なんにもありません…。</div>
+                                </li> {% endcomment %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="panel2 tab2-D">

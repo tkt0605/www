@@ -28,6 +28,7 @@ a {
 .flexBlock {
     font-size: 35px;
     text-align: center;
+    color: #50C878;
 }
 
 .explain {}
@@ -41,7 +42,8 @@ a {
 
 .button,
 .button_login {
-    background: black;
+    /* background: black; */
+    background: #50C878;
     color: white;
     border-radius: 5px;
     border: 1px solid white;
@@ -55,7 +57,7 @@ a {
 
 .button:hover,
 .button_login:hover {
-    background-color: #555;
+    background-color: #42a563;
 }
 
 input[type="text"],

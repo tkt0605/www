@@ -38,6 +38,7 @@ a {
 .flexBlock {
     text-align: center;
     font-size: 35px;
+    color: #50C878;
 }
 
 .login {
@@ -52,7 +53,8 @@ a {
 
 .button,
 .button_register {
-    background: black;
+    /* background: black; */
+    background: #50C878;
     color: white;
     border-radius: 5px;
     border: 1px solid white;
@@ -66,7 +68,7 @@ a {
 
 .button:hover,
 .button_register:hover {
-    background-color: #555;
+    background-color: #42a563;
 }
 
 #id_login,

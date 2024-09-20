@@ -85,7 +85,7 @@ body {
     place-items: center;   
     margin-left: 37.5%; 
     /* margin:  0 auto;  */
-    margin-bottom:25px ;
+    margin-bottom:10px ;
 }
 .button {
     margin: -15px 0px 0px 0px;
@@ -136,20 +136,21 @@ body {
 
 
 .hr {
-    margin: -20px 0;
+    margin: 10px 0;
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #d8d8d8;
 }
 
 .sub_filed {
     list-style: none;
     padding: 0;
     text-align: left;
-    margin: 25px 15px 0px 75px;
+    margin: 25px 15px 0px 5%;
 }
 
 .sub_filed li {
     display: flex;
+    padding: 2.5px;
     align-items: center;
     color: #555;
 }
@@ -158,6 +159,27 @@ body {
     margin-right: 10px;
     fill: #000000;
 }
+/* .sub_fileds {
+    background: white;
+    width: 100%;
+    list-style: none;
+    padding: 0px;
+    text-align: left;
+    margin: 0px 0px 0px 0px;
+}
+
+.sub_fileds li {
+    margin-left: 25px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: #555;
+}
+
+.sub_fileds svg {
+    margin-right: 10px;
+    fill: #000000;
+} */
 .d-info{
     font-size: 16px;
     margin-left: 0px;
@@ -444,7 +466,7 @@ body {
 
 /* 投稿フィールド全体 */
 .post_field_home {
-    margin: 10px;
+    margin: 0px;
 } 
 
 /* 投稿ユーザーリスト */

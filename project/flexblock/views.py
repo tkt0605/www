@@ -30,6 +30,9 @@ def index(request):
 def page(request, pk):
     template = loader.get_template("page.html")
     # urlのidのナンバーから、Accountモデルに一致するものを抽出。
+    networks = Network.objects.order_by('-pk')[:1000000]
+    groups = Group.objects.order_by('-pk')[:100000000]
+    rootauths = RootAuth.objects.order_by('-pk')[:1000000]
     posts = Post.objects.order_by('-pk')[:100000]
     account = Account.objects.get(pk=pk)
     # Accountモデルの全DBを取得する。
@@ -57,6 +60,9 @@ def page(request, pk):
         "auth_request_sent": auth_request_sent,
         "auth_requests_received": auth_requests_received,
         "mutual_auth": mutual_auth,
+        "networks":networks,
+        "groups":groups,
+        "rootauths": rootauths,
     }
     return HttpResponse(template.render(context, request))
 @login_required

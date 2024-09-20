@@ -93,7 +93,14 @@
                     <div class="post_field_home">
                         <ul class="member_info inline-list">
                             <span class="first_member">オーナーズ</span>
-                            <li><div class="founder"><img class="founder_image" src="/media/{{community.managername.icon}}"/>{{community.managername}}</div></li>
+                            <li>
+                                <div class="founder">
+                                    <a href='/profile/{{network.hub.managername.pk}}'>
+                                        <img class="founder_image" src="/media/{{network.hub.managername.icon}}"/>
+                                        <b>{{network.hub.managername}}</b>
+                                    </a>
+                                </div>
+                            </li>
                         </ul>
                         <ul class="messages">
                             <span class="hdvbd">通知</span>
@@ -156,7 +163,7 @@
         
             <div class="panel2 tab2-D">
                 <div class="tab_1">
-                    <div class="post_field">
+                    <div class="post_field_home">
                         <div class="post_user">
                             <ul class="asgc">
                                 {% for member in members %}

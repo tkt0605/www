@@ -32,15 +32,16 @@ body {
 .main_filed {
     width: 100%;
 }
-
+.profile_icon{
+    position: relative;
+    margin-top: 20px;
+    /* margin-left: 50px; */
+}
 .icon-image {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     border: 2px solid #ddd;
-    margin-bottom: 0px;
-    margin-top: 20px;
-    margin-left: -7.5px;
 }
 .name-container {
     text-align: center;
@@ -51,11 +52,11 @@ body {
     font-size: 3.0em;
     font-weight: bold;
     color: #333;
-    margin-left: -15px;
+    /* margin-left: -15px; */
     text-align: center;
 }
 .root {
-    margin: 0px 10px 15px 0%;
+    margin: -10px 10px 15px 0px;
 }
 .buttons {
     background-color: #50C878;
@@ -64,7 +65,10 @@ body {
     padding: 10px 30px;
     border-radius: 4px;
     cursor: not-allowed;
-    margin-left: 10%;
+    margin-left: 0%;
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
 }
 .button {
     background-color: #50C878;
@@ -73,6 +77,9 @@ body {
     padding: 10px 20px;
     border-radius: 4px;
     cursor: not-allowed;
+    font-size: 20px;
+    width: 200px;
+    height: 50px;
 }
 
 .hr {
@@ -90,6 +97,7 @@ body {
 
 .sub_filed li {
     margin-bottom: 10px;
+    padding: 2.5px;
     font-size: 1em;
     color: #555;
 }
@@ -141,7 +149,7 @@ body {
     text-align: left;
 }
 
-.tab_1 h1, .tab_1 h2, .tab_1 h3 {
+.tab_1 h2, .tab_1 h3 {
     margin: 0;
     color: #333;
 }
@@ -149,12 +157,6 @@ body {
     margin: 10px;
 } 
 
-.info {
-    background-color: #f0f8ff;
-    padding: 10px;
-    border-radius: 4px;
-    margin-top: 10px;
-}
 
 .d-info, .d-info1, .d-info2 {
     margin-top: 5px;
@@ -177,7 +179,7 @@ body {
     align-items: center;
     display: flex;
     gap: 0px;
-    margin: 10px;
+    margin: 0px;
 }
 .post_creates{
     margin-left: -10px;
@@ -202,7 +204,7 @@ body {
     color: #000000;
 }
 .post_text {
-    margin: 10px 10px 0px 50px;
+    margin: -10px 10px 5px 50px;
     line-height: 1.6;
 }
 
@@ -228,10 +230,113 @@ body {
     color: black;
 }
 
+/* 全体の投稿フィールド */
+.post_field {
+    padding: 20px;
+    background-color: #ffffff;
+    /* border-radius: 8px; */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* margin-bottom: 20px; */
+    font-family: Arial, sans-serif;
+}
 
+.post_field h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
+    
+}
+
+/* 通知リストのスタイル */
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 15px;
+}
+.messages li {
+    margin-bottom: 15px;
+    /* padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #555; */
+}
+.hdvbd {
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+    display: block;
+}
+.ndvhjsbd{
+    font-size: 25px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+    display: block;
+}
+/* リクエスト情報 */
+.request_info {
+    background-color: #fff;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #555;
+}
+
+/* 承認・非承認ボタン */
+.approve a {
+    padding: 8px 15px;
+    margin-right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.approve a:hover {
+    background-color: #45a049;
+}
+
+.approve a:last-child {
+    background-color: #f44336;
+    margin-left: 5px;
+}
+
+.approve a:last-child:hover {
+    background-color: #e53935;
+}
+
+/* メッセージがない場合のスタイル */
+.ddfsres {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+/* モバイル対応 */
 @media (max-width: 768px) {
     #main {
         width: 95%;
+    }
+    .profile_icon{
+        position: relative;
+        margin-top: 20px;
+        /* margin-left: 50px; */
     }
     .profile_image {
         height: 175px;
@@ -259,8 +364,6 @@ body {
         border-radius: 50%;
         align-items: center;
         border: 2px solid #ddd;
-        margin-top: 0px;
-        margin-left: 5px;
     }
     .profile_name{
         text-align: center;
@@ -268,8 +371,8 @@ body {
     }
     .name-container {
         text-align: center;
-        margin-top: 50px;
-        margin-left: 0px;
+        /* margin-top: 0px; */
+        /* margin-left: 0px; */
     }
     .profile_filed{
         margin: 40px 0px 0px 0px;
@@ -277,10 +380,15 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    .profile_icon {
+    /* .profile_icon {
         width: 50px;
         height: 50px;
         margin-top: 0px;
+    } */
+    .profile_icon{
+        position: relative;
+        margin-top: 0px;
+        margin-left: 0px;
     }
     .name {
         font-size: 2.5em;
