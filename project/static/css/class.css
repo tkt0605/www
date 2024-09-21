@@ -337,9 +337,9 @@ body {
 .a_url{
     color: #000000;
 }
-.rink{
+/* .rink{
     color: #000000;
-}
+} */
 /* メディアクエリ */
 /* Panel styling */
 .panel2-group {
@@ -383,12 +383,32 @@ body {
 .messages {
     margin-top: 20px;
 }
-
-.hdvbd {
+.ndvhjsbd{
+    font-size: 25px;
     font-weight: bold;
+    color: #000000;
     margin-bottom: 10px;
+    display: block;
 }
-
+.hdvbd {
+    /* font-weight: bold;
+    margin-bottom: 10px; */
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+    display: block;
+}
+.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 15px;
+    margin-left: 30px;
+}
+.messages li {
+    margin-bottom: 15px;
+}
 .post_field {
     padding: 15px;
     margin: 0px 0px 0px 0px;
@@ -508,20 +528,22 @@ body {
 
 /* 名前の強調 */
 .groupmembership-name b {
-    font-size: 1.1em; /* 名前のサイズを少し大きく */
-    color: #333; /* 濃いグレーで視認性を向上 */
+    font-size: 1.1em; 
 }
-
+.groupmembership-name a{
+    text-emphasis: none;
+    color: #000000;
+}
 /* リンクスタイル */
-.rink {
+/* .rink {
     text-decoration: none;
-    color: #007bff; /* 青色でリンクを示す */
-    transition: color 0.2s ease; /* ホバー時の色変化をスムーズに */
+    color: #007bff; 
+    transition: color 0.2s ease; 
 }
 
 .rink:hover {
-    color: #0056b3; /* ホバー時に濃い青に */
-}
+    color: #0056b3; 
+} */
 
 @media (max-width: 768px) {
 

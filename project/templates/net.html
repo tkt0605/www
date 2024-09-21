@@ -90,9 +90,10 @@
         <div class="panel2-group">
             <div class="panel2 tab2-A is-show2">
                 <div class="tab_1">
-                    <div class="post_field_home">
-                        <ul class="member_info inline-list">
-                            <span class="first_member">オーナーズ</span>
+                    <div class="post_field">
+                        <div class='ndvhjsbd'><b>共同管理者一覧</b></div>
+                        <ul class="messages">
+                            <span class="hdvbd">オーナー</span>
                             <li>
                                 <div class="founder">
                                     <a href='/profile/{{network.hub.managername.pk}}'>
@@ -101,19 +102,25 @@
                                     </a>
                                 </div>
                             </li>
-                        </ul>
-                        <ul class="messages">
-                            <span class="hdvbd">通知</span>
-                            {% if messages %}
-                            {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                            {% endfor %}
-                            {% else %}
+                            <span class="hdvbd">サブ・オーナー</span>
                             <li>
-                                <div class="ddfsres"><b>メッセージはありません。</b></div>
+                                {% if is_sub %}
+                                {% for mark in marks %}
+                                {% if network == mark.name %}
+                                <div class='founder'>
+                                    <a href="{% url "page" mark.sub.managername.pk %}">
+                                        <img src="/media/{{mark.sub.managername.icon}}/" class="founder_image"/>
+                                        <b>{{mark.sub.managername}}</b>
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                <div class='founder'>
+                                    <b>Nothing</b>
+                                </div>
+                                {% endif %}
                             </li>
-                            {% endif %}
-                            <p>{{is_network_name}}</p>
                         </ul>
                     </div>        
                 </div>
@@ -121,6 +128,7 @@
         
             <div class="panel2 tab2-B">
                 <div class="tab_1">
+
                 </div>
             </div>
         
@@ -164,8 +172,10 @@
             <div class="panel2 tab2-D">
                 <div class="tab_1">
                     <div class="post_field_home">
-                        <div class="post_user">
-                            <ul class="asgc">
+                        <div class="post_field">
+                            <div class='ndvhjsbd'><b>Members一覧</b></div>
+                            <ul class='messages_1'>
+                                <span class='hdvbd'>メンバーズ</span>
                                 {% for member in members %}
                                 {% if network == member.name and network.hub != member.group %}
                                 <li>

@@ -8,6 +8,7 @@ from .forms import CreateClassForm, CreateNetworkForm, CreatePostForm, NetworkPo
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 def error(request):
     template = loader.get_template('error.html')
     accounts = Account.objects.order_by('-pk')[:100000]
@@ -32,12 +33,19 @@ def page(request, pk):
     # urlのidのナンバーから、Accountモデルに一致するものを抽出。
     networks = Network.objects.order_by('-pk')[:1000000]
     groups = Group.objects.order_by('-pk')[:100000000]
-    rootauths = RootAuth.objects.order_by('-pk')[:1000000]
+    # rootusers = RootAuth.objects.filter(user=request.user)
     posts = Post.objects.order_by('-pk')[:100000]
     account = Account.objects.get(pk=pk)
     # Accountモデルの全DBを取得する。
     accounts = Account.objects.order_by('-pk')[:100000]
     profile_user = get_object_or_404(CustomUser, pk=pk)
+    rootauths = RootAuth.objects.filter(
+        Q(user=request.user, target_user=profile_user) | 
+        Q(user=profile_user, target_user=request.user),
+        is_approved_by_user=True, 
+        is_approved_by_target=True
+    ).order_by('-pk')[:1000000]
+    rootauths = RootAuth.objects.order_by('-pk')[:1000000]
     mutual_auth = RootAuth.objects.filter(
         user=request.user, 
         target_user=profile_user, 
@@ -63,6 +71,7 @@ def page(request, pk):
         "networks":networks,
         "groups":groups,
         "rootauths": rootauths,
+        # "rooters": rooters,
     }
     return HttpResponse(template.render(context, request))
 @login_required
@@ -175,12 +184,13 @@ def network(request, pk):
     template = loader.get_template('net.html')
     posts = NetworkPost.objects.order_by('-pk')[:100000000000]
     user = request.user
-    # group = Group.objects.filter(mainuser=user)
+    group = Group.objects.filter(mainuser=user).exists()
     is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
     # is_members = 
     is_sub = Making.objects.filter(name=network, hub=network.hub).exists()
     marks = Making.objects.filter(hub=network.hub).order_by('-pk')[:1000000]
+    enter_received = AddNetwork.objects.filter(name=network, group=group)
     context = {
         'csrf_token': '',
         'accounts': accounts,
@@ -191,11 +201,12 @@ def network(request, pk):
         "posts": posts,
         "is_sub": is_sub,
         "marks": marks,
+        "enter_received": enter_received,
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
-    if network.visibility == 'local':
-        user = request.user
+    if network.visibility:
+        user = network
         can_join = network.can_user_join(user)
         if not can_join:
                 return redirect('error') 

@@ -142,22 +142,43 @@
         <div class="panel2 tab2-C">
             <div class="tab_1">
                 <div class='post_field'>
-                    <div class='ndvhjsbd'><b>Rooting一覧</b></div>
-                    <ul class='messages'>
+                    <div class='ndvhjsbd'><b>Root一覧</b></div>
+                    <ul class='messages_1'>
+                        <span class='hdvbd'>認証済み</span>
+                        {% for rootauth in rootauths %}
+                        {% if rootauth.user == account.mainuser and rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True %}
+                        {% for page in accounts %}
+                        {% if page.mainuser == rootauth.target_user %}
+                        <li>
+                            <div class="founde">
+                                <a class="a_icon" href="/profile/{{page.pk}}">
+                                    <img class='founder_image' src="/media/{{page.icon}}" />
+                                    <b>{{page.name}}</b>
+                                </a>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <ul class="messages_1">
                         <span class='hdvbd'>ルート中</span>
                         {% for rootauth in rootauths %}
-                            {% for account in accounts %}
-                                {% comment %} {% if rootauth.user == account.mainuser %} {% endcomment %}
-                                    {% if rootauth.target_user == account.mainuser %}
-                                    <li>
-                                        <div class="founde">
-                                            <img class='founder_image' src="/media/{{account.icon}}" />
-                                            {{account.name}}
-                                        </div>
-                                    </li>
-                                    {% endif %}
-                                {% comment %} {% endif %} {% endcomment %}
-                            {% endfor %}
+                        {% if rootauth.user == account.mainuser and rootauth.is_approved_by_user == False  %}
+                        {% for page in accounts %}
+                        {% if page.mainuser == rootauth.target_user %}
+                        <li>
+                            <div class='founde'>
+                                <a class='a_icon' href="/profile/{{page.pk}}">
+                                    <img class='founder_image' src="/media/{{page.icon}}"/>
+                                    <b>{{page.name}}</b>
+                                </a>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -170,21 +191,25 @@
                     <ul class='messages'>
                         <span class='hdvbd'>ブロック・ネットワーク</span>
                         {% for group in groups %}
-                        {% if group.mainuser == user %}
+                        {% if group.mainuser == account.mainuser %}
                         <li>
                             <div class="founde">
-                                <img class='founder_image' src="/media/{{group.icon}}" />
-                                {{group.name}}
+                                <a class='a_icon' href="/community/{{group.name}}"> 
+                                    <img class='founder_image' src="/media/{{group.icon}}" />
+                                    <b>{{group.name}}</b>
+                                </a>
                             </div>
                         </li>
                         {% endif %}
                         {% endfor %}
                         {% for network in networks %}
-                        {% if network.mainuser == user %}
+                        {% if network.mainuser == account.mainuser %}
                         <li>
                             <div class="founde">
-                                <img class='founder_image' src="/media/{{network.image}}" />
-                                {{network.name}}
+                                <a class="a_icon" href="/flex/networks/{{network.pk}}">
+                                    <img class='founder_image' src="/media/{{network.image}}" />
+                                    <b>{{network.name}}</b>
+                                </a>
                             </div>
                         </li>
                         {% endif %}

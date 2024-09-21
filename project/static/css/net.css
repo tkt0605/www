@@ -47,7 +47,15 @@ body {
     top: 10px;
     left: 10px;
 }
-
+.request_info {
+    background-color: #fff;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #555;
+}
 /* 画像のスタイル */
 /* .image_bord {
     width: 100%;
@@ -265,7 +273,12 @@ hr {
     margin-bottom: 20px;
     font-family: Arial, sans-serif;
 }
-
+.post_field {
+    padding: 15px;
+    margin: 0px;
+    background-color: #ffffff;
+    display: block;
+}
 /* メンバー情報リストのスタイル */
 .member_info {
     list-style-type: none;
@@ -290,6 +303,7 @@ hr {
     align-items: center;
     font-size: 16px;
     color: #555;
+    /* margin-bottom: 15px; */
 }
 .founder a{
     text-emphasis: none;
@@ -313,7 +327,8 @@ hr {
     list-style-type: none;
     padding: 10px 0;
     margin: 0;
-    border-top: 1px solid #ccc;
+    margin-top: -15px;
+    /* border-top: 1px solid #ccc; */
 }
 
 .hdvbd {
@@ -323,14 +338,12 @@ hr {
     margin-bottom: 10px;
     display: block;
 }
-
-/* 各メッセージのスタイル */
 .messages li {
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     border-radius: 4px;
-    background-color: #fff;
+    /* background-color: #fff; */
     font-size: 14px;
     color: #555;
 }
@@ -346,7 +359,32 @@ hr {
 .messages li.error {
     border-left: 4px solid #F44336;
 }
-
+.ndvhjsbd{
+    font-size: 25px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 10px;
+    display: block;
+}
+.messages_1 {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 15px;
+    /* margin-left: 30px; */
+}
+.messages_1 li {
+    margin-bottom: 15px;
+}
+.messages_1 .hdvbd {
+    /* font-weight: bold;
+    margin-bottom: 10px; */
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+    display: block;
+}
 /* メッセージがない場合のスタイル */
 .ddfsres {
     font-size: 16px;

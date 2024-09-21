@@ -239,21 +239,23 @@
         <div class="panel2 tab2-C">
             <div class="tab_1">
                 <div class="post_field">
-                    <div class="post_user">
+                    <div class='ndvhjsbd'><b>Members一覧</b></div>
+                    <ul class='messages'>
+                        <span class='hdvbd'>メンバーズ</span>
                         {% for groupmembership in groupmemberships %}
                         {% if community.name == groupmembership.group.name %}
-                        <ul>
-                            <li>
-                                <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'page' groupmembership.account.id%}">
-                                    <div class="groupmembership-name">
-                                        <img class="groupmembership-icon" src="/media/{{groupmembership.account.icon}}" alt="{{groupmembership.account}}'s icon"/>
-                                        <b>{{groupmembership.account}}</b>
-                                    </div>
+                        <li>
+                            <div class="groupmembership-name">
+                                <a target="_blank" rel="noopener noreferrer" href="{% url 'page' groupmembership.account.id%}">
+                                    <img class="groupmembership-icon" src="/media/{{groupmembership.account.icon}}" alt="{{groupmembership.account}}'s icon"/>
+                                    <b>{{groupmembership.account}}</b>
                                 </a>
-                            </li>
-                        </ul>
+                            </div>
+                        </li>
                         {% endif %}
                         {% endfor %}
+                    </ul>
+                    <div class="post_user">
                     </div>
                 </div>
             </div>

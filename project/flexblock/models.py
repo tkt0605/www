@@ -134,12 +134,26 @@ class Network(models.Model):
 class AddNetwork(models.Model):
     name = models.ForeignKey(Network, on_delete=models.CASCADE, null=True)
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
-    created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
-    def __str__(self):
-        # return f"{self.name} ⇔ {self.group}"
-        return f"{self.group}"
+    is_approved_by_user = models.BooleanField(default=False)
+    is_approved_by_target = models.BooleanField(default=False)
+    # created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     class Meta:
         verbose_name_plural = "AddNetwork"
+    def approve(self, by_user):
+        """相互認証の承認処理"""
+        if by_user == self.name:
+            self.is_approved_by_user = True
+        elif by_user == self.group:
+            self.is_approved_by_target = True
+        self.save()
+        return self.is_approved_by_user and self.is_approved_by_target
+
+    def is_fully_approved(self):
+        """両者による承認の完了状態を確認"""
+        return self.is_approved_by_user and self.is_approved_by_target
+
+    def __str__(self):
+        return f"{self.name}"
 class RootAuth(models.Model):
     user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_sent', on_delete=models.CASCADE)
     target_user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_received', on_delete=models.CASCADE)
