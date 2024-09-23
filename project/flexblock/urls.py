@@ -24,6 +24,8 @@ urlpatterns = [
     path("create/network_post/<int:pk>", views.form_network_post, name='form_network_post'),
     path('flex/networks/<int:pk>/add_making/<str:name>', views.add_mark, name='add_mark'),
     path('flex/networks/<int:pk>/delete_making/<str:name>', views.delete_mark, name='delete_mark'),
+    path('approve_add_request/<int:pk>', views.approve_add_request, name='approve_add_request'),
+    path("not_approve_add_request/<int:pk>", views.not_approve_add_request, name="not_approve_add_request"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

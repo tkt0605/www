@@ -192,9 +192,9 @@ class NetworkPost(models.Model):
     class Meta:
         verbose_name_plural = "NetworkPost"
 class Making(models.Model):
-    name = models.ForeignKey(Network, on_delete=models.CASCADE, null=True, related_name="ネットワーク名")
-    hub = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name="ハブグループ")
-    sub = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, related_name="サブグループ")
+    name = models.ForeignKey(Network, on_delete=models.PROTECT, null=True, related_name="ネットワーク名")
+    hub = models.ForeignKey(Group, on_delete=models.PROTECT, null=True, related_name="ハブグループ")
+    sub = models.ForeignKey(Group, on_delete=models.PROTECT, null=True, related_name="サブグループ")
     created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return f"{self.name}⇔{self.hub}->{self.sub} "

@@ -59,6 +59,7 @@ def page(request, pk):
     ).exists()
     auth_request_sent = RootAuth.objects.filter(user=request.user, target_user=profile_user).exists()
     auth_requests_received = RootAuth.objects.filter(target_user=request.user, is_approved_by_target=False)
+    add_network = AddNetwork.objects.filter(group__mainuser=account.mainuser, is_approved_by_target=False)
     context = {
         "csrf_token": "",
         "posts": posts,
@@ -71,7 +72,8 @@ def page(request, pk):
         "networks":networks,
         "groups":groups,
         "rootauths": rootauths,
-        # "rooters": rooters,
+        "add_network": add_network,
+
     }
     return HttpResponse(template.render(context, request))
 @login_required
@@ -91,6 +93,19 @@ def community(request, name):
     # networks = Network.objects.order_by('-pk')[:1000000]
     networks = Network.objects.filter(mainuser=user).order_by('-pk')[:1000000]
     exists = AddNetwork.objects.filter(group=group, name__mainuser=user).order_by('-pk')[:100000000000]
+    mutual_auth = AddNetwork.objects.filter(
+        name__mainuser=request.user,
+        group=group,
+        is_approved_by_user=True, 
+        is_approved_by_target=True
+    ).exists() 
+    # or AddNetwork.objects.filter(
+    #         name__mainuser=request.user,
+    #         group=group,
+    #         is_approved_by_user=True, 
+    #         is_approved_by_target=True
+    #     ).exists()
+    auth_requests_received = AddNetwork.objects.filter(group=group, is_approved_by_target=False)
     context = {
         "csrf_token": "",
         "posts": posts,
@@ -102,8 +117,10 @@ def community(request, name):
         "networks": networks,
         "network_exists": network_exists,
         "exists": exists,
+        "auth_requests_received": auth_requests_received,
+        "mutual_auth": mutual_auth,
     }
-    # ユーザーがグループに参加できるかを確認
+        # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
         return HttpResponse(template.render(context, request))
     if group.visibility== "local":
@@ -205,7 +222,7 @@ def network(request, pk):
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
-    if network.visibility:
+    if network.visibility == "local":
         user = network
         can_join = network.can_user_join(user)
         if not can_join:
@@ -328,7 +345,6 @@ def send_auth_request(request, pk):
 
     # URLのパスパラメータ`pk`を使用してユーザーを取得
     profile_user = get_object_or_404(CustomUser, pk=pk)
-
     # 認証リクエストを送信するロジック
     if not RootAuth.objects.filter(user=request.user, target_user=profile_user).exists():
         RootAuth.objects.create(user=request.user, target_user=profile_user)
@@ -376,6 +392,65 @@ def not_approve_auth_request(request, pk):
         
         reverse_request = RootAuth.objects.filter(user=not_approve_auth_request.target_user, target_user=not_approve_auth_request.user).first()
         if reverse_request:
+            reverse_request.is_approved_by_target = False
+            reverse_request.save()
+    return redirect('page', pk=request.user.id)
+@login_required
+def approve_add_request(request, pk):
+    """認証リクエストを承認するビュー"""
+    auth_request = get_object_or_404(AddNetwork, pk=pk)
+
+    # ユーザーがリクエストの送信者または受信者であるかを確認
+    #ログインユーザーとAddNetworkモデルの引数group(Groupモデルのmainuser)の持つアドレスと一致とis_approved_by_targetが存在してないかどうかを判定。
+    if request.user == auth_request.group.mainuser and not auth_request.is_approved_by_target:
+        #もし、存在してないのであれば、is_approved_by_target=Trueで保存する。
+        auth_request.is_approved_by_target = True
+        auth_request.save()
+        # 相手からのリクエストも承認するロジックを追加
+        #AddNetworkの下で、引数nameが対象のNetworkのmainuserと一致しているもの(引数groupも同様)で絞り込み。
+        reverse_request = AddNetwork.objects.filter(name__mainuser=auth_request.name.mainuser, group__mainuser=auth_request.group.mainuser).first()
+        if reverse_request:
+            #もし、上のAddNetworkが存在していればis_approved_by_user=Trueとして保存する。
+            reverse_request.is_approved_by_user = True
+            reverse_request.save()
+    #ログインユーザーとAddNetworkモデルの引数group(Groupモデルのmainuser)の持つアドレスと一致とis_approved_by_userが存在してない時の処理
+    elif request.user == auth_request.name.mainuser and not auth_request.is_approved_by_user:
+        #もし、存在してないのであれば、is_approved_by_user=Trueで保存する
+        auth_request.is_approved_by_user = True
+        auth_request.save()
+
+        # 相手からのリクエストも承認するロジックを追加
+        #上のコードと同じで、AddNetworkの下で引数nameのmainuserと対象のNetworkのmainuserと一致しているもの(引数groupも同様)で絞り込み。
+        reverse_request = AddNetwork.objects.filter(name__mainuser=auth_request.name.mainuser, group__mainuser=auth_request.group.mainuser).first()
+        if reverse_request:
+            #もし、絞り込みで存在していたらis_approved_by_target=Trueで保存。
+            reverse_request.is_approved_by_target = True
+            reverse_request.save()
+
+    return redirect('page', pk=request.user.id)
+@login_required
+def not_approve_add_request(request, pk):
+    not_approve_auth_request = get_object_or_404(AddNetwork, pk=pk)
+    #ログインしてるユーザーとAddNetworkの引数groupのmainuserと一致していて、is_approved_by_targetがないのであれば、以下の処理を行う。
+    if request.user == not_approve_auth_request.group.mainuser and not not_approve_auth_request.is_approved_by_target:
+        #存在してないのであれば、is_approved_by_target=Trueで保存
+        not_approve_auth_request.is_approved_by_target = True
+        not_approve_auth_request.save()
+        #AddNetworkの下で、引数nameが対象のNetworkのmainuserと一致しているもの(引数groupも同様)で絞り込み。
+        reverse_request = AddNetwork.objects.filter(name__mainuser=not_approve_auth_request.name.mainuser, group__mainuser=not_approve_auth_request.group.mainuser).first()
+        if reverse_request:
+            #もし、絞り込みで存在しているときis_approved_by_user=Falseで保存。
+            reverse_request.is_approved_by_user = False
+            reverse_request.save()
+    #ログインしているユーザーとAddNetworkの引数groupのmainuserと一致して、is_approved_by_userがないのであれば、以下の処理を行う。
+    elif request.user == not_approve_auth_request.name.mainuser and not not_approve_auth_request.is_approved_by_user:
+        #もしあれば、is_approved_by_user=Trueで保存。
+        not_approve_auth_request.is_approved_by_user = True
+        not_approve_auth_request.save()
+        #AddNetworkの下で、引数nameが対象のNetworkのmainuserと一致しているもの(引数groupも同様)で絞り込み。
+        reverse_request = AddNetwork.objects.filter(name__mainuser=not_approve_auth_request.name.mainuser, group__mainuser=not_approve_auth_request.group.mainuser).first()
+        if reverse_request:
+            #もし、上の引数も存在していたらis_approved_by_target=Falseで保存する。
             reverse_request.is_approved_by_target = False
             reverse_request.save()
     return redirect('page', pk=request.user.id)

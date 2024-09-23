@@ -12,6 +12,7 @@
                 <img class="image_bord" src="/media/{{network.image}}" alt=""/>
             </div>
             <div class="group_info"><b>{{network.name}}</b></div>
+
             <hr>
             <ul class='menu_network'>
                 <li class="create">
@@ -177,13 +178,14 @@
                             <ul class='messages_1'>
                                 <span class='hdvbd'>メンバーズ</span>
                                 {% for member in members %}
-                                {% if network == member.name and network.hub != member.group %}
+                                {% if network == member.name and network.hub != member.group%}
                                 <li>
                                     {% if network.mainuser == user %}
                                     <div class="member_info_font">
                                         <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'community' member.group%}" >
                                             <img class="post_member" src="/media/{{member.group.backimage}}/"/><b>{{member.group}}</b>
                                         </a>    
+                                        {% if  member.is_approved_by_user == True %}
                                         {% if not is_sub %}
                                         <div class="button">
                                             <a href="{% url 'add_mark' network.pk member.group.name %}">
@@ -196,6 +198,7 @@
                                                 <button type="submit" class="join-button-out"><b>サブを削除</b></button>
                                             </a>
                                         </div>
+                                        {% endif %}
                                         {% endif %}
                                     </div>
                                     {% else %}

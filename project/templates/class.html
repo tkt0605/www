@@ -25,6 +25,7 @@
                             
                         </div>
                     {% else %}
+                    <!--ここにAddNetwork認証機能のHTMLコードを書く。参照は、page.htmlで、-->
                         {% if not is_member %}
                             <div class="button">
                                 <a href="{% url 'join' community.name %}">
@@ -54,11 +55,6 @@
                             </div>
                             {% endif %}
                         {% else %}
-                            {% comment %} <div class="button">
-                                <a href="{% url 'delete_network' community.name network.pk %}">
-                                    <button type="submit" class="join-button-out"><b>追加済み</b></button>
-                                </a>
-                            </div> {% endcomment %}
                             <div class="button" class="btn-group" role="group">
                                 <button class="join-button-out" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <b>追加済み</b>

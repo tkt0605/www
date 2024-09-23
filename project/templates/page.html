@@ -77,7 +77,7 @@
                         {% comment %} {% if user.is_authenticated %} {% endcomment %}
                         <ul class="messages">
                             <span class="hdvbd">通知</span>
-                            {% if auth_requests_received %}
+                            {% if auth_requests_received%}
                             {% for request in auth_requests_received %}
                             {% if account.mainuser == user %}
                             <li>
@@ -92,6 +92,18 @@
                             <li>
                                 <div class="ddfsres"><b>メッセージはありません。</b></div>
                             </li>
+                            {% endif %}
+                            {% if add_network %}
+                            {% for request in add_network %}
+                            {% if account.mainuser == user %}
+                            <li>
+                                <div class="request_info">
+                                    <p>{{ request.name.mainuser.username }}が、{{request.group}}を{{request.name}}に追加しました。</p>
+                                </div>
+                                <div class="approve"><a href="{% url 'approve_add_request' request.id %}">Approve</a>or<a href="{% url "not_approve_add_request" request.id %}">Not Approve</a></div>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
                             {% endif %}
                         </ul>
                         {% comment %} {% endif %} {% endcomment %}
