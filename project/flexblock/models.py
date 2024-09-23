@@ -38,20 +38,21 @@ class Group(models.Model):
     ]
     GROUP_TYPE = [
         ('single', 'シングル'),
-        ('multiple', 'マルチ')
+        ('multiple', 'マルチ'),
     ]
     mainuser = models.ForeignKey("accounts.CustomUser",  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
     group_type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
-    comanager = models.ForeignKey(RootAuth, null=True, on_delete=models.PROTECT, verbose_name="共同管理", blank=True)
+    # group_type = models.ForeignKey(, choices=GROUP_TYPE,default='single',verbose_name="タイプ", on_delete=models.CASCADE) 
+    comanager = models.ForeignKey(RootAuth, null=True,on_delete=models.CASCADE, related_name="共同管理", blank=True)
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
     visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
     web_site = models.URLField(blank=True)
     backimage = models.ImageField(upload_to='backimage/', verbose_name="BackImage")
-    icon = models.ImageField(upload_to='classicon/', verbose_name="クラスアイコン", null=True)
-    index = models.CharField(max_length=50, blank=False, null=True, verbose_name = "見出し")
-    explain = models.TextField(max_length=180, blank=True, verbose_name="explain")
+    # icon = models.ImageField(upload_to='classicon/', verbose_name="クラスアイコン", null=True)
+    index = models.CharField(max_length=100, blank=False, null=True, verbose_name = "見出し")
+    # explain = models.TextField(max_length=180, blank=True, verbose_name="explain")
     created_at = models.DateField(null=True ,auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return str(self.name)

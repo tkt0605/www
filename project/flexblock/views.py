@@ -182,6 +182,7 @@ def delete_mark(request,name , pk):
         exists_mark = Making.objects.get(name=network_name, hub=network_name.hub, sub=group)
         exists_mark.delete()
     return redirect('network', pk=pk)
+    return redirect("page", pk=root.pk)
 def networks(request):
     accounts = Account.objects.order_by('-pk')[:10000000]
     networks = Network.objects.order_by('-pk')[:10000000]
@@ -393,6 +394,25 @@ def not_approve_auth_request(request, pk):
         reverse_request = RootAuth.objects.filter(user=not_approve_auth_request.target_user, target_user=not_approve_auth_request.user).first()
         if reverse_request:
             reverse_request.is_approved_by_target = False
+            reverse_request.save()
+    return redirect('page', pk=request.user.id)
+@login_required
+def add_root(request, pk):
+    add_root = get_object_or_404(RootAuth, pk=pk)
+    if request.user == add_root.user and not add_root.is_approved_by_user:
+        add_root.is_approved_by_user = True
+        add_root.save()
+        reverse_request = RootAuth.objects.filter(user=add_root.target_user, target_user=add_root.user).first()
+        if reverse_request:
+            reverse_request.is_approved_by_user = True
+            reverse_request.save()
+    elif request.user == add_root.target_user and not add_root.is_approved_by_user:
+        add_root.is_approved_by_user = True
+        add_root.save()
+        
+        reverse_request = RootAuth.objects.filter(user=add_root.target_user, target_user=add_root.user).first()
+        if reverse_request:
+            reverse_request.is_approved_by_user = False
             reverse_request.save()
     return redirect('page', pk=request.user.id)
 @login_required

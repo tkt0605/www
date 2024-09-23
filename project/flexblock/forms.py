@@ -7,6 +7,8 @@ class CreateClassForm(forms.ModelForm):
         model = Group
         fields = "__all__"
         exclude = ["mainuser", "managername"]
+        required=True,
+        disabled=False,
         widgets = {
             'name': forms.TextInput(
                 attrs={
@@ -21,11 +23,6 @@ class CreateClassForm(forms.ModelForm):
                     "placeholder": "#カテゴリー",
                 }
             ),
-            'explain': forms.Textarea(
-                attrs={
-                    "class": "explain",
-                }
-            ),
             'web_site': forms.TextInput(
                 attrs={
                     "class":"web_site",
@@ -38,25 +35,14 @@ class CreateClassForm(forms.ModelForm):
                     "placeholder": "@見出し",
                 }
             ),
-            'root':forms.TextInput(
-                attrs={
-                    'placeholder': '@(Your Approach class)',
-                }
-            ),
         }
         required=True
-    def clean_comanager(self):
-        group_type = self.cleaned_data.get('group_type')
-        comanager = self.cleaned_data.get('comanager')
-
-        if group_type == 'single' and comanager:
-            raise forms.ValidationError("シングルタイプの場合、共同管理は設定できません。")
-        
-        return comanager
     def __init__(self, mainuser=None, managername=None, *args, **kwargs):
         self.mainuser = mainuser
         self.managername = managername
         super().__init__(*args, **kwargs)
+        if self.mainuser:
+            self.fields['comanager'].queryset =  RootAuth.objects.filter(user=self.managername.mainuser, is_approved_by_user=True, is_approved_by_target=True)
     def save(self, commit=True):
         kwargs = super().save(commit=False)
         if self.mainuser:
