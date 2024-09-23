@@ -83,8 +83,8 @@
                             <li>
                                 <div class="request_info">
                                     <p>{{ request.user.username }} wants to connect with you.</p>
+                                    <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">Approve</a>or<a href="{% url "not_approve_auth_request" request.id %}">Not Approve</a></div>
                                 </div>
-                                <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">Approve</a>or<a href="{% url "not_approve_auth_request" request.id %}">Not Approve</a></div>
                             </li>
                             {% endif %}
                             {% endfor %}
@@ -99,8 +99,8 @@
                             <li>
                                 <div class="request_info">
                                     <p>{{ request.name.mainuser.username }}が、{{request.group}}を{{request.name}}に追加しました。</p>
+                                    <div class="approve"><a href="{% url 'approve_add_request' request.id %}">Approve</a>or<a href="{% url "not_approve_add_request" request.id %}">Not Approve</a></div>
                                 </div>
-                                <div class="approve"><a href="{% url 'approve_add_request' request.id %}">Approve</a>or<a href="{% url "not_approve_add_request" request.id %}">Not Approve</a></div>
                             </li>
                             {% endif %}
                             {% endfor %}

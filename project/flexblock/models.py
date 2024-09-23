@@ -8,13 +8,42 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+class RootAuth(models.Model):
+    user = models.ForeignKey(get_user_model(), related_name='auth_requests_sent', on_delete=models.CASCADE)
+    target_user = models.ForeignKey(get_user_model(), related_name='auth_requests_received', on_delete=models.CASCADE)
+    is_approved_by_user = models.BooleanField(default=False)
+    is_approved_by_target = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = ('user', 'target_user')
+    def approve(self, by_user):
+        """相互認証の承認処理"""
+        if by_user == self.user:
+            self.is_approved_by_user = True
+        elif by_user == self.target_user:
+            self.is_approved_by_target = True
+        self.save()
+        return self.is_approved_by_user and self.is_approved_by_target
+
+    def is_fully_approved(self):
+        """両者による承認の完了状態を確認"""
+        return self.is_approved_by_user and self.is_approved_by_target
+
+    def __str__(self):
+        return f"{self.user}"
 class Group(models.Model):
     VISIBILITY_CHOICES = [
         ('public', 'Public'),
         ('local', 'Local'),
     ]
+    GROUP_TYPE = [
+        ('single', 'シングル'),
+        ('multiple', 'マルチ')
+    ]
     mainuser = models.ForeignKey("accounts.CustomUser",  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
+    group_type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
+    comanager = models.ForeignKey(RootAuth, null=True, on_delete=models.PROTECT, verbose_name="共同管理", blank=True)
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
     visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
@@ -23,7 +52,6 @@ class Group(models.Model):
     icon = models.ImageField(upload_to='classicon/', verbose_name="クラスアイコン", null=True)
     index = models.CharField(max_length=50, blank=False, null=True, verbose_name = "見出し")
     explain = models.TextField(max_length=180, blank=True, verbose_name="explain")
-    transaction_hash = models.CharField(max_length=66, blank=True, null=True)
     created_at = models.DateField(null=True ,auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return str(self.name)
@@ -154,29 +182,6 @@ class AddNetwork(models.Model):
 
     def __str__(self):
         return f"{self.name}"
-class RootAuth(models.Model):
-    user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_sent', on_delete=models.CASCADE)
-    target_user = models.ForeignKey("accounts.CustomUser", related_name='auth_requests_received', on_delete=models.CASCADE)
-    is_approved_by_user = models.BooleanField(default=False)
-    is_approved_by_target = models.BooleanField(default=False)
-    
-    class Meta:
-        unique_together = ('user', 'target_user')
-    def approve(self, by_user):
-        """相互認証の承認処理"""
-        if by_user == self.user:
-            self.is_approved_by_user = True
-        elif by_user == self.target_user:
-            self.is_approved_by_target = True
-        self.save()
-        return self.is_approved_by_user and self.is_approved_by_target
-
-    def is_fully_approved(self):
-        """両者による承認の完了状態を確認"""
-        return self.is_approved_by_user and self.is_approved_by_target
-
-    def __str__(self):
-        return f"{self.user}"
 class NetworkPost(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     destination = models.ForeignKey(Network, on_delete=models.CASCADE, verbose_name="投稿先")

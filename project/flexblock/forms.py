@@ -6,7 +6,7 @@ class CreateClassForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = "__all__"
-        exclude = ["mainuser", "managername", "transaction_hash"]
+        exclude = ["mainuser", "managername"]
         widgets = {
             'name': forms.TextInput(
                 attrs={
@@ -45,6 +45,14 @@ class CreateClassForm(forms.ModelForm):
             ),
         }
         required=True
+    def clean_comanager(self):
+        group_type = self.cleaned_data.get('group_type')
+        comanager = self.cleaned_data.get('comanager')
+
+        if group_type == 'single' and comanager:
+            raise forms.ValidationError("シングルタイプの場合、共同管理は設定できません。")
+        
+        return comanager
     def __init__(self, mainuser=None, managername=None, *args, **kwargs):
         self.mainuser = mainuser
         self.managername = managername
@@ -142,7 +150,7 @@ class NetworkPostForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['mainuser', 'destination', 'username', 'group']
         widgets = {
-                        "text": forms.Textarea(
+            "text": forms.Textarea(
                 attrs = {
                     "class": "text-post",
                     "placeholder": "新規投稿",
