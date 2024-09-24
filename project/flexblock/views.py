@@ -224,7 +224,8 @@ def network(request, pk):
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
     if network.visibility == "local":
-        user = network
+        # user = network.mainuser
+        user = request.user
         can_join = network.can_user_join(user)
         if not can_join:
                 return redirect('error') 
@@ -347,8 +348,8 @@ def send_auth_request(request, pk):
     # URLのパスパラメータ`pk`を使用してユーザーを取得
     profile_user = get_object_or_404(CustomUser, pk=pk)
     # 認証リクエストを送信するロジック
-    if not RootAuth.objects.filter(user=request.user, target_user=profile_user).exists():
-        RootAuth.objects.create(user=request.user, target_user=profile_user)
+    if not RootAuth.objects.filter(user=request.user, target_user=profile_user, is_approved_by_user=True).exists():
+        RootAuth.objects.create(user=request.user, target_user=profile_user, is_approved_by_user=True)
 
     return redirect('page', pk=pk)
 @login_required

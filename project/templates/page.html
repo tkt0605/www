@@ -158,8 +158,8 @@
                     <ul class='messages_1'>
                         <span class='hdvbd'>認証済み</span>
                         {% for rootauth in rootauths %}
-                        {% if rootauth.user == account.mainuser and rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True %}
                         {% for page in accounts %}
+                        {% if account.mainuser == rootauth.user and rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True %}
                         {% if page.mainuser == rootauth.target_user %}
                         <li>
                             <div class="founde">
@@ -170,8 +170,20 @@
                             </div>
                         </li>
                         {% endif %}
-                        {% endfor %}
                         {% endif %}
+                        {% if account.mainuser == rootauth.target_user and rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True%}
+                        {% if page.mainuser == rootauth.user %}
+                        <li>
+                            <div class="founde">
+                                <a class="a_icon" href="/profile/{{page.pk}}">
+                                    <img class='founder_image' src="/media/{{page.icon}}" />
+                                    <b>{{page.name}}</b>
+                                </a>
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </ul>
                     <ul class="messages_1">
@@ -186,14 +198,14 @@
                                     <img class='founder_image' src="/media/{{page.icon}}"/>
                                     <b>{{page.name}}</b>
                                 </a>
-                                {% if account.mainuser == user %}
+                                {% comment %} {% if account.mainuser == user %}
                                 <div class='sac'>
                                     <a class="dropdown-item" href="{% url 'add_root' rootauth.id %}">
                                         <button class='button-auth'>承認</button>
                                     </a>
-                                </div>
+                                </div> 
                             </div>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                         </li>
                         {% endif %}
                         {% endfor %}

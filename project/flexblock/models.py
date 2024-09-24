@@ -9,8 +9,8 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 class RootAuth(models.Model):
-    user = models.ForeignKey(get_user_model(), related_name='auth_requests_sent', on_delete=models.CASCADE)
-    target_user = models.ForeignKey(get_user_model(), related_name='auth_requests_received', on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name='auth_requests_sent', on_delete=models.CASCADE)
+    target_user = models.ForeignKey(CustomUser, related_name='auth_requests_received', on_delete=models.CASCADE)
     is_approved_by_user = models.BooleanField(default=False)
     is_approved_by_target = models.BooleanField(default=False)
     
@@ -44,7 +44,7 @@ class Group(models.Model):
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
     group_type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
     # group_type = models.ForeignKey(, choices=GROUP_TYPE,default='single',verbose_name="タイプ", on_delete=models.CASCADE) 
-    comanager = models.ManyToManyField(Account, null=True,on_delete=models.CASCADE, related_name="共同管理", blank=True)
+    comanager = models.ManyToManyField(Account, related_name="共同管理", blank=True)
     # comanager = models.ManyToManyField(RootAuth, null=True, related_name="共同管理", blank=True)
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")

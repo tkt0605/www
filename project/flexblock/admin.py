@@ -8,10 +8,4 @@ admin.site.register(GroupMembership)
 admin.site.register(AddNetwork)
 admin.site.register(NetworkPost)
 admin.site.register(Making)
-class GroupAdmin(admin.ModelAdmin):
-    fields = ('name', 'category', 'group_type', 'comanager', 'mainuser', 'managername', 'visibility', 'web_site', 'backimage', 'icon', 'index', 'explain')
-
-    class Media:
-        js = ('js/group_admin.js',)  # カスタムJavaScriptファイルを読み込む
-
-admin.site.register(Group, GroupAdmin)
+admin.site.register(Group)
