@@ -186,8 +186,14 @@
                                     <img class='founder_image' src="/media/{{page.icon}}"/>
                                     <b>{{page.name}}</b>
                                 </a>
+                                {% if account.mainuser == user %}
+                                <div class='sac'>
+                                    <a class="dropdown-item" href="{% url 'add_root' rootauth.id %}">
+                                        <button class='button-auth'>承認</button>
+                                    </a>
+                                </div>
                             </div>
-                            <a class="dropdown-item" href="{% url 'add_root' rootauth.id %}">承認</a>
+                            {% endif %}
                         </li>
                         {% endif %}
                         {% endfor %}
