@@ -13,7 +13,7 @@ class RootAuth(models.Model):
     target_user = models.ForeignKey(CustomUser, related_name='auth_requests_received', on_delete=models.CASCADE)
     is_approved_by_user = models.BooleanField(default=False)
     is_approved_by_target = models.BooleanField(default=False)
-    
+    is_denied = models.BooleanField(default=False) 
     class Meta:
         unique_together = ('user', 'target_user')
     def approve(self, by_user):

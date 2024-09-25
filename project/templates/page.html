@@ -21,13 +21,13 @@
                         {% if mutual_auth %}
                             <button class="buttons"><b>Rooting</b></button>
                         {% else %}
-                            {% if not auth_request_sent %}
+                            {% if not auth_request_sent%}
                                 <a href="{% url 'send_auth_request' account.id %}">
                                     <button class="button"><b>Send Auth Request</b></button>
                                 </a>
                             {% else %}
                                 <button class="button"><b>Request Sent</b></button>
-                            {% endif %}
+                            {% endif %} 
                         {% endif %}
                     {% endif %}
                 {% endif %}
@@ -79,11 +79,11 @@
                             <span class="hdvbd">通知</span>
                             {% if auth_requests_received%}
                             {% for request in auth_requests_received %}
-                            {% if account.mainuser == user %}
+                            {% if account.mainuser == user and not request.is_denied %}
                             <li>
                                 <div class="request_info">
                                     <p>{{ request.user.username }} wants to connect with you.</p>
-                                    <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">Approve</a>or<a href="{% url "not_approve_auth_request" request.id %}">Not Approve</a></div>
+                                    <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">承認</a>or<a href="{% url "not_approve_auth_request" request.id %}">拒否</a></div>
                                 </div>
                             </li>
                             {% endif %}
@@ -93,6 +93,7 @@
                                 <div class="ddfsres"><b>メッセージはありません。</b></div>
                             </li>
                             {% endif %}
+
                             {% if add_network %}
                             {% for request in add_network %}
                             {% if account.mainuser == user %}
@@ -159,7 +160,7 @@
                         <span class='hdvbd'>認証済み</span>
                         {% for rootauth in rootauths %}
                         {% for page in accounts %}
-                        {% if account.mainuser == rootauth.user and rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True %}
+                        {% if account.mainuser == rootauth.user and  rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True%}
                         {% if page.mainuser == rootauth.target_user %}
                         <li>
                             <div class="founde">
@@ -171,7 +172,7 @@
                         </li>
                         {% endif %}
                         {% endif %}
-                        {% if account.mainuser == rootauth.target_user and rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True%}
+                        {% if account.mainuser == rootauth.target_user and rootauth.is_approved_by_user == True  and  rootauth.is_approved_by_target == True%}
                         {% if page.mainuser == rootauth.user %}
                         <li>
                             <div class="founde">
@@ -187,6 +188,35 @@
                         {% endfor %}
                     </ul>
                     <ul class="messages_1">
+                        <span class='hdvbd'>非認証</span>
+                        {% for rootauth in rootauths %}
+                        {% if rootauth.target_user == account.mainuser and rootauth.is_approved_by_user == False  %}
+                        {% for page in accounts %}
+                        {% if page.mainuser == rootauth.user %}
+                        <li>
+                            <div class='founde'>
+                                <a class='a_icon' href="/profile/{{page.pk}}">
+                                    <img class='founder_image' src="/media/{{page.icon}}"/>
+                                    <b>{{page.name}}</b>
+                                </a>
+                                {% if account.mainuser == user %}
+                                {% if return_requests %}
+                                {% for return in return_requests %}
+                                <a href="{% url 'return_auth_request' return.pk  %}">
+                                    <button class="button"><b>認証許可</b></button>
+                                </a>
+                                {% comment %} <a href="{% url 'approve_auth_request' page.id %}">承認</a> {% endcomment %}
+                                {% endfor %}
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <ul class="messages_1">
                         <span class='hdvbd'>ルート中</span>
                         {% for rootauth in rootauths %}
                         {% if rootauth.user == account.mainuser and rootauth.is_approved_by_user == False  %}
@@ -198,20 +228,14 @@
                                     <img class='founder_image' src="/media/{{page.icon}}"/>
                                     <b>{{page.name}}</b>
                                 </a>
-                                {% comment %} {% if account.mainuser == user %}
-                                <div class='sac'>
-                                    <a class="dropdown-item" href="{% url 'add_root' rootauth.id %}">
-                                        <button class='button-auth'>承認</button>
-                                    </a>
-                                </div> 
                             </div>
-                            {% endif %} {% endcomment %}
                         </li>
                         {% endif %}
                         {% endfor %}
                         {% endif %}
                         {% endfor %}
                     </ul>
+
                 </div>
             </div>
         </div>
