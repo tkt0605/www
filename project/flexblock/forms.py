@@ -42,7 +42,24 @@ class CreateClassForm(forms.ModelForm):
         self.managername = managername
         super().__init__(*args, **kwargs)
         if self.mainuser:
-            self.fields['comanager'].queryset =  RootAuth.objects.filter(user=self.managername.mainuser, is_approved_by_user=True, is_approved_by_target=True)
+            # self.fields['comanager'].queryset =  RootAuth.objects.filter(
+            #     Q(user=self.managername.mainuser) |
+            #     Q(target_user=self.managername.mainuser),
+            #     is_approved_by_user=True, 
+            #     is_approved_by_target=True,
+            #     is_denied = False
+            # )
+            rootauth = RootAuth.objects.filter(
+                Q(user=self.managername.mainuser) |
+                Q(target_user=self.managername.mainuser),
+                is_approved_by_user=True, 
+                is_approved_by_target=True,
+                is_denied = False
+            )
+            self.fields['comanager'].queryset = Account.objects.filter(
+                Q(mainuser=rootauth.user) |
+                Q(mainuser=rootauth.target_user),
+            )
     def save(self, commit=True):
         kwargs = super().save(commit=False)
         if self.mainuser:

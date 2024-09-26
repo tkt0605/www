@@ -78,22 +78,25 @@
                         <ul class="messages">
                             <span class="hdvbd">通知</span>
                             {% if auth_requests_received%}
-                            {% for request in auth_requests_received %}
-                            {% if account.mainuser == user and not request.is_denied %}
-                            <li>
-                                <div class="request_info">
-                                    <p>{{ request.user.username }} wants to connect with you.</p>
-                                    <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">承認</a>or<a href="{% url "not_approve_auth_request" request.id %}">拒否</a></div>
-                                </div>
-                            </li>
-                            {% endif %}
-                            {% endfor %}
+                                {% for request in auth_requests_received %}
+                                    {% if account.mainuser == user and not request.is_denied %}
+                                    <li>
+                                        <div class="request_info">
+                                            <p>{{ request.user.username }} wants to connect with you.</p>
+                                            <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">承認</a>or<a href="{% url "not_approve_auth_request" request.id %}">拒否</a></div>
+                                        </div>
+                                    </li>
+                                    {% else %}
+                                    <li>
+                                        <div class="ddfsres"><b>メッセージはありません。</b></div>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
                             {% else %}
                             <li>
                                 <div class="ddfsres"><b>メッセージはありません。</b></div>
                             </li>
                             {% endif %}
-
                             {% if add_network %}
                             {% for request in add_network %}
                             {% if account.mainuser == user %}

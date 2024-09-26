@@ -50,12 +50,14 @@ def page(request, pk):
         user=request.user, 
         target_user=profile_user, 
         is_approved_by_user=True, 
-        is_approved_by_target=True
+        is_approved_by_target=True,
+        is_denied = False
     ).exists() or RootAuth.objects.filter(
         user=profile_user, 
         target_user=request.user, 
         is_approved_by_user=True, 
-        is_approved_by_target=True
+        is_approved_by_target=True,
+        is_denied = False
     ).exists()
     auth_request_sent = RootAuth.objects.filter(user=request.user, target_user=profile_user).exists()
     auth_requests_received = RootAuth.objects.filter(target_user=request.user, is_approved_by_user=False)
@@ -461,18 +463,18 @@ def not_approve_auth_request(request, pk):
 
     # リクエストを拒否状態に変更する
     if request.user == not_approve_auth_request.target_user and not not_approve_auth_request.is_approved_by_target:
-        not_approve_auth_request.is_approved_by_user = True
+        not_approve_auth_request.is_approved_by_user = False
         not_approve_auth_request.is_approved_by_target = False
         not_approve_auth_request.is_denied = True  # 拒否状態に設定
         not_approve_auth_request.save()
 
         reverse_request = RootAuth.objects.filter(user=not_approve_auth_request.target_user, target_user=not_approve_auth_request.user).first()
         if reverse_request:
-            reverse_request.is_approved_by_user = True
+            reverse_request.is_approved_by_user = False
             reverse_request.save()
 
     elif request.user == not_approve_auth_request.user and not not_approve_auth_request.is_approved_by_user:
-        not_approve_auth_request.is_approved_by_user = True
+        not_approve_auth_request.is_approved_by_user = False
         reverse_request.is_approved_by_target = False
         not_approve_auth_request.is_denied = True  # 拒否状態に設定
         not_approve_auth_request.save()
