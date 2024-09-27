@@ -14,7 +14,6 @@
     <form class="Signup_form" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <p>{{user.username}}</p>
       <button class="button" type="submit"><b>サインアップ</b></button>
       <hr class="hr">
     </form>
