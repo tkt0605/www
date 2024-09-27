@@ -99,11 +99,11 @@
                             {% endif %}
                             {% if add_network %}
                             {% for request in add_network %}
-                            {% if account.mainuser == user %}
+                            {% if account.mainuser == user and not request.is_denied %}
                             <li>
                                 <div class="request_info">
                                     <p>{{ request.name.mainuser.username }}が、{{request.group}}を{{request.name}}に追加しました。</p>
-                                    <div class="approve"><a href="{% url 'approve_add_request' request.id %}">Approve</a>or<a href="{% url "not_approve_add_request" request.id %}">Not Approve</a></div>
+                                    <div class="approve"><a href="{% url 'approve_add_request' request.id %}">許可</a>or<a href="{% url "not_approve_add_request" request.id %}">拒否</a></div>
                                 </div>
                             </li>
                             {% endif %}

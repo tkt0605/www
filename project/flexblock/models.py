@@ -166,6 +166,7 @@ class AddNetwork(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
     is_approved_by_user = models.BooleanField(default=False)
     is_approved_by_target = models.BooleanField(default=False)
+    is_denied = models.BooleanField(default=False)
     # created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     class Meta:
         verbose_name_plural = "AddNetwork"

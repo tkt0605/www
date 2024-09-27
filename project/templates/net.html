@@ -91,39 +91,41 @@
         <div class="panel2-group">
             <div class="panel2 tab2-A is-show2">
                 <div class="tab_1">
-                    <div class="post_field">
-                        <div class='ndvhjsbd'><b>共同管理者一覧</b></div>
-                        <ul class="messages">
-                            <span class="hdvbd">オーナー</span>
-                            <li>
-                                <div class="founder">
-                                    <a href='/profile/{{network.hub.managername.pk}}'>
-                                        <img class="founder_image" src="/media/{{network.hub.managername.icon}}"/>
-                                        <b>{{network.hub.managername}}</b>
-                                    </a>
-                                </div>
-                            </li>
-                            <span class="hdvbd">サブ・オーナー</span>
-                            <li>
-                                {% if is_sub %}
-                                {% for mark in marks %}
-                                {% if network == mark.name %}
-                                <div class='founder'>
-                                    <a href="{% url "page" mark.sub.managername.pk %}">
-                                        <img src="/media/{{mark.sub.managername.icon}}/" class="founder_image"/>
-                                        <b>{{mark.sub.managername}}</b>
-                                    </a>
-                                </div>
-                                {% endif %}
-                                {% endfor %}
-                                {% else %}
-                                <div class='founder'>
-                                    <b>Nothing</b>
-                                </div>
-                                {% endif %}
-                            </li>
-                        </ul>
-                    </div>        
+                    <div class="post_field_home">
+                        <div class="post_field">
+                            <div class='ndvhjsbd'><b>共同管理者一覧</b></div>
+                            <ul class="messages">
+                                <span class="hdvbd">オーナー</span>
+                                <li>
+                                    <div class="founder">
+                                        <a href='/profile/{{network.hub.managername.pk}}'>
+                                            <img class="founder_image" src="/media/{{network.hub.managername.icon}}"/>
+                                            <b>{{network.hub.managername}}</b>
+                                        </a>
+                                    </div>
+                                </li>
+                                <span class="hdvbd">サブ・オーナー</span>
+                                <li>
+                                    {% if is_sub %}
+                                    {% for mark in marks %}
+                                    {% if network == mark.name %}
+                                    <div class='founder'>
+                                        <a href="{% url "page" mark.sub.managername.pk %}">
+                                            <img src="/media/{{mark.sub.managername.icon}}/" class="founder_image"/>
+                                            <b>{{mark.sub.managername}}</b>
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% else %}
+                                    <div class='founder'>
+                                        <b>Nothing</b>
+                                    </div>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div> 
+                    </div>       
                 </div>
             </div>
         
@@ -185,21 +187,32 @@
                                         <a target="_blank" rel="noopener noreferrer" class='rink' href="{% url 'community' member.group%}" >
                                             <img class="post_member" src="/media/{{member.group.backimage}}/"/><b>{{member.group}}</b>
                                         </a>    
-                                        {% if  member.is_approved_by_user == True %}
-                                        {% if not is_sub %}
-                                        <div class="button">
-                                            <a href="{% url 'add_mark' network.pk member.group.name %}">
-                                                <button type="submit" class="join-button"><b>サブに追加</b></button>
-                                            </a>
-                                        </div>
+
+                                        {% if  member.is_denied == False %}
+                                            {% if not is_sub %}
+                                            <div class="button">
+                                                <a href="{% url 'add_mark' network.pk member.group.name %}">
+                                                    <button type="submit" class="join-button"><b>サブに追加</b></button>
+                                                </a>
+                                            </div>
+                                            {% else %}
+                                            <div class="button">
+                                                <a href="{% url 'delete_mark' network.pk member.group.name %}">
+                                                    <button type="submit" class="join-button-out"><b>サブを削除</b></button>
+                                                </a>
+                                            </div>
+                                            {% endif %}
                                         {% else %}
-                                        <div class="button">
-                                            <a href="{% url 'delete_mark' network.pk member.group.name %}">
-                                                <button type="submit" class="join-button-out"><b>サブを削除</b></button>
-                                            </a>
-                                        </div>
+                                            {% if not return_add_request %}
+                                            <div class="button">
+                                                <a href="{% url 'return_add_request' member.pk %}">
+                                                    <button type="submit" class="join-button-out"><b>参加を許可</b></button>
+                                                </a>
+                                            </div>
+                                            {% comment %} {% endfor %} {% endcomment %}
+                                            {% endif %}
                                         {% endif %}
-                                        {% endif %}
+
                                     </div>
                                     {% else %}
                                     <div class='member_info_font'>

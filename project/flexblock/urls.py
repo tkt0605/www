@@ -29,6 +29,7 @@ urlpatterns = [
     path('approve_add_request/<int:pk>', views.approve_add_request, name='approve_add_request'),
     path("not_approve_add_request/<int:pk>", views.not_approve_add_request, name="not_approve_add_request"),
     path('add_auth_root/<int:pk>', views.add_root, name='add_root'),
+    path("return_add_request/<int:auth_add_pk>", views.return_add_request, name="return_add_request")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

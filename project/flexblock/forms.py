@@ -49,7 +49,7 @@ class CreateClassForm(forms.ModelForm):
             #     is_approved_by_target=True,
             #     is_denied = False
             # )
-            rootauth = RootAuth.objects.filter(
+            rootauths = RootAuth.objects.get(
                 Q(user=self.managername.mainuser) |
                 Q(target_user=self.managername.mainuser),
                 is_approved_by_user=True, 
@@ -57,8 +57,8 @@ class CreateClassForm(forms.ModelForm):
                 is_denied = False
             )
             self.fields['comanager'].queryset = Account.objects.filter(
-                Q(mainuser=rootauth.user) |
-                Q(mainuser=rootauth.target_user),
+                Q(mainuser=rootauths.user) |
+                Q(mainuser=rootauths.target_user),
             )
     def save(self, commit=True):
         kwargs = super().save(commit=False)
