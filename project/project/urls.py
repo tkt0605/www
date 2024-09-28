@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin-auth/', admin.site.urls),
     path('', include('flexblock.urls')),
     path('accounts/', include('allauth.urls')),
+    #  path('accounts/', include('accounts.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

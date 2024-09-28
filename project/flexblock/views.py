@@ -102,6 +102,10 @@ def community(request, name):
         is_approved_by_user=True, 
         is_approved_by_target=True
     ).exists() 
+    web_site_links = group.web_site.split('@') if group.web_site else []
+
+    # 空文字列を除外
+    web_site_links = [link for link in web_site_links if link]
     # or AddNetwork.objects.filter(
     #         name__mainuser=request.user,
     #         group=group,
@@ -122,6 +126,7 @@ def community(request, name):
         "exists": exists,
         "auth_requests_received": auth_requests_received,
         "mutual_auth": mutual_auth,
+        'web_site_links': web_site_links
     }
         # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:

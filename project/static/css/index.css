@@ -32,28 +32,30 @@ body {
 }
 
 .group-container {
-     display: flex;
-    /* display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
-    gap: 30px;
-    padding: 40px;
-    width: 80%;
-    margin-top: 20px;
-    margin-left: 300px;
-    /* align-items: center; */
+    /* display: flex;
+    flex-wrap: wrap; */
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+   gap: 30px;
+   padding: 40px;
+   width: 80%;
+   margin-top: 20px;
+   margin-left: 300px;
+   /* align-items: center; */
 }
 
 .group-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(15px);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-    position: relative;
-    /* padding: 40px; */
-    width: 450px;
-    /* align-items: center; */
+   background: rgba(255, 255, 255, 0.1);
+   border-radius: 20px;
+   overflow: hidden;
+   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+   backdrop-filter: blur(15px);
+   transition: transform 0.4s ease, box-shadow 0.4s ease;
+   position: relative;
+   /* padding: 40px; */
+   width: 350px;
+   height: auto;
+   /* align-items: center; */
 }
 
 .group-card:hover {

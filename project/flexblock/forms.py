@@ -2,13 +2,15 @@ from accounts.models import Account
 from .models import Group, Network, Post, RootAuth, NetworkPost, AddNetwork
 from django import forms
 from django.db.models import Q
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 class CreateClassForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = "__all__"
         exclude = ["mainuser", "managername"]
-        required=True,
-        disabled=False,
+        # required=True,
+        # disabled=False,
         widgets = {
             'name': forms.TextInput(
                 attrs={
@@ -36,30 +38,57 @@ class CreateClassForm(forms.ModelForm):
                 }
             ),
         }
-        required=True
     def __init__(self, mainuser=None, managername=None, *args, **kwargs):
         self.mainuser = mainuser
         self.managername = managername
         super().__init__(*args, **kwargs)
         if self.mainuser:
-            # self.fields['comanager'].queryset =  RootAuth.objects.filter(
-            #     Q(user=self.managername.mainuser) |
-            #     Q(target_user=self.managername.mainuser),
-            #     is_approved_by_user=True, 
-            #     is_approved_by_target=True,
-            #     is_denied = False
-            # )
-            rootauths = RootAuth.objects.get(
+            self.fields['comanager'].queryset =  RootAuth.objects.filter(
                 Q(user=self.managername.mainuser) |
                 Q(target_user=self.managername.mainuser),
                 is_approved_by_user=True, 
                 is_approved_by_target=True,
                 is_denied = False
             )
-            self.fields['comanager'].queryset = Account.objects.filter(
-                Q(mainuser=rootauths.user) |
-                Q(mainuser=rootauths.target_user),
-            )
+            # rootauths = RootAuth.objects.get(
+            #     Q(user=self.managername.mainuser) |
+            #     Q(target_user=self.managername.mainuser),
+            #     is_denied = False
+            # )
+            # self.fields['comanager'].queryset = Account.objects.filter(
+            #     Q(mainuser=rootauths.user) |
+            #     Q(mainuser=rootauths.target_user),
+            # )
+    def clean_web_site(self):
+        web_site = self.cleaned_data.get('web_site')
+
+        if web_site:
+            # @で区切ってリンクリストを作成し、先頭の@を削除
+            
+            link_list = [link.strip() for link in web_site.split('@') if link.strip()]
+            url_validator = URLValidator()
+
+            invalid_links = []
+            valid_links = []
+        
+            # 各リンクをバリデーション
+            for link in link_list:
+                try:
+                    # リンクがhttpまたはhttpsで始まっているか確認
+                    if not (link.startswith('http://') or link.startswith('https://')):
+                        raise ValidationError(f'{link} must start with http:// or https://')
+                    # URLをバリデート
+                    url_validator(link)
+                    valid_links.append(link)  # 有効なリンクをリストに追加
+                except ValidationError:
+                    invalid_links.append(link)
+            # 不正なリンクがある場合はエラーを返す
+            if invalid_links:
+                raise ValidationError(f'The following URLs are invalid: {", ".join(invalid_links)}')
+            # リストを再び'@'で区切って返す
+            return '@' + '@'.join(valid_links)
+        # web_siteが存在しない場合はそのまま返す
+        return web_site
     def save(self, commit=True):
         kwargs = super().save(commit=False)
         if self.mainuser:

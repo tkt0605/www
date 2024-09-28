@@ -17,30 +17,6 @@ from django.db.models import Q # 遅延インポート
 #         extra_fields.setdefault('is_staff', True)
 #         extra_fields.setdefault('is_superuser', True)
 #         return self.create_user(email, username,first_name, last_name, password, **extra_fields)
-
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, username=None, first_name=None, last_name=None, password=None, **extra_fields):
-        if not email:
-            raise ValueError('The Email field must be set')
-        if not username:
-            username = 'default_username'
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username, first_name=first_name, last_name=last_name, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, username=None, first_name=None, last_name=None, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
-
-        return self.create_user(email, username, first_name, last_name, password, **extra_fields)
-
 # class CustomUser(AbstractBaseUser, PermissionsMixin):
 #     email = models.EmailField(unique=True)
 #     username = models.CharField(max_length=30, unique=True, default='default_username')
@@ -74,33 +50,46 @@ class CustomUserManager(BaseUserManager):
 #     @property
 #     def profile(self):
 #         return Account.objects.get_or_create(user=self)[0]
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, username, password=None):
+        if not email:
+            raise ValueError("Users must have an email address")
+        email = self.normalize_email(email)
+        user = self.model(email=email, username=username)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username, password):
+        user = self.create_user(email, username, password)
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=30, unique=True, default='default_username')
-    first_name = models.CharField(max_length=30, blank=True, null=True)  # null=True 追加
-    last_name = models.CharField(max_length=30, blank=True, null=True)   # null=True 追加
+    email = models.EmailField(verbose_name='email address', max_length=255, unique=True)
+    username = models.CharField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
-
-    # 追加: related_name を設定して競合を避ける
+    objects = CustomUserManager()
     groups = models.ManyToManyField(
         Group,
-        related_name='custom_user_groups',
+        related_name='custom_user_groups', 
         blank=True,
         help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
         related_query_name='user',
     )
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name='custom_user_permissions',
+        related_name='custom_user_permissions', 
         blank=True,
         help_text='Specific permissions for this user.',
         related_query_name='user',
     )
-
-    objects = CustomUserManager()
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -110,8 +99,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     @property
     def profile(self):
         return Account.objects.get_or_create(user=self)[0]
-
-
 class Account(models.Model):
     mainuser = models.OneToOneField(CustomUser, on_delete=models.CASCADE, verbose_name="メインユーザー", blank=True, null=True, default="")
     name = models.CharField(max_length=15, verbose_name='ユーザー名', blank=True, null=True, default="")
