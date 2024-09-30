@@ -8,7 +8,7 @@
 {% block content %}
 <div class="main_bord">
     <div class="name">
-        ブロックの作成
+        シングル・ブロックの作成
     </div>
     <br>
     <div class="forms">
@@ -21,5 +21,28 @@
         </div>
     </div>
 </div>
-<script type='text/javascript' src="{% static 'js/group_admin.js' %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // group_type の選択を取得
+        const groupTypeSelect = document.querySelector('#id_type');
+        const coManagerField = document.querySelector('#id_comanager');
+
+        // ページ読み込み時に group_type を確認
+        function toggleCoManagerField() {
+            if (groupTypeSelect.value === 'multiple') {
+                coManagerField.style.display = 'block';  // マルチなら表示
+            } else {
+                coManagerField.style.display = 'none';   // シングルなら非表示
+            }
+        }
+
+        // 初期表示時に状態を確認
+        toggleCoManagerField();
+
+        // group_type が変更されたら動的に表示切り替え
+        groupTypeSelect.addEventListener('change', function () {
+            toggleCoManagerField();
+        });
+    });
+</script> 
 {% endblock content %}

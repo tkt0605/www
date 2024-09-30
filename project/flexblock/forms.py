@@ -1,3 +1,7 @@
+from typing import Any, Mapping
+from django.core.files.base import File
+from django.db.models.base import Model
+from django.forms.utils import ErrorList
 from accounts.models import Account
 from .models import Group, Network, Post, RootAuth, NetworkPost, AddNetwork
 from django import forms
@@ -8,7 +12,7 @@ class CreateClassForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = "__all__"
-        exclude = ["mainuser", "managername"]
+        exclude = ["mainuser", "managername", "mainusers"]    
         # required=True,
         # disabled=False,
         widgets = {
@@ -38,33 +42,23 @@ class CreateClassForm(forms.ModelForm):
                 }
             ),
         }
-    def __init__(self, mainuser=None, managername=None, *args, **kwargs):
+    def __init__(self, mainuser=None, managername=None, mainusers=None, *args, **kwargs):
         self.mainuser = mainuser
         self.managername = managername
+        self.mainusers = mainusers
+        # self.comanager = comanager 
         super().__init__(*args, **kwargs)
-        if self.mainuser:
-            self.fields['comanager'].queryset =  RootAuth.objects.filter(
-                Q(user=self.managername.mainuser) |
-                Q(target_user=self.managername.mainuser),
-                is_approved_by_user=True, 
-                is_approved_by_target=True,
-                is_denied = False
-            )
-            # rootauths = RootAuth.objects.get(
-            #     Q(user=self.managername.mainuser) |
-            #     Q(target_user=self.managername.mainuser),
-            #     is_denied = False
-            # )
-            # self.fields['comanager'].queryset = Account.objects.filter(
-            #     Q(mainuser=rootauths.user) |
-            #     Q(mainuser=rootauths.target_user),
-            # )
+        if self.instance.type == 'multiple':
+            self.fields['comanager'].required = True  # 必須にする
+            self.fields['managername'].required = False
+        else:
+            self.fields['comanager'].required = False# 非表示にする
     def clean_web_site(self):
         web_site = self.cleaned_data.get('web_site')
 
         if web_site:
             # @で区切ってリンクリストを作成し、先頭の@を削除
-            
+
             link_list = [link.strip() for link in web_site.split('@') if link.strip()]
             url_validator = URLValidator()
 
@@ -91,12 +85,20 @@ class CreateClassForm(forms.ModelForm):
         return web_site
     def save(self, commit=True):
         kwargs = super().save(commit=False)
+        # mainuserとmanagernameの保存処理
         if self.mainuser:
             kwargs.mainuser = self.mainuser
+        if self.managername:
             kwargs.managername = self.managername
-            if commit == True:
-                kwargs.save()
-        return  kwargs.mainuser
+        if commit:
+            kwargs.save()
+        # ManyToManyField の mainusers をセット
+        if self.mainusers:
+            kwargs.mainuser.set(self.mainusers)
+        # commit=True ならばオブジェクトを保存してから返す
+        if commit:
+            kwargs.save()
+        return kwargs  # オブジェクトそのものを返す
 class CreateNetworkForm(forms.ModelForm):
     class Meta:
         model = Network

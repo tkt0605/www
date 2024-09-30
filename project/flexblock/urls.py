@@ -7,6 +7,7 @@ urlpatterns = [
     path("profile/<int:pk>", views.page, name="page"),
     path("community/<str:name>", views.community, name="community"),
     path("class/create.html", views.form_create, name="form_create"),
+    # path("class/co/co-create.html", views.create_class_view, name="create_class_view"),
     path("flex/networks", views.networks, name="networks"),
     path("flex/networks/<int:pk>", views.network, name="network"),
     path("flex/create-network", views.form_net, name="form_net"),

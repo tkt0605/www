@@ -1,3 +1,4 @@
+from django.forms import BaseModelForm
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import loader
@@ -24,7 +25,7 @@ def index(request):
     context = {
         "csrf_token":"",
         "accounts": accounts,
-        "rooms": rooms
+        "rooms": rooms,
     }
     return HttpResponse(template.render(context, request))
 @login_required
@@ -82,12 +83,13 @@ def page(request, pk):
 @login_required
 def community(request, name):
     # データの取得
+    user = request.user
+
     accounts = Account.objects.order_by("-pk")[:100000]
     group = get_object_or_404(Group, name=name)
     template = loader.get_template('class.html')
     posts = Post.objects.order_by('-pk')[:1000000]
     user_account = request.user.account
-    user = request.user
     network_exists = Network.objects.filter(mainuser=user).exists()
     is_member = GroupMembership.objects.filter(account=user_account, group=group).exists()
     # is_network = AddNetwork.objects.filter(name = network_exists, group=group).exists()
@@ -113,6 +115,7 @@ def community(request, name):
     #         is_approved_by_target=True
     #     ).exists()
     auth_requests_received = AddNetwork.objects.filter(group=group, is_approved_by_target=False)
+
     context = {
         "csrf_token": "",
         "posts": posts,
@@ -126,7 +129,9 @@ def community(request, name):
         "exists": exists,
         "auth_requests_received": auth_requests_received,
         "mutual_auth": mutual_auth,
-        'web_site_links': web_site_links
+        'web_site_links': web_site_links,
+        # "comanager_exists": comanager_exists,
+        # "account_name": account_name,
     }
         # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
@@ -278,11 +283,49 @@ class CreateClassView(generic.CreateView):
     # success_url = "/"
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super().get_form_kwargs(*args, **kwargs)
-        kwargs['mainuser'] = self.request.user
-        form = self.request.user.username
-        kwargs['managername'] = Account.objects.get(name=form)
+        if self.request.method == 'POST':
+            form_type = self.request.POST.get('type')
+            if form_type == 'multiple':
+                comanager_ids = self.request.POST.getlist('comanager')  
+                mainusers_qs = CustomUser.objects.filter(email__in=comanager_ids)
+                kwargs['mainusers'] = mainusers_qs 
+            else:
+                kwargs['mainuser'] = self.request.user
+                form = self.request.user.username
+                kwargs['managername'] = Account.objects.get(name=form)
         return kwargs
     ## classフォームから、get_context_data()を取得する。
+    def form_valid(self, form):
+        # フォームが有効な場合、`type`が`multiple`ならば`comanager`を必須にする
+        if form.is_valid():
+            # form.save(commit=False) で一時的なオブジェクトを作成
+            self.object = form.save(commit=False)
+
+            # Noneチェック: objectがNoneであればエラー
+            if self.object is None:
+                form.add_error(None, "保存するオブジェクトが作成できませんでした。")
+                return self.form_invalid(form)
+        cleaned_data = form.cleaned_data
+        if cleaned_data['type'] == 'multiple':
+
+            commanger_ps = RootAuth.objects.filter(
+                Q(user=self.request.user) | Q(target_user=self.request.user),
+                is_approved_by_user = True,
+                is_approved_by_target = True,
+                is_denied = False
+            )
+            form.fields['comanager'].queryset = commanger_ps
+            comanager_ids = self.request.POST.getlist('comanager')  
+            # form.fields['mainusers'].queryset = CustomUser.objects.filter(email__in=comanager_ids)
+            if not cleaned_data.get('comanager'):
+                form.add_error('comanager', '共同管理者は必須です。')
+            self.object.save()  # まずメインのオブジェクトを保存
+            # self.object.mainuser.set(cleaned_data['mainusers'])  # ManyToManyField の設定
+            self.object.comanager.set(cleaned_data['comanager'])  # ManyToManyField の設定
+        else:
+            # type が "single" の場合の処理
+            self.object.save()
+        return super().form_valid(form)
     def get_context_data(self, **kwargs):
         #親クラスの get_context_data メソッドを呼び出す:
         context = super().get_context_data(**kwargs)
@@ -291,12 +334,7 @@ class CreateClassView(generic.CreateView):
         #追加のコンテキストデータをマージ,htmlにコンテキストを表示できるようにする。
         context['accounts'] = accounts
         return context
-    # def get_absolute_url(self):
-    #     return reverse('community', kwargs={"name": self.kwargs["name"]})
-    def get_absolute_url(self):
-        return reverse('community', name=self.kwargs["name"])
 form_create = CreateClassView.as_view()
-
 class CreateNetworkView(generic.CreateView):
     form_class = CreateNetworkForm
     template_name = "create-net.html"
@@ -315,9 +353,16 @@ form_net = CreateNetworkView.as_view()
 class CreatePostView(generic.CreateView):
     form_class = CreatePostForm
     template_name = "create-post.html"
+    def get_instance(self):
+        if 'group' in self.kwargs:  # もしURLや別の条件でGroupを渡しているなら
+            return Group.objects.get(id=self.kwargs['group'])
+        elif 'account' in self.kwargs:  # もしAccountを渡すなら
+            return Account.objects.get(id=self.kwargs['account'])
+        return None
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super().get_form_kwargs(*args, **kwargs)
-        form = CreatePostForm(self.request.FILES, self.request.POST, instance=Account and Group)
+        # form = CreatePostForm(self.request.FILES, self.request.POST, instance=Account and Group)
+        form = CreatePostForm(self.request.POST, self.request.FILES, instance=self.get_instance())
         form.instance.name = self.kwargs['name']
         kwargs['mainuser'] = self.request.user
         kwargs['destination'] = Group.objects.get(name=form.instance.name)

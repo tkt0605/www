@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from accounts.models import CustomUser, Account
+from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 User = get_user_model()
 class Category(models.Model):
@@ -40,21 +41,17 @@ class Group(models.Model):
         ('single', 'シングル'),
         ('multiple', 'マルチ'),
     ]
-    mainuser = models.ForeignKey("accounts.CustomUser",  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
+    mainuser = models.ForeignKey(CustomUser,  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
-    group_type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
-    # group_type = models.ForeignKey(, choices=GROUP_TYPE,default='single',verbose_name="タイプ", on_delete=models.CASCADE) 
-    comanager = models.ManyToManyField(Account, related_name="共同管理", blank=True)
-    # comanager = models.ManyToManyField(RootAuth, null=True, related_name="共同管理", blank=True)
+    type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
+    mainusers = models.ManyToManyField(CustomUser, related_name="共同管理者", blank=True)
+    comanager = models.ManyToManyField(Account, related_name="comanager_groups", blank=True)
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
     visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
-    # web_site = models.URLField(blank=True)
     web_site = models.TextField(blank=True, help_text="複数のURLを@で区切って入力してください")
     backimage = models.ImageField(upload_to='backimage/', verbose_name="BackImage")
-    # icon = models.ImageField(upload_to='classicon/', verbose_name="クラスアイコン", null=True)
     index = models.CharField(max_length=100, blank=False, null=True, verbose_name = "見出し")
-    # explain = models.TextField(max_length=180, blank=True, verbose_name="explain")
     created_at = models.DateField(null=True ,auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return str(self.name)
@@ -81,6 +78,7 @@ class Group(models.Model):
             if not (is_approved_by_manager or is_approved_by_mainuser or is_approved_by_manager_login or is_approved_by_mainuser_login):
                 return False
             # 通常のグループ参加条件（RootAuthの相互承認をチェック）
+            # 通常のグループ参加条件（RootAuthの相互承認をチェック）
         auth_exists = RootAuth.objects.filter(
             Q(user=main_user, target_user=user) | 
             Q(user=user, target_user=main_user),
@@ -90,12 +88,14 @@ class Group(models.Model):
         print(f"Auth from mainuser to user: {auth_exists}")
         # 'local'の場合の追加条件も満たしていれば、参加可能
         return auth_exists
+    def get_absolute_url(self):
+        return reverse('community', kwargs={"name": self.name})
     class Meta:
             verbose_name_plural = 'ClassName'
 class GroupMembership(models.Model):
     # account = models.ForeignKey("accounts.CustomUser", on_delete=models.CASCADE, verbose_name="ユーザー名", null=True)
     account = models.ForeignKey(Account, on_delete=models.CASCADE, verbose_name="ユーザー名", null=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name='参加グループ名', null=True)
+    group = models.ForeignKey(Group or CoGroup, on_delete=models.CASCADE, verbose_name='参加グループ名', null=True)
     join_date = models.DateTimeField(auto_now_add=True, null=True, verbose_name="参加日")
     class Meta:
         unique_together = ('account', 'group')  # 同じユーザーが同じグループに重複して参加できないようにする
@@ -104,7 +104,7 @@ class GroupMembership(models.Model):
         return f'{self.account.name} joined {self.group.name}'
 class Post(models.Model):
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
-    destination = models.ForeignKey(Group, on_delete=models.CASCADE, verbose_name="投稿先")
+    destination = models.ForeignKey(Group or CoGroup, on_delete=models.CASCADE, verbose_name="投稿先")
     username = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="投稿主")
     text = models.TextField(null=True, verbose_name=None)
     image = models.FileField(upload_to='post/',null=True,blank=True , verbose_name=None)
