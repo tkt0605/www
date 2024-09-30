@@ -51,6 +51,14 @@ class CreateClassForm(forms.ModelForm):
         if self.instance.type == 'multiple':
             self.fields['comanager'].required = True  # 必須にする
             self.fields['managername'].required = False
+            ## 以下が変更、ユーザーのEmailとRootAuthモデルのuserやtarget_userと対応している物を取得する。
+            accouunt = RootAuth.objects.filter(
+                Q(user=self.request.user) | Q(target_user=self.request.user),
+                is_approved_by_user = True,
+                is_approved_by_target = True,
+                is_denied = False
+            )
+            self.fields['comanager'].queryset = accouunt
         else:
             self.fields['comanager'].required = False# 非表示にする
     def clean_web_site(self):

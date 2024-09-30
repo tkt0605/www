@@ -287,8 +287,9 @@ class CreateClassView(generic.CreateView):
             form_type = self.request.POST.get('type')
             if form_type == 'multiple':
                 comanager_ids = self.request.POST.getlist('comanager')  
-                mainusers_qs = CustomUser.objects.filter(email__in=comanager_ids)
-                kwargs['mainusers'] = mainusers_qs 
+
+                # mainusers_qs = CustomUser.objects.filter(email__in=comanager_ids)
+                # kwargs['mainusers'] = mainusers_qs 
             else:
                 kwargs['mainuser'] = self.request.user
                 form = self.request.user.username
@@ -347,8 +348,7 @@ class CreateNetworkView(generic.CreateView):
         accounts = Account.objects.order_by('-pk')[:10000000]
         context['accounts'] = accounts
         return context
-    def get_success_url(self):
-        return reverse('networks')
+
 form_net = CreateNetworkView.as_view()
 class CreatePostView(generic.CreateView):
     form_class = CreatePostForm
@@ -373,8 +373,6 @@ class CreatePostView(generic.CreateView):
         accounts = Account.objects.order_by('-pk')[:10000000]
         context['accounts'] = accounts
         return context
-    def get_absolute_url(self):
-        return reverse('community', name=self.kwargs["name"])
 form_post = CreatePostView.as_view()
 class NetworkPostViews(generic.CreateView):
     form_class = NetworkPostForm
@@ -393,8 +391,6 @@ class NetworkPostViews(generic.CreateView):
         accounts = Account.objects.order_by('-pk')[:10000000]
         context['accounts'] = accounts       
         return context
-    def get_success_url(self):
-        return super().get_success_url()
 form_network_post = NetworkPostViews.as_view()
 @login_required
 def send_auth_request(request, pk):

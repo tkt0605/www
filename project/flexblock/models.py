@@ -44,7 +44,7 @@ class Group(models.Model):
     mainuser = models.ForeignKey(CustomUser,  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
     type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
-    mainusers = models.ManyToManyField(CustomUser, related_name="共同管理者", blank=True)
+    # mainusers = models.ManyToManyField(CustomUser, related_name="共同管理者", blank=True)
     comanager = models.ManyToManyField(Account, related_name="comanager_groups", blank=True)
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
@@ -112,6 +112,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True  ,verbose_name='作成日')
     def __str__(self):
         return str(self.text)
+    def get_absolute_url(self):
+        return reverse('community', name=self.destination)
     class Meta:
         verbose_name_plural = "Post"
 class Network(models.Model):
@@ -160,6 +162,8 @@ class Network(models.Model):
         print(f"Auth from mainuser to user: {auth_exists}")
         # 'local'の場合の追加条件も満たしていれば、参加可能
         return auth_exists
+    def get_success_url(self):
+        return reverse('networks')
     class Meta:
         verbose_name_plural = 'Network'
 class AddNetwork(models.Model):
@@ -198,6 +202,8 @@ class NetworkPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,null=True  ,verbose_name='作成日')
     def __str__(self):
         return str(self.text)
+    def get_absolute_url(self):
+        return reverse("network", kwargs={"pk": self.destination.pk})
     class Meta:
         verbose_name_plural = "NetworkPost"
 class Making(models.Model):
