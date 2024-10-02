@@ -9,6 +9,10 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 class CreateClassForm(forms.ModelForm):
+    comanager = forms.ModelChoiceField(
+        queryset=Account.objects.none(),  # 初期は空のクエリセットを設定
+        required=False
+    )
     class Meta:
         model = Group
         fields = "__all__"
@@ -49,16 +53,9 @@ class CreateClassForm(forms.ModelForm):
         # self.comanager = comanager 
         super().__init__(*args, **kwargs)
         if self.instance.type == 'multiple':
-            self.fields['comanager'].required = True  # 必須にする
+            self.fields['mainuser'].required = True
             self.fields['managername'].required = False
-            ## 以下が変更、ユーザーのEmailとRootAuthモデルのuserやtarget_userと対応している物を取得する。
-            accouunt = RootAuth.objects.filter(
-                Q(user=self.request.user) | Q(target_user=self.request.user),
-                is_approved_by_user = True,
-                is_approved_by_target = True,
-                is_denied = False
-            )
-            self.fields['comanager'].queryset = accouunt
+            self.fields["comanager"].required = True
         else:
             self.fields['comanager'].required = False# 非表示にする
     def clean_web_site(self):
@@ -102,7 +99,7 @@ class CreateClassForm(forms.ModelForm):
             kwargs.save()
         # ManyToManyField の mainusers をセット
         if self.mainusers:
-            kwargs.mainuser.set(self.mainusers)
+            kwargs.mainusers.set(self.mainusers)
         # commit=True ならばオブジェクトを保存してから返す
         if commit:
             kwargs.save()

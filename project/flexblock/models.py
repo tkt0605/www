@@ -4,11 +4,6 @@ from accounts.models import CustomUser, Account
 from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 User = get_user_model()
-class Category(models.Model):
-    name = models.CharField('カテゴリー', max_length=100)
-
-    def __str__(self):
-        return self.name
 class RootAuth(models.Model):
     user = models.ForeignKey(CustomUser, related_name='auth_requests_sent', on_delete=models.CASCADE)
     target_user = models.ForeignKey(CustomUser, related_name='auth_requests_received', on_delete=models.CASCADE)
