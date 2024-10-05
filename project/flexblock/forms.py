@@ -9,10 +9,6 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 class CreateClassForm(forms.ModelForm):
-    comanager = forms.ModelChoiceField(
-        queryset=Account.objects.none(),  # 初期は空のクエリセットを設定
-        required=False
-    )
     class Meta:
         model = Group
         fields = "__all__"
@@ -53,9 +49,10 @@ class CreateClassForm(forms.ModelForm):
         # self.comanager = comanager 
         super().__init__(*args, **kwargs)
         if self.instance.type == 'multiple':
-            self.fields['mainuser'].required = True
+            self.fields['mainuser'].required = False
             self.fields['managername'].required = False
             self.fields["comanager"].required = True
+            
         else:
             self.fields['comanager'].required = False# 非表示にする
     def clean_web_site(self):

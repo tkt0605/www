@@ -40,7 +40,7 @@ class Group(models.Model):
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
     type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
     # mainusers = models.ManyToManyField(CustomUser, related_name="共同管理者", blank=True)
-    comanager = models.ManyToManyField(Account, related_name="comanager_groups", blank=True)
+    comanager = models.ManyToManyField(Account, related_name="rootauths", blank=True)
     name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
     visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
