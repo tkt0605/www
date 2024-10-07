@@ -37,7 +37,7 @@ class Group(models.Model):
         ('multiple', 'マルチ'),
     ]
     mainuser = models.ForeignKey(CustomUser,  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
-    managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者")
+    managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者",  blank=True,)
     type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
     # mainusers = models.ManyToManyField(CustomUser, related_name="共同管理者", blank=True)
     comanager = models.ManyToManyField(Account, related_name="rootauths", blank=True)
@@ -55,7 +55,7 @@ class Group(models.Model):
         # もしグループが'local'な場合、追加のチェックを実行
         manager_user = self.managername.user if hasattr(self.managername, 'user') else None
         main_user = self.mainuser
-        if self.visibility == 'local':
+        if self.visibility == 'local' and self.type == 'single':
             # 管理者またはメインユーザーによる許可を確認
             is_approved_by_manager = RootAuth.objects.filter(
                 user=manager_user, target_user=user, is_approved_by_user=True, is_approved_by_target=True
@@ -69,11 +69,11 @@ class Group(models.Model):
             is_approved_by_mainuser_login = RootAuth.objects.filter(
                 user=user, target_user=main_user, is_approved_by_user=True, is_approved_by_target=True
             ).exists()
+            
             # グループに参加できる条件は、管理者またはメインユーザーによる許可
             if not (is_approved_by_manager or is_approved_by_mainuser or is_approved_by_manager_login or is_approved_by_mainuser_login):
                 return False
-            # 通常のグループ参加条件（RootAuthの相互承認をチェック）
-            # 通常のグループ参加条件（RootAuthの相互承認をチェック）
+            # 通常のグループ参加条件（RootAuthの相互承認をチェック
         auth_exists = RootAuth.objects.filter(
             Q(user=main_user, target_user=user) | 
             Q(user=user, target_user=main_user),
@@ -83,6 +83,30 @@ class Group(models.Model):
         print(f"Auth from mainuser to user: {auth_exists}")
         # 'local'の場合の追加条件も満たしていれば、参加可能
         return auth_exists
+    def multiple_user_join(self, user):
+        if self.visibility == 'local' and self.type == 'multiple':
+            comanagers = self.comanager.all()
+            # comanagers = Group.objects.filter(name=self.name).values_list('comanager', flat=True).all()
+            for co_manager in comanagers:
+                is_approved_by_manager = RootAuth.objects.filter(
+                    user=co_manager.mainuser, target_user=user, is_approved_by_user=True, is_approved_by_target=True, is_denied=False
+                ).exists() 
+                is_approved_by_manager_login = RootAuth.objects.filter(
+                    user=user, target_user=co_manager.mainuser, is_approved_by_user=True, is_approved_by_target=True, is_denied=False
+                ).exists()
+                if is_approved_by_manager  or is_approved_by_manager_login:
+                    return True
+            return False
+        if self.mainuser:
+            multiple_auth_user = RootAuth.objects.filter(
+                Q(user=self.mainuser, target_user=user) | 
+                Q(user=user, target_user=self.mainuser),
+                is_approved_by_user=True,
+                is_approved_by_target=True
+            ).exists()
+            print(f"Auth from mainuser to user: {multiple_auth_user}")
+            return multiple_auth_user
+        return False
     def get_absolute_url(self):
         return reverse('community', kwargs={"name": self.name})
     class Meta:

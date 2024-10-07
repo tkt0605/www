@@ -135,7 +135,7 @@ class CreateNetworkForm(forms.ModelForm):
         self.mainuser = mainuser
         super().__init__(*args, **kwargs)
         if self.mainuser:
-            self.fields['hub'].queryset = Group.objects.filter(mainuser=self.mainuser)
+            self.fields['hub'].queryset = Group.objects.filter(mainuser=self.mainuser) or Group.objects.filter(comanager=self.mainuser) 
     def save(self, commit=True):
         kwargs = super().save(commit=False)
         if self.mainuser:

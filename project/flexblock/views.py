@@ -105,18 +105,13 @@ def community(request, name):
         is_approved_by_target=True
     ).exists() 
     web_site_links = group.web_site.split('@') if group.web_site else []
-    co_managers = Group.objects.values_list('comanager', flat=True).order_by('-pk')[:100000]
-    # 空文字列を除外
+    comanagers = Group.objects.filter(name=group).values_list("comanager", flat=True)
+    co_exist = Group.objects.filter(type='multiple')
+    comanager_exists = comanagers.order_by('-pk')[:1000000000]
+    cocos = group.comanager.all()
     web_site_links = [link for link in web_site_links if link]
-    # or AddNetwork.objects.filter(
-    #         name__mainuser=request.user,
-    #         group=group,
-    #         is_approved_by_user=True, 
-    #         is_approved_by_target=True
-    #     ).exists()
     auth_requests_received = AddNetwork.objects.filter(group=group, is_approved_by_target=False)
-
-    context = {
+    context = { 
         "csrf_token": "",
         "posts": posts,
         "community": group,
@@ -130,21 +125,30 @@ def community(request, name):
         "auth_requests_received": auth_requests_received,
         "mutual_auth": mutual_auth,
         'web_site_links': web_site_links,
-        "co_managers": co_managers,
-        # "comanager_exists": comanager_exists,
-        # "account_name": account_name,
+        "comanager_exists": comanager_exists,
+        "co_exist": co_exist,
+        "cocos": cocos,
     }
         # ユーザーがグループに参加できるかを確認
     if group.mainuser == request.user:
         return HttpResponse(template.render(context, request))
     if group.visibility== "local":
-        user = request.user
-        can_join = group.can_user_join(user)
-        if not can_join :
+        if group.type == "single":
+            user = request.user
+            can_join = group.can_user_join(user)
+            if not can_join  :
                 return redirect('error') 
+            else:
+                return HttpResponse(template.render(context, request))
         else:
-            return HttpResponse(template.render(context, request))
-    return HttpResponse(template.render(context, request))
+            user = request.user
+            multiple_user_join = group.multiple_user_join(user)
+            if not multiple_user_join:
+                return redirect('error')
+            else:
+                return HttpResponse(template.render(context, request))
+    else:
+        return HttpResponse(template.render(context, request))
 @login_required
 def join(request, name):
     group = get_object_or_404(Group, name=name)
