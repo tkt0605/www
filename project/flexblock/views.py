@@ -225,8 +225,7 @@ def network(request, pk):
     comanager_exists = Group.objects.filter(name=network.hub).values_list('comanager', flat=True).order_by('-pk')[:10000000]
     is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
-    # is_members = 
-    is_comanager = Network.objects.filter(hub__type='multiple').exists()
+    is_mainuser = Group.objects.filter(type='single', mainuser=network.hub.mainuser).exists()
     is_sub = Making.objects.filter(name=network, hub=network.hub).exists()
     marks = Making.objects.filter(hub=network.hub).order_by('-pk')[:1000000]
     enter_received = AddNetwork.objects.filter(name=network, group=group)
@@ -243,8 +242,10 @@ def network(request, pk):
         "marks": marks,
         "enter_received": enter_received,
         "return_add_request": return_add_request,
-        "is_comanager":is_comanager,
+        # "is_comanager":is_comanager,
         "comanager_exists": comanager_exists,
+        # "managers": managers,
+        "is_mainuser": is_mainuser,
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
