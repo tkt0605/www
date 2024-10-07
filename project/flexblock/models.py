@@ -149,6 +149,30 @@ class Network(models.Model):
     created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True, verbose_name='作成日')
     def __str__(self):
         return str(self.name)
+    def multiple_user_join(self, user):
+        if self.visibility == 'local' and self.hub.type == 'multiple':
+            comanagers = self.hub.comanager.all()
+            # comanagers = Group.objects.filter(name=self.name).values_list('comanager', flat=True).all()
+            for co_manager in comanagers:
+                is_approved_by_manager = RootAuth.objects.filter(
+                    user=co_manager.mainuser, target_user=user, is_approved_by_user=True, is_approved_by_target=True, is_denied=False
+                ).exists() 
+                is_approved_by_manager_login = RootAuth.objects.filter(
+                    user=user, target_user=co_manager.mainuser, is_approved_by_user=True, is_approved_by_target=True, is_denied=False
+                ).exists()
+                if is_approved_by_manager  or is_approved_by_manager_login:
+                    return True
+            return False
+        if self.mainuser:
+            multiple_auth_user = RootAuth.objects.filter(
+                Q(user=self.mainuser, target_user=user) | 
+                Q(user=user, target_user=self.mainuser),
+                is_approved_by_user=True,
+                is_approved_by_target=True
+            ).exists()
+            print(f"Auth from mainuser to user: {multiple_auth_user}")
+            return multiple_auth_user
+        return False
     def can_user_join(self, user):
         """指定されたユーザーがグループに参加できるか確認"""
         # もしグループが'local'な場合、追加のチェックを実行

@@ -134,8 +134,11 @@ class CreateNetworkForm(forms.ModelForm):
     def __init__(self, mainuser=None, *args, **kwargs):
         self.mainuser = mainuser
         super().__init__(*args, **kwargs)
+        ## Networkモデルのself.mainuserが存在しているのであれば、if文以下を実行。 Groupモデルでのmainuserやcomanagerの両方を絞り込む。
         if self.mainuser:
-            self.fields['hub'].queryset = Group.objects.filter(mainuser=self.mainuser) or Group.objects.filter(comanager=self.mainuser) 
+            self.fields['hub'].queryset = Group.objects.filter(
+                Q(mainuser=self.mainuser)  | Q(comanager__mainuser=mainuser)
+            )
     def save(self, commit=True):
         kwargs = super().save(commit=False)
         if self.mainuser:

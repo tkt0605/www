@@ -221,9 +221,12 @@ def network(request, pk):
     posts = NetworkPost.objects.order_by('-pk')[:100000000000]
     user = request.user
     group = Group.objects.filter(mainuser=user).exists()
+    ##Groupモデルで、nameとnetworkのhubの名前が一致しているもののcomanagerをすべて取り出す。
+    comanager_exists = Group.objects.filter(name=network.hub).values_list('comanager', flat=True).order_by('-pk')[:10000000]
     is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
     # is_members = 
+    is_comanager = Network.objects.filter(hub__type='multiple')
     is_sub = Making.objects.filter(name=network, hub=network.hub).exists()
     marks = Making.objects.filter(hub=network.hub).order_by('-pk')[:1000000]
     enter_received = AddNetwork.objects.filter(name=network, group=group)
@@ -240,17 +243,26 @@ def network(request, pk):
         "marks": marks,
         "enter_received": enter_received,
         "return_add_request": return_add_request,
+        "is_comanager":is_comanager,
+        "comanager_exists": comanager_exists,
     }
     if network.mainuser == request.user:
         return HttpResponse(template.render(context, request))
     if network.visibility == "local":
-        # user = network.mainuser
-        user = request.user
-        can_join = network.can_user_join(user)
-        if not can_join:
+        if network.hub.type=="single":
+            user = request.user
+            can_join = network.can_user_join(user)
+            if not can_join:
                 return redirect('error') 
+            else:
+                return HttpResponse(template.render(context, request))
         else:
-            return HttpResponse(template.render(context, request))
+            user = request.user
+            multiple_user_join = network.hub.multiple_user_join(user)
+            if not multiple_user_join:
+                return redirect('error')
+            else:
+                return HttpResponse(template.render(context, request))
     # if network.visibility:
     #     if not network_exists_mainuser:
     #         return redirect('error') 

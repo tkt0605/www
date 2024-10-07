@@ -12,21 +12,9 @@
             <img class="backimage" src="/media/{{room.backimage}}"/>
         </div>
         <div class="group-content">
-            <h2>{{room.name}}</h2>
+            <h2>{{room.name}}</h2><small>/<b>{{room.visibility}}</b></small>
             <p>{{room.index}}</p>
             <button onclick="location.href='{% url "community" room.name %}'" class="btn"><b>詳細を見る</b></button>
-        </div>
-    </div>
-    {% endfor %}
-    {% for cogroup in cogroups %}
-    <div class="group-card">
-        <div class="group-image">
-            <img class="backimage" src="/media/{{cogroup.backimage}}"/>
-        </div>
-        <div class="group-content">
-            <h2>{{cogroup.name}}</h2>
-            <p>{{cogroup.index}}</p>
-            <button onclick="location.href='{% url "cogroup" cogroup.name %}'" class="btn"><b>詳細を見る</b></button>
         </div>
     </div>
     {% endfor %}
