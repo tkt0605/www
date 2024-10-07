@@ -98,12 +98,13 @@
                                 <span class="hdvbd">オーナー</span>
                                 <li>
                                     <div class="founder">
-                                        {% if not is_comanager %}
-                                        <a href='/profile/{{network.hub.managername.pk}}'>
-                                            <img class="founder_image" src="/media/{{network.hub.managername.icon}}"/>
-                                            <b>{{network.hub.managername}}</b>
-                                        </a>
-                                        {% else %}
+                                        {% if not network.hub.managername == 'None' %}
+                                            <a href='/profile/{{network.hub.managername.pk}}'>
+                                                <img class="founder_image" src="/media/{{network.hub.managername.icon}}"/>
+                                                <b>{{network.hub.managername}}</b>
+                                            </a>
+                                        {% endif %}
+                                        {% if is_comanager %}
                                             {% for comanager_exist in comanager_exists %}
                                             {% for profile in accounts %}
                                             {% if profile.pk == comanager_exist %}

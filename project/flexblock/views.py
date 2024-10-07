@@ -226,7 +226,7 @@ def network(request, pk):
     is_network_name = AddNetwork.objects.filter(name=network, group__mainuser=user).exists()
     network_exists_mainuser = GroupMembership.objects.filter(account__mainuser=user, group=network.hub).exists()
     # is_members = 
-    is_comanager = Network.objects.filter(hub__type='multiple')
+    is_comanager = Network.objects.filter(hub__type='multiple').exists()
     is_sub = Making.objects.filter(name=network, hub=network.hub).exists()
     marks = Making.objects.filter(hub=network.hub).order_by('-pk')[:1000000]
     enter_received = AddNetwork.objects.filter(name=network, group=group)
