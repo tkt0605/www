@@ -270,7 +270,7 @@ body {
 }
 
 
-.post_user {
+/* .post_user {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -324,18 +324,13 @@ body {
     text-decoration: none;
 }
 
-/* .hr_style {
-    margin-top: 20px;
-    border: none;
-    border-top: 1px solid #ddd;
-} */
 .hr_style {
     margin: 0px;
     width: 100%;
     border: none;
     height: 1px;
     color: black;
-}
+} */
 .groupmembership-icon{
     width: 30px;
     height: 30px;
@@ -424,9 +419,20 @@ body {
     margin: 0px 0px 0px 0px;
     background-color: #ffffff;
 }
+/* .post_field {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-.post_user {
-    /* display: flex; */
+.post_field:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+} */
+/* .post_user {
     align-items: center;
     gap: 0px;
     margin-bottom: -10px;
@@ -466,13 +472,6 @@ body {
     margin-top: -10px;
 }
 
-/* .hr_style {
-    margin-top: -45px;
-    width: 100%;
-    border: none;
-    height: 1px;
-    background-color: #ddd;
-} */
 .dropdown-menu{
     margin-left: auto;
 }
@@ -482,7 +481,7 @@ body {
 }
 .ksac{
 
-}
+} */
 
 
 
@@ -497,15 +496,26 @@ body {
 /* 投稿フィールド全体 */
 .post_field_home {
     margin: 0px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
 } 
-
+.user_font{
+    color: #000000;
+    margin-top: 0px;
+}
 /* 投稿ユーザーリスト */
 .post_user ul {
     list-style-type: none; 
     padding: 0;
     margin: 0;
 }
-
+.post_manager{
+    margin-left: -5px;
+    margin-top: -5px;
+}
 .post_user li {
     margin-bottom: 15px; /* リストアイテム間にスペース */
     padding: 10px;
@@ -554,7 +564,93 @@ body {
 .rink:hover {
     color: #0056b3; 
 } */
+.post_user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
+.post_icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.post_username {
+    font-size: 16px;
+    color: #007bff;
+}
+
+.post_username a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}
+
+.post_username a:hover {
+    text-decoration: underline;
+}
+
+.destination_name {
+    font-size: 14px;
+    color: #6c757d;
+    margin-left: 5px;
+}
+
+.destination_name:hover {
+    color: #007bff;
+}
+
+.post_create {
+    color: #adb5bd;
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+.post_image_field {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.post_image {
+    max-width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post_text {
+    font-size: 15px;
+    color: #343a40;
+    margin: 10px 0;
+}
+
+.menu_icon {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.menu_icon li {
+    margin-left: 15px;
+}
+
+.menu_icon a {
+    color: #6c757d;
+    transition: color 0.2s ease;
+}
+
+.menu_icon a:hover {
+    color: #007bff;
+}
+
+.hr_style {
+    border: none;
+    border-top: 1px solid #dee2e6;
+    margin: 10px 0;
+}
 @media (max-width: 768px) {
 
     .profile_image, .profile_icon, .d-images {

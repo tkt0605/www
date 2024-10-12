@@ -5,8 +5,8 @@ from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 User = get_user_model()
 class RootAuth(models.Model):
-    user = models.ForeignKey(CustomUser, related_name='auth_requests_sent', on_delete=models.CASCADE)
-    target_user = models.ForeignKey(CustomUser, related_name='auth_requests_received', on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, related_name='auth_requests_sent', on_delete=models.CASCADE, blank=True, null=True)
+    target_user = models.ForeignKey(CustomUser, related_name='auth_requests_received', on_delete=models.CASCADE, blank=True, null=True)
     is_approved_by_user = models.BooleanField(default=False)
     is_approved_by_target = models.BooleanField(default=False)
     is_denied = models.BooleanField(default=False) 
@@ -39,9 +39,10 @@ class Group(models.Model):
     mainuser = models.ForeignKey(CustomUser,  on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者",  blank=True,)
     type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
-    # mainusers = models.ManyToManyField(CustomUser, related_name="共同管理者", blank=True)
+    # mainusers = models.ForeignKey(CustomUser, related_name="共同管理者", blank=True)
     comanager = models.ManyToManyField(Account, related_name="rootauths", blank=True)
-    name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Class名")
+    # comanager = models.ForeignKey(Account, related_name="rootauths",on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField(max_length=30, blank=True, null=True,unique=True , verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")
     visibility = models.CharField(max_length=10,choices=VISIBILITY_CHOICES,default='public',verbose_name="可視性")
     web_site = models.TextField(blank=True, help_text="複数のURLを@で区切って入力してください")
@@ -142,7 +143,7 @@ class Network(models.Model):
     ]
     mainuser = models.ForeignKey("accounts.CustomUser", on_delete=models.PROTECT, verbose_name="メインユーザー", blank=True, null=True)
     hub = models.ForeignKey(Group, on_delete=models.CASCADE, null=True, blank=True, related_name="ハブグループ名")
-    name = models.CharField(max_length=30, blank=True, null=True, verbose_name="Network名")
+    name = models.CharField(max_length=30, blank=True, null=True,unique=True , verbose_name="Network名")
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='public', verbose_name="可視性")
     image = models.FileField(upload_to='classicon/', null=True, blank=True, verbose_name=None)
     index = models.CharField(max_length=50, blank=False, null=True, verbose_name="見出し")

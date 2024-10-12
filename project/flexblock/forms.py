@@ -2,7 +2,7 @@ from typing import Any, Mapping
 from django.core.files.base import File
 from django.db.models.base import Model
 from django.forms.utils import ErrorList
-from accounts.models import Account
+from accounts.models import Account, CustomUser
 from .models import Group, Network, Post, RootAuth, NetworkPost, AddNetwork
 from django import forms
 from django.db.models import Q
@@ -49,12 +49,25 @@ class CreateClassForm(forms.ModelForm):
         # self.comanager = comanager 
         super().__init__(*args, **kwargs)
         if self.instance.type == 'multiple':
-            self.fields['mainuser'].required = False
+            self.fields['mainuser'].required = True
             self.fields['managername'].required = False
-            self.fields["comanager"].required = True
-            
+            # if self.mainuser:
+            #     rooters = self.cleaned_data.get('comanager')
+            #     # rooters = RootAuth.objectsrder_by('-pk')[:1000]
+            #     for rooter in rooters:
+            #         self.fields['comanager'].queryset = RootAuth.objects.filter(
+            #             # Q(mainuser=rooter.mainuser) |Q(mainuser=rooter.mainuser)
+            #             Q(user=rooter.mainuser) | Q(target_user=rooter.mainuser),
+            #         )
+            #     return False
+            rooters = RootAuth.objects.all()
+            for rooter in rooters:
+                self.fields['comanager'].queryset = Account.objects.filter(
+                    Q(mainuser = rooter.user) | Q(mainuser=rooter.target_user)
+                )
+            return False
         else:
-            self.fields['comanager'].required = False# 非表示にする
+            self.fields['comanager'].required = False
     def clean_web_site(self):
         web_site = self.cleaned_data.get('web_site')
 

@@ -295,60 +295,6 @@ def local(request):
         "message": message,
     }
     return HttpResponse(template.render(context, request))
-
-# class CreateClassView(generic.CreateView):
-#     form_class = CreateClassForm
-#     template_name = "create.html"
-#     # success_url = "/"
-#     def get_form_kwargs(self, *args, **kwargs):
-#         kwargs = super().get_form_kwargs(*args, **kwargs)
-#         # if self.request.method == 'POST':
-#         form_type = self.request.POST.get('type')
-#         if form_type == 'single':
-#         #     account =  RootAuth.objects.filter(
-#         #         user=self.request.user, 
-#         #         is_approved_by_user=True, 
-#         #         is_approved_by_target=True
-#         #     )
-#         #     kwargs['comanager'].queryset = account
-#         #     kwargs['mainuser'] = self.request.user
-#         # else:
-#             kwargs['mainuser'] = self.request.user
-#             name = self.request.user.username
-#             kwargs['managername'] = Account.objects.get(name=name)
-#         return kwargs
-#     ##クエリセットは、本来 get_form()関数で行う。
-#     def get_form(self, form_class=None):
-#         form = super().get_form(form_class)
-#         form_type = self.request.POST.get("type")
-#         if form_type == 'multiple':
-#             queryset = Account.objects.get(
-#                 # Q(mainuser__email__in=RootAuth.objects.filter(user=self.request.user, is_approved_by_user=True, is_approved_by_target=True, is_denied=False).values_list('user__email', flat=True)) |
-#                 # Q(mainuser__email__in=RootAuth.objects.filter(target_user=self.request.user,is_approved_by_user=True,is_approved_by_target=True,is_denied=False).values_list('target_user__email', flat=True))
-#                 mainuser = self.request.user
-#             )
-#             form.fields['comanager'].queryset = queryset
-#         return form
-#     def form_valid(self, form):
-#         self.object = form.save(commit=False)
-#         if self.object == None:
-#             form.add_error(None, "保存するオブジェクトが作成できませんでした。")
-#             return self.form_invalid(form)
-#         cleaned_data = form.cleaned_data
-#         if cleaned_data['type'] == "multiple": 
-#             if not cleaned_data.get('comanager'):
-#                 form.add_error("comanager, 共同管理者は必須です。")
-#                 self.object.save()
-#                 self.object.comanager.set(cleaned_data['comanager'])
-#         else:
-#             self.object.save()
-#         return super().form_valid(form)
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         accounts = Account.objects.order_by('-pk')[:100000]
-#         context['accounts'] = accounts
-#         return context
-# form_create = CreateClassView.as_view()
 class CreateClassView(generic.CreateView):
     form_class = CreateClassForm
     template_name = "create.html"
@@ -358,56 +304,35 @@ class CreateClassView(generic.CreateView):
         if self.request.method == 'POST':
             form_type = self.request.POST.get('type')
             if form_type == 'multiple':
-                comanager_ids = self.request.POST.getlist('comanager')  
-                mainusers_qs = CustomUser.objects.filter(email__in=comanager_ids)
-                kwargs['mainusers'] = mainusers_qs 
-                # mainusers_qs = CustomUser.objects.filter(email__in=comanager_ids)
-                # kwargs['mainusers'] = mainusers_qs 
+                kwargs['mainuser'] = self.request.user
             else:
                 kwargs['mainuser'] = self.request.user
                 form = self.request.user.username
                 kwargs['managername'] = Account.objects.get(name=form)
         return kwargs
-    ## classフォームから、get_context_data()を取得する。
+    # classフォームから、get_context_data()を取得する。
     def form_valid(self, form):
         # フォームが有効な場合、`type`が`multiple`ならば`comanager`を必須にする
         if form.is_valid():
             # form.save(commit=False) で一時的なオブジェクトを作成
             self.object = form.save(commit=False)
-
-            # Noneチェック: objectがNoneであればエラー
+            cleaned_data = form.cleaned_data
             if self.object is None:
                 form.add_error(None, "保存するオブジェクトが作成できませんでした。")
                 return self.form_invalid(form)
-        cleaned_data = form.cleaned_data
-        if cleaned_data['type'] == 'multiple':
-
-            commanger_ps = RootAuth.objects.filter(
-                Q(user=self.request.user) | Q(target_user=self.request.user),
-                is_approved_by_user = True,
-                is_approved_by_target = True,
-                is_denied = False
-            )
-            form.fields['comanager'].queryset = commanger_ps
-            comanager_ids = self.request.POST.getlist('comanager')  
-            # form.fields['mainusers'].queryset = CustomUser.objects.filter(email__in=comanager_ids)
-            if not cleaned_data.get('comanager'):
-                form.add_error('comanager', '共同管理者は必須です。')
-            self.object.save()  # まずメインのオブジェクトを保存
-            # self.object.mainuser.set(cleaned_data['mainusers'])  # ManyToManyField の設定
-            self.object.comanager.set(cleaned_data['comanager'])  # ManyToManyField の設定
+        if cleaned_data['type'] == 'multiple': 
+            self.object.save()
+            self.object.comanager.set(cleaned_data['comanager']) 
         else:
             # type が "single" の場合の処理
             self.object.save()
         return super().form_valid(form)
     def get_context_data(self, **kwargs):
-        #親クラスの get_context_data メソッドを呼び出す:
         context = super().get_context_data(**kwargs)
-        #既存のコンテキストデータを取得:
-        accounts = Account.objects.order_by('-pk')[:100000]
-        #追加のコンテキストデータをマージ,htmlにコンテキストを表示できるようにする。
-        context['accounts'] = accounts
+        accounts = Account.objects.order_by('-pk')[:1000000]
+        context["accounts"] = accounts
         return context
+    
 form_create = CreateClassView.as_view()
 class CreateNetworkView(generic.CreateView):
     form_class = CreateNetworkForm
