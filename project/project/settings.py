@@ -27,7 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS =['127.0.0.1', 'localhost', 'www']
 
-
+ACCOUNT_FORMS = {
+    # 'signup': 'accounts.forms.CustomSignupForm',  
+    'signup': 'accounts.forms.CustomUserCreationForm'
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -146,8 +149,12 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
+ACCOUNT_USER_MODEL_FIRST_NAME_FIELD = 'first_name'
+ACCOUNT_USER_MODEL_LAST_NAME_FIELD = 'last_name'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 # ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'

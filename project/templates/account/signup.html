@@ -14,7 +14,13 @@
     <h2><b>サインアップ</b></h2>
     <form class="Signup_form" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
-      {{ form.as_p }}
+      {% comment %} {{ form.as_p }} {% endcomment %}
+      <div>{{ form.email }}</div>
+      <div>{{ form.username }}</div>
+      <div>{{ form.first_name }}</div>
+      <div>{{ form.last_name }}</div>
+      <div>{{ form.password1 }}</div>
+      <div>{{ form.password2 }}</div>
       <button class="button" type="submit"><b>サインアップ</b></button>
       <hr class="hr">
     </form>

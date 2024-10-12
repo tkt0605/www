@@ -12,10 +12,9 @@
   </div>
   <div class="login">
     <h2><b>ログイン</b></h2>
-    <form class="login_form" method="post" action="{% url 'account_login' %}">
+    <form class="login_form" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <p>{{user.username}}</p>
       <button class="button" type="submit"><b>ログイン</b></button>
       <hr class="hr">
     </form>
