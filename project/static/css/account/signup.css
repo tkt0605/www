@@ -92,3 +92,14 @@ li::before {
     border-top: 1px solid #ccc;
     margin: 20px auto;
 }
+.name_ul{
+    display: flex;
+    gap: 10px;
+    margin-left: 39.25%;
+}
+#id_first_name.first_name{
+    width: 135px;
+}
+#id_last_name.last_name{
+    width: 135px;
+}

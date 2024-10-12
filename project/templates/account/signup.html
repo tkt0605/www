@@ -17,8 +17,10 @@
       {% comment %} {{ form.as_p }} {% endcomment %}
       <div>{{ form.email }}</div>
       <div>{{ form.username }}</div>
-      <div>{{ form.first_name }}</div>
-      <div>{{ form.last_name }}</div>
+      <ul  class='name_ul'>
+        <div>{{ form.first_name }}</div>
+        <div>{{ form.last_name }}</div>
+      </ul>
       <div>{{ form.password1 }}</div>
       <div>{{ form.password2 }}</div>
       <button class="button" type="submit"><b>サインアップ</b></button>
