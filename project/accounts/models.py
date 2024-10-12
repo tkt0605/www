@@ -41,9 +41,9 @@ class CustomUserManager(BaseUserManager):
         return user
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=30, unique=True, default='default_username')
-    first_name = models.CharField(max_length=30,default="NoFirstName", blank=True)
-    last_name = models.CharField(max_length=30,default="NoLastName", blank=True)
+    username = models.CharField(max_length=30, unique=True)
+    first_name = models.CharField(max_length=30,blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -63,7 +63,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         related_query_name='user',
     )
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['username']
     def __str__(self):
         return self.email
 

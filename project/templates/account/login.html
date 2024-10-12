@@ -1,5 +1,6 @@
 {% extends "account/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block title %}flexBlock | Login{% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/account/login.css' %}">
@@ -11,7 +12,7 @@
   </div>
   <div class="login">
     <h2><b>ログイン</b></h2>
-    <form class="login_form" method="post">
+    <form class="login_form" method="post" action="{% url 'account_login' %}">
       {% csrf_token %}
       {{ form.as_p }}
       <p>{{user.username}}</p>

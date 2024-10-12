@@ -1,5 +1,6 @@
 {% extends "account/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block title %}flexBlock | Signup{% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/account/signup.css' %}">
@@ -11,7 +12,7 @@
   </div>
   <div class="Signup">
     <h2><b>サインアップ</b></h2>
-    <form class="Signup_form" method="post">
+    <form class="Signup_form" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
       {{ form.as_p }}
       <button class="button" type="submit"><b>サインアップ</b></button>

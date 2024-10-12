@@ -138,18 +138,14 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 SITE_ID = 1
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True
-LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = "/accounts/login/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-LOGIN_REDIRECT_URL = '/'
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_LOGOUT_ON_GET = True
