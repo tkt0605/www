@@ -52,10 +52,6 @@ class CreateClassForm(forms.ModelForm):
         if self.instance.type == 'multiple':
             self.fields['mainuser'].required = True
             self.fields['managername'].required = False
-            account = Account.objects.get(mainuser=self.mainuser)
-            self.fields['comanager'].queryset = RootAuth.objects.filter(
-                Q(user=account.name) | Q(target_user=account.name)
-            )
         else:
             self.fields['comanager'].required = False
     def clean_web_site(self):

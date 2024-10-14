@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin-auth/', admin.site.urls),
     path('', include('flexblock.urls')),
     path('accounts/', include('allauth.urls')),
+    path('api-auth/', include('api.urls')),
     #  path('accounts/', include('accounts.urls')),
 ]
 if settings.DEBUG:

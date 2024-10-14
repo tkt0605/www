@@ -321,13 +321,20 @@ class CreateClassView(generic.CreateView):
             if self.object is None:
                 form.add_error(None, "保存するオブジェクトが作成できませんでした。")
                 return self.form_invalid(form)
-            if cleaned_data['type'] == 'multiple': 
+            if cleaned_data['type'] == 'multiple':
                 self.object.save()
-                account = Account.objects.get(mainuser=self.request.user)
-                cleaned_data['comanager'].queryset = RootAuth.objects.filter(
-                    Q(user__name=account.name) | Q(target_user__name=account.name)
+                rootauth_user = RootAuth.objects.filter(
+                    Q(user=self.request.user.account, is_denied=False) 
+                ).values_list('target_user', flat=True)
+                rootauth_target = RootAuth.objects.filter(
+                    Q(target_user=self.request.user.account, is_denied=False)
+                ).values_list('user', flat=True)
+                comanagers = Account.objects.filter(
+                    Q(name__in=rootauth_user) | Q(name__in=rootauth_target)
                 )
-                self.object.comanager.set(cleaned_data["comanager"])
+                if comanagers.exists():
+                    self.object.save()
+                    self.object.comanager.set(comanagers[:10])
             else:
                 self.object.save()
         return super().form_valid(form)
@@ -336,7 +343,6 @@ class CreateClassView(generic.CreateView):
         accounts = Account.objects.order_by('-pk')[:1000000]
         context["accounts"] = accounts
         return context
-    
 form_create = CreateClassView.as_view()
 class CreateNetworkView(generic.CreateView):
     form_class = CreateNetworkForm
