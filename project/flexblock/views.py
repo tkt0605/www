@@ -41,29 +41,30 @@ def page(request, pk):
     accounts = Account.objects.order_by('-pk')[:100000]
     profile_user = get_object_or_404(CustomUser, pk=pk)
     rootauths = RootAuth.objects.filter(
-        Q(user=request.user, target_user=profile_user) | 
-        Q(user=profile_user, target_user=request.user),
+        Q(user=request.user.account, target_user=account) | 
+        Q(user=account, target_user=request.user.account),
         is_approved_by_user=True, 
         is_approved_by_target=True
     ).order_by('-pk')[:1000000]
     rootauths = RootAuth.objects.order_by('-pk')[:1000000]
     mutual_auth = RootAuth.objects.filter(
-        user=request.user, 
-        target_user=profile_user, 
+        user=request.user.account, 
+        target_user=account, 
         is_approved_by_user=True, 
         is_approved_by_target=True,
         is_denied = False
     ).exists() or RootAuth.objects.filter(
-        user=profile_user, 
-        target_user=request.user, 
+        user=account, 
+        target_user=request.user.account, 
         is_approved_by_user=True, 
         is_approved_by_target=True,
         is_denied = False
     ).exists()
-    auth_request_sent = RootAuth.objects.filter(user=request.user, target_user=profile_user).exists()
-    auth_requests_received = RootAuth.objects.filter(target_user=request.user, is_approved_by_user=False)
+    
+    auth_request_sent = RootAuth.objects.filter(user=request.user.account, target_user=account).exists()
+    auth_requests_received = RootAuth.objects.filter(target_user=request.user.account, is_approved_by_user=False)
     add_network = AddNetwork.objects.filter(group__mainuser=account.mainuser, is_approved_by_target=False)
-    return_requests = RootAuth.objects.filter(target_user=request.user, is_approved_by_target=False, is_approved_by_user=False, is_denied=True)
+    return_requests = RootAuth.objects.filter(target_user=request.user.account, is_approved_by_target=False, is_approved_by_user=False, is_denied=True)
     context = {
         "csrf_token": "",
         "posts": posts,
@@ -320,12 +321,17 @@ class CreateClassView(generic.CreateView):
             if self.object is None:
                 form.add_error(None, "保存するオブジェクトが作成できませんでした。")
                 return self.form_invalid(form)
-        if cleaned_data['type'] == 'multiple': 
-            self.object.save()
-            self.object.comanager.set(cleaned_data['comanager']) 
-        else:
-            # type が "single" の場合の処理
-            self.object.save()
+            if cleaned_data['type'] == 'multiple': 
+                rootauth = RootAuth.objects.filter(
+                    Q(user=self.request.user, is_denied=False) 
+                    # Q(target_user=self.request.user, is_denied=False)
+                ).values_list('target_user', flat=True)
+                comanagers = CustomUser.objects.filter(email=rootauth.user)
+                if comanagers.exists():
+                    self.object.save()
+                    self.object.comanager.set(comanagers[:10])
+                else:
+                    self.object.save()
         return super().form_valid(form)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -395,10 +401,10 @@ def send_auth_request(request, pk):
     """ユーザーに認証リクエストを送信するビュー"""
 
     # URLのパスパラメータ`pk`を使用してユーザーを取得
-    profile_user = get_object_or_404(CustomUser, pk=pk)
+    profile_user = get_object_or_404(Account, pk=pk)
     # 認証リクエストを送信するロジック
-    if not RootAuth.objects.filter(user=request.user, target_user=profile_user).exists():
-        RootAuth.objects.create(user=request.user, target_user=profile_user)
+    if not RootAuth.objects.filter(user=request.user.account, target_user=profile_user).exists():
+        RootAuth.objects.create(user=request.user.account, target_user=profile_user)
 
     return redirect('page', pk=pk)
 @login_required
@@ -411,13 +417,13 @@ def approve_auth_request(request, pk):
         auth_request.is_denied = False
 
     # リクエストを承認するロジック
-    if request.user == auth_request.target_user and not auth_request.is_approved_by_target:
+    if request.user.account == auth_request.target_user and not auth_request.is_approved_by_target:
         auth_request.is_approved_by_target = True
         auth_request.is_approved_by_user = True
         auth_request.is_denied = False
         auth_request.save()
 
-    elif request.user == auth_request.user and not auth_request.is_approved_by_user:
+    elif request.user.account == auth_request.user and not auth_request.is_approved_by_user:
         auth_request.is_approved_by_user = True
         auth_request.is_approved_by_target = True
         auth_request.is_denied = False
@@ -457,7 +463,7 @@ def not_approve_auth_request(request, pk):
     not_approve_auth_request = get_object_or_404(RootAuth, pk=pk)
 
     # リクエストを拒否状態に変更する
-    if request.user == not_approve_auth_request.target_user and not not_approve_auth_request.is_approved_by_target:
+    if request.user.account == not_approve_auth_request.target_user and not not_approve_auth_request.is_approved_by_target:
         not_approve_auth_request.is_approved_by_user = False
         not_approve_auth_request.is_approved_by_target = False
         not_approve_auth_request.is_denied = True  # 拒否状態に設定
@@ -468,7 +474,7 @@ def not_approve_auth_request(request, pk):
             reverse_request.is_approved_by_user = False
             reverse_request.save()
 
-    elif request.user == not_approve_auth_request.user and not not_approve_auth_request.is_approved_by_user:
+    elif request.user.account == not_approve_auth_request.user and not not_approve_auth_request.is_approved_by_user:
         not_approve_auth_request.is_approved_by_user = False
         not_approve_auth_request.is_approved_by_target = False
         not_approve_auth_request.is_denied = True  # 拒否状態に設定
@@ -484,14 +490,14 @@ def not_approve_auth_request(request, pk):
 @login_required
 def add_root(request, pk):
     add_root = get_object_or_404(RootAuth, pk=pk)
-    if request.user == add_root.user and not add_root.is_approved_by_user:
+    if request.user.account == add_root.user and not add_root.is_approved_by_user:
         add_root.is_approved_by_user = True
         add_root.save()
         reverse_request = RootAuth.objects.filter(user=add_root.target_user, target_user=add_root.user).first()
         if reverse_request:
             reverse_request.is_approved_by_user = True
             reverse_request.save()
-    elif request.user == add_root.target_user and not add_root.is_approved_by_user:
+    elif request.user.account == add_root.target_user and not add_root.is_approved_by_user:
         add_root.is_approved_by_user = True
         add_root.save()
         
@@ -500,6 +506,7 @@ def add_root(request, pk):
             reverse_request.is_approved_by_user = False
             reverse_request.save()
     return redirect('page', pk=request.user.id)
+
 @login_required
 def approve_add_request(request, pk):
     """認証リクエストを承認するビュー"""

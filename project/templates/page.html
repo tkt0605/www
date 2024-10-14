@@ -82,7 +82,7 @@
                                     {% if account.mainuser == user and not request.is_denied %}
                                     <li>
                                         <div class="request_info">
-                                            <p>{{ request.user.username }} wants to connect with you.</p>
+                                            <p>{{ request.user.name }} wants to connect with you.</p>
                                             <div class="approve"><a href="{% url 'approve_auth_request' request.id %}">承認</a>or<a href="{% url "not_approve_auth_request" request.id %}">拒否</a></div>
                                         </div>
                                     </li>
@@ -163,8 +163,8 @@
                         <span class='hdvbd'>認証済み</span>
                         {% for rootauth in rootauths %}
                         {% for page in accounts %}
-                        {% if account.mainuser == rootauth.user and  rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True%}
-                        {% if page.mainuser == rootauth.target_user %}
+                        {% if account.name == rootauth.user.name and  rootauth.is_approved_by_user == True and  rootauth.is_approved_by_target == True%}
+                        {% if page.name == rootauth.target_user.name %}
                         <li>
                             <div class="founde">
                                 <a class="a_icon" href="/profile/{{page.pk}}">
@@ -175,8 +175,8 @@
                         </li>
                         {% endif %}
                         {% endif %}
-                        {% if account.mainuser == rootauth.target_user and rootauth.is_approved_by_user == True  and  rootauth.is_approved_by_target == True%}
-                        {% if page.mainuser == rootauth.user %}
+                        {% if account.name == rootauth.target_user.name and rootauth.is_approved_by_user == True  and  rootauth.is_approved_by_target == True%}
+                        {% if page.name == rootauth.user.name %}
                         <li>
                             <div class="founde">
                                 <a class="a_icon" href="/profile/{{page.pk}}">
@@ -193,16 +193,16 @@
                     <ul class="messages_1">
                         <span class='hdvbd'>非認証</span>
                         {% for rootauth in rootauths %}
-                        {% if rootauth.target_user == account.mainuser and rootauth.is_approved_by_user == False  %}
+                        {% if account.name == rootauth.target_user.name and rootauth.is_approved_by_user == False  %}
                         {% for page in accounts %}
-                        {% if page.mainuser == rootauth.user %}
+                        {% if page.name == rootauth.user.name %}
                         <li>
                             <div class='founde'>
                                 <a class='a_icon' href="/profile/{{page.pk}}">
                                     <img class='founder_image' src="/media/{{page.icon}}"/>
                                     <b>{{page.name}}</b>
                                 </a>
-                                {% if account.mainuser == user %}
+                                {% if account.name == user.username %}
                                 {% if return_requests %}
                                 {% for return in return_requests %}
                                 <a href="{% url 'return_auth_request' return.pk  %}">
@@ -222,9 +222,9 @@
                     <ul class="messages_1">
                         <span class='hdvbd'>ルート中</span>
                         {% for rootauth in rootauths %}
-                        {% if rootauth.user == account.mainuser and rootauth.is_approved_by_user == False  %}
+                        {% if account.name == rootauth.user.name and rootauth.is_approved_by_user == False  %}
                         {% for page in accounts %}
-                        {% if page.mainuser == rootauth.target_user %}
+                        {% if page.name == rootauth.target_user %}
                         <li>
                             <div class='founde'>
                                 <a class='a_icon' href="/profile/{{page.pk}}">

@@ -5,8 +5,8 @@ from django.urls import reverse_lazy, reverse
 from django.db.models import Q
 User = get_user_model()
 class RootAuth(models.Model):
-    user = models.ForeignKey(CustomUser, related_name='auth_requests_sent', on_delete=models.CASCADE, blank=True, null=True)
-    target_user = models.ForeignKey(CustomUser, related_name='auth_requests_received', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(Account, related_name='auth_requests_sent', on_delete=models.CASCADE, blank=True, null=True)
+    target_user = models.ForeignKey(Account, related_name='auth_requests_received', on_delete=models.CASCADE, blank=True, null=True)
     is_approved_by_user = models.BooleanField(default=False)
     is_approved_by_target = models.BooleanField(default=False)
     is_denied = models.BooleanField(default=False) 
@@ -40,7 +40,7 @@ class Group(models.Model):
     managername = models.ForeignKey(Account, null=True,on_delete=models.CASCADE,verbose_name="管理者",  blank=True,)
     type = models.CharField(max_length=10,choices=GROUP_TYPE,default='single',verbose_name="タイプ")
     # mainusers = models.ForeignKey(CustomUser, related_name="共同管理者", blank=True)
-    comanager = models.ManyToManyField(Account, related_name="rootauths", blank=True)
+    comanager = models.ManyToManyField(RootAuth, related_name="rootauths", blank=True)
     # comanager = models.ForeignKey(Account, related_name="rootauths",on_delete=models.CASCADE, blank=True, null=True)
     name = models.CharField(max_length=30, blank=True, null=True,unique=True , verbose_name="Class名")
     category=models.CharField(max_length=15, blank=False, null=True, verbose_name="カテゴリ")

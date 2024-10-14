@@ -9,6 +9,7 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 class CreateClassForm(forms.ModelForm):
+    
     class Meta:
         model = Group
         fields = "__all__"
@@ -51,26 +52,10 @@ class CreateClassForm(forms.ModelForm):
         if self.instance.type == 'multiple':
             self.fields['mainuser'].required = True
             self.fields['managername'].required = False
-            # if self.mainuser:
-            #     rooters = self.cleaned_data.get('comanager')
-            #     # rooters = RootAuth.objectsrder_by('-pk')[:1000]
-            #     for rooter in rooters:
-            #         self.fields['comanager'].queryset = RootAuth.objects.filter(
-            #             # Q(mainuser=rooter.mainuser) |Q(mainuser=rooter.mainuser)
-            #             Q(user=rooter.mainuser) | Q(target_user=rooter.mainuser),
-            #         )
-            #     return False
-            rooters = RootAuth.objects.all()
-            for rooter in rooters:
-                self.fields['comanager'].queryset = Account.objects.filter(
-                    Q(mainuser = rooter.user) | Q(mainuser=rooter.target_user)
-                )
-            return False
         else:
             self.fields['comanager'].required = False
     def clean_web_site(self):
         web_site = self.cleaned_data.get('web_site')
-
         if web_site:
             # @で区切ってリンクリストを作成し、先頭の@を削除
 

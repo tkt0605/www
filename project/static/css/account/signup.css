@@ -103,3 +103,19 @@ li::before {
 #id_last_name.last_name{
     width: 135px;
 }
+@media screen and (max-width: 600px) {
+    .main{
+        text-align: center;
+    }
+    .name_ul{
+        display: flex;
+        gap: 10px;
+        margin-left: 16%;
+    }
+    #id_first_name.first_name{
+        width: 135px;
+    }
+    #id_last_name.last_name{
+        width: 135px;
+    }
+}
