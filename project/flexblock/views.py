@@ -322,16 +322,14 @@ class CreateClassView(generic.CreateView):
                 form.add_error(None, "保存するオブジェクトが作成できませんでした。")
                 return self.form_invalid(form)
             if cleaned_data['type'] == 'multiple': 
-                rootauth = RootAuth.objects.filter(
-                    Q(user=self.request.user, is_denied=False) 
-                    # Q(target_user=self.request.user, is_denied=False)
-                ).values_list('target_user', flat=True)
-                comanagers = CustomUser.objects.filter(email=rootauth.user)
-                if comanagers.exists():
-                    self.object.save()
-                    self.object.comanager.set(comanagers[:10])
-                else:
-                    self.object.save()
+                self.object.save()
+                account = Account.objects.get(mainuser=self.request.user)
+                cleaned_data['comanager'].queryset = RootAuth.objects.filter(
+                    Q(user__name=account.name) | Q(target_user__name=account.name)
+                )
+                self.object.comanager.set(cleaned_data["comanager"])
+            else:
+                self.object.save()
         return super().form_valid(form)
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -417,6 +415,7 @@ def approve_auth_request(request, pk):
         auth_request.is_denied = False
 
     # リクエストを承認するロジック
+    # ログインしているユーザーのアカウントとRootAuthモデルでのtarget_userが一致していればよき。（ここでは、RootAuthモデルの親モデルが、Accountモデルだからこそ成立する。）
     if request.user.account == auth_request.target_user and not auth_request.is_approved_by_target:
         auth_request.is_approved_by_target = True
         auth_request.is_approved_by_user = True
