@@ -311,11 +311,8 @@ class CreateClassView(generic.CreateView):
                 form = self.request.user.username
                 kwargs['managername'] = Account.objects.get(name=form)
         return kwargs
-    # classフォームから、get_context_data()を取得する。
     def form_valid(self, form):
-        # フォームが有効な場合、`type`が`multiple`ならば`comanager`を必須にする
         if form.is_valid():
-            # form.save(commit=False) で一時的なオブジェクトを作成
             self.object = form.save(commit=False)
             cleaned_data = form.cleaned_data
             if self.object is None:
@@ -323,14 +320,13 @@ class CreateClassView(generic.CreateView):
                 return self.form_invalid(form)
             if cleaned_data['type'] == 'multiple':
                 self.object.save()
-                rootauth_user = RootAuth.objects.filter(
+                rootauth= RootAuth.objects.filter(
                     Q(user=self.request.user.account, is_denied=False) 
-                ).values_list('target_user', flat=True)
-                rootauth_target = RootAuth.objects.filter(
+                ).values_list('target_user', flat=True) or RootAuth.objects.filter(
                     Q(target_user=self.request.user.account, is_denied=False)
                 ).values_list('user', flat=True)
                 comanagers = Account.objects.filter(
-                    Q(name__in=rootauth_user) | Q(name__in=rootauth_target)
+                    Q(name__in=rootauth.user) | Q(name__in=rootauth.target_user)
                 )
                 if comanagers.exists():
                     self.object.save()
